@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="{% static "css/mystyle.css" %}" />
+  </head>
+  <body>
+    <h1>Hello</h1>
+    {{ insert_var }}
+    <p>
+      a picture: <dir><img src="{% static "images/3.png" %}" /></dir>
+    </p>
+  </body>
+</html>
