@@ -15,18 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from vol_reg import views as vol_views
 from backend import views
-#from vol_reg import views
 
 urlpatterns = [
     url(r'^$',views.index,name='index'),
     url(r'^admin/', admin.site.urls),
-    url(r'^formpage/',views.form_view,name="form_name"),
-
-    url(r'^orgform', views.org_addr_form, name='foo'),
-
-    url(r'^other',views.other,name='other'),
-
     url(r'^volunteer/', include('vol_reg.urls')),
-
 ]

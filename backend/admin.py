@@ -3,7 +3,7 @@ from django.contrib import admin
 from address.models import AddressField
 from address.forms import AddressWidget
 
-from backend.models import Funder, Project, Organisation
+from backend.models import Funder, Project, Organisation, Person, Role, Person_org_role
 
 
 class OrganisationAdmin(admin.ModelAdmin):
@@ -15,3 +15,6 @@ class OrganisationAdmin(admin.ModelAdmin):
 admin.site.register(Funder)
 admin.site.register(Project)
 admin.site.register(Organisation, OrganisationAdmin)
+admin.site.register(Person)
+admin.site.register(Role)
+admin.site.register(Person_org_role)
