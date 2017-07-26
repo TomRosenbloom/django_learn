@@ -71,8 +71,8 @@ class Person(models.Model):
         (MALE, 'Male'),
         (FEMALE, 'Female'),
     )
-    forename = models.CharField(max_length=100)
-    surname = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
     title = models.CharField(
         max_length=4,
         choices=TITLE_CHOICES,
@@ -87,11 +87,13 @@ class Person(models.Model):
     mobile = models.CharField(max_length=20,blank=True)
     email = models.EmailField(max_length=254, blank=True, null=True)
     address = AddressField(blank=True, null=True)
+    is_volunteer = models.NullBooleanField()
+    is_org_member = models.NullBooleanField()
     role = models.ManyToManyField(Role,related_name='role',through='Person_org_role')
     organisation = models.ManyToManyField(Organisation,related_name='organisation',through='Person_org_role')
 
     def __str__(self):
-        return ('%s %s' % (self.forename, self.surname))
+        return ('%s %s' % (self.first_name, self.last_name))
 
 class Person_org_role(models.Model):
     person = models.ForeignKey('Person')

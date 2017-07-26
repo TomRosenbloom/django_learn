@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+{% extends "vol_reg/base.html" %}
+  {% block body_block %}
+  <h2>Sign up form</h2>
+      <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+          <div class="form-group">
+            <label for="{{ field.name }}">{{ field.label_tag }}</label><br />
+            {{ field }}
+            {% for error in field.errors %}
+              <p style="color: red">{{ error }}</p>
+            {% endfor %}
+          </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Sign up</button>
+        <button type="reset" class="btn btn-default">Clear form</button>
+      </form>
+
+  {% endblock %}
