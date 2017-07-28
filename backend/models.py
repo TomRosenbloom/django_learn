@@ -1,14 +1,9 @@
 from django.db import models
 from address.models import AddressField
+from django.contrib.auth.models import User
 
 # Create your models here.
 
-# ok, let's use funding database as example. The tables:
-#  project
-#  project_status - one-to-one via foreign key
-#  funder - one-to-many via lookup table
-#  actually to start with I'll just use project and funder as a one-to-one
-#  nb could add organisations, where projects involve organisations
 class Funder(models.Model):
     funder_name = models.CharField(max_length=255,unique=True)
 
@@ -54,6 +49,43 @@ class Role(models.Model):
         return self.role_name
 
 
+class Profile(models.Model):
+    MR = 'MR'
+    MRS = 'MRS'
+    MS = 'MS'
+    SIR = 'SIR'
+    TITLE_CHOICES = (
+        (MR, 'Mr'),
+        (MRS, 'Mrs'),
+        (MS, 'Ms'),
+        (SIR, 'Sir'),
+    )
+    MALE = 'MALE'
+    FEMALE = 'FEMALE'
+    SEX_CHOICES = (
+        (MALE, 'Male'),
+        (FEMALE, 'Female'),
+    )
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    title = models.CharField(
+        max_length=4,
+        choices=TITLE_CHOICES,
+        blank=True
+    )
+    sex = models.CharField(
+        max_length=6,
+        choices=SEX_CHOICES,
+        blank=True
+    )
+    mobile = models.CharField(max_length=20,blank=True)
+    address = AddressField(blank=True, null=True)
+    is_volunteer = models.NullBooleanField()
+    is_org_member = models.NullBooleanField()
+
+    def __str__(self):
+        return ('%s %s' % (self.first_name, self.last_name))
+
+
 class Person(models.Model):
     MR = 'MR'
     MRS = 'MRS'
@@ -89,8 +121,8 @@ class Person(models.Model):
     address = AddressField(blank=True, null=True)
     is_volunteer = models.NullBooleanField()
     is_org_member = models.NullBooleanField()
-    role = models.ManyToManyField(Role,related_name='role',through='Person_org_role')
-    organisation = models.ManyToManyField(Organisation,related_name='organisation',through='Person_org_role')
+    role = models.ManyToManyField(Role,related_name='person_role',through='Person_org_role')
+    organisation = models.ManyToManyField(Organisation,related_name='person_organisation',through='Person_org_role')
 
     def __str__(self):
         return ('%s %s' % (self.first_name, self.last_name))

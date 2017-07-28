@@ -1,14 +1,15 @@
 from django import forms
-from backend.models import Person
+from backend.models import Profile
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
 
-class RegForm(forms.ModelForm):
+
+class ProfileForm(forms.ModelForm):
     class Meta:
-        model = Person
-        fields = ['first_name','last_name','title','dob','sex','mobile','email','address']
+        model = Profile
+        fields = '__all__'
 
 
 class SignUpForm(UserCreationForm):
@@ -18,4 +19,4 @@ class SignUpForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', )
+        fields = ('username', 'password1', 'password2', 'first_name', 'last_name', 'email', )
