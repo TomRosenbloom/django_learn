@@ -83,7 +83,7 @@ class Profile(models.Model):
     is_org_member = models.NullBooleanField()
 
     def __str__(self):
-        return ('%s %s' % (self.first_name, self.last_name))
+        return ('%s %s' % (self.user.first_name, self.user.last_name))
 
 
 class Person(models.Model):
