@@ -29,6 +29,7 @@ def register(request):
 
             profile = profile_form.save(commit=False)
             profile.user = user
+            profile.is_volunteer = True
 
             profile.save()
 

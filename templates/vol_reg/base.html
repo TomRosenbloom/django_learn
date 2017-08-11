@@ -13,12 +13,21 @@
           <li>
             <a  class="navbar-brand" href="{% url 'vol_reg:index' %}">Home</a>
           </li>
-          <li>
-            <a  class="navbar-link" href="{% url 'vol_reg:signup' %}">Sign up</a>
-          </li>
+          {% if user.is_authenticated %}
           <li>
             <a  class="navbar-link" href="{% url 'vol_reg:profile' %}">Profile</a>
           </li>
+          <li>
+            <a class="navbar-link" href="{% url 'logout' %}">Logout {{ user.username }}</a>
+          </li>
+          {% else %}
+          <li>
+            <a class="navbar-link" href="{% url 'vol_reg:login' %}">Login</a>
+          </li>
+          <li>
+            <a  class="navbar-link" href="{% url 'vol_reg:signup' %}">Sign up</a>
+          </li>
+          {% endif %}
         </ul>
       </div>
     </nav>

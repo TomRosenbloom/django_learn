@@ -3,6 +3,17 @@
   {% block body_block %}
 
     <h2>Home</h2>
-    <a href="{% url 'vol_reg:signup' %}">Sign up</a> or <a href="#">Log in</a>
+    {% if user.is_authenticated %}
+      <p>
+        Logged in as {{ user.username }}
+      </p>
+      <p>
+        Hello {{ user.first_name }}, how about <a href="{% url 'vol_reg:profile' %}">updating your profile</a>?
+      </p>
+    {% else %}
+
+      <a href="{% url 'vol_reg:signup' %}">Sign up</a> or <a href="#">Log in</a>
+
+    {% endif %}
 
     {% endblock %}
