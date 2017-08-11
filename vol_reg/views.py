@@ -29,7 +29,7 @@ def signup(request):
             # that should be accessible as user.pk from user = form.save(), or form.pk?
             Profile.objects.create(user_id=user.pk,is_volunteer=True)
 
-            return redirect('vol_reg:welcome') 
+            return redirect('vol_reg:profile') 
     else:
         form = SignUpForm()
     return render(request, 'vol_reg/signup.html', {'form': form})
