@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Volunteer dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <ul class="nav navbar-nav">
+          <li>
+            <a  class="navbar-brand" href="{% url 'vol_reg:index' %}">Home</a>
+          </li>
+          <li>
+            <a  class="navbar-link" href="{% url 'vol_reg:signup' %}">Sign up</a>
+          </li>
+          <li>
+            <a  class="navbar-link" href="{% url 'vol_reg:profile' %}">Profile</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container">
+      <h1>Volunteer registration</h1>
+
+        {% block body_block %}
+
+        {% endblock %}
+
+    </div>
+
+
+  </body>
+</html>
