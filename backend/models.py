@@ -2,6 +2,8 @@ from django.db import models
 from address.models import AddressField
 from django.contrib.auth.models import User
 
+from backend.model_choices import *
+
 # Create your models here.
 
 class Funder(models.Model):
@@ -12,14 +14,6 @@ class Funder(models.Model):
 
 
 class Project(models.Model):
-    PROPOSED = 'PROP'
-    CURRENT = 'CURR'
-    COMPLETED = 'COMP'
-    STAGE_CHOICES = (
-        (PROPOSED, 'Proposed'),
-        (CURRENT, 'Current'),
-        (COMPLETED, 'Completed'),
-    )
     funders = models.ManyToManyField(Funder)
     project_name = models.CharField(max_length=255,unique=True)
     stage = models.CharField(
@@ -50,22 +44,6 @@ class Role(models.Model):
 
 
 class Profile(models.Model):
-    MR = 'MR'
-    MRS = 'MRS'
-    MS = 'MS'
-    SIR = 'SIR'
-    TITLE_CHOICES = (
-        (MR, 'Mr'),
-        (MRS, 'Mrs'),
-        (MS, 'Ms'),
-        (SIR, 'Sir'),
-    )
-    MALE = 'MALE'
-    FEMALE = 'FEMALE'
-    SEX_CHOICES = (
-        (MALE, 'Male'),
-        (FEMALE, 'Female'),
-    )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     title = models.CharField(
         max_length=4,
@@ -79,6 +57,8 @@ class Profile(models.Model):
     )
     mobile = models.CharField(max_length=20,blank=True)
     address = AddressField(blank=True, null=True)
+    postcode = models.CharField(max_length=10,blank=True)
+    range = models.PositiveSmallIntegerField(choices=RANGE_CHOICES,null=True)
     is_volunteer = models.NullBooleanField()
     is_org_member = models.NullBooleanField()
 
@@ -87,22 +67,6 @@ class Profile(models.Model):
 
 
 class Person(models.Model):
-    MR = 'MR'
-    MRS = 'MRS'
-    MS = 'MS'
-    SIR = 'SIR'
-    TITLE_CHOICES = (
-        (MR, 'Mr'),
-        (MRS, 'Mrs'),
-        (MS, 'Ms'),
-        (SIR, 'Sir'),
-    )
-    MALE = 'MALE'
-    FEMALE = 'FEMALE'
-    SEX_CHOICES = (
-        (MALE, 'Male'),
-        (FEMALE, 'Female'),
-    )
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     title = models.CharField(

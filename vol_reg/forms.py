@@ -4,12 +4,15 @@ from backend.models import Profile
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-
+from localflavor.gb.forms import GBPostcodeField
 
 class ProfileForm(forms.ModelForm):
+    postcode = GBPostcodeField()
+
     class Meta:
         model = Profile
-        fields = '__all__'
+        fields = ('postcode','range',)
+        labels = { 'range': 'Travel range'}
 
 
 class SignUpForm(UserCreationForm):

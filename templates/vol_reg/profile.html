@@ -3,6 +3,9 @@
   {% block body_block %}
 
     <h2>Profile</h2>
+    <p>
+      Edit profile for {{ user.first_name }} {{ user.last_name }}
+    </p>
     <form method="post">
       {% csrf_token %}
       {% for field in form %}
@@ -14,8 +17,7 @@
           {% endfor %}
         </div>
       {% endfor %}
-      <button type="submit" class="btn btn-primary">Sign up</button>
-      <button type="reset" class="btn btn-default">Clear form</button>
+      <button type="submit" class="btn btn-primary">Update profile</button>
     </form>
 
     {% endblock %}
