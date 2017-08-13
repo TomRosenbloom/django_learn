@@ -3,7 +3,10 @@ from django.contrib import admin
 from address.models import AddressField
 from address.forms import AddressWidget
 
-from backend.models import Funder, Project, Organisation, Person, Role, Person_org_role, Profile
+from mptt.admin import MPTTModelAdmin
+from mptt.admin import DraggableMPTTAdmin
+
+from backend.models import Funder, Project, Organisation, Person, Role, Person_org_role, Profile, Skill, Activity
 
 
 class OrganisationAdmin(admin.ModelAdmin):
@@ -19,3 +22,17 @@ admin.site.register(Person)
 admin.site.register(Role)
 admin.site.register(Person_org_role)
 admin.site.register(Profile)
+admin.site.register(Skill, MPTTModelAdmin)
+
+admin.site.register(
+    Activity,
+    DraggableMPTTAdmin,
+    list_display=(
+        'tree_actions',
+        'indented_title',
+        # ...more fields if you feel like it...
+    ),
+    list_display_links=(
+        'indented_title',
+    ),
+)

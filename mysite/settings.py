@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'localflavor',
     'address',
+    'mptt',
     'backend',
     'vol_reg'
 ]

@@ -1,10 +1,35 @@
 from django.db import models
 from address.models import AddressField
+from mptt.models import MPTTModel, TreeForeignKey
 from django.contrib.auth.models import User
 
 from backend.model_choices import *
 
 # Create your models here.
+
+
+
+class Skill(MPTTModel):
+    name = models.CharField(max_length=50, unique=True)
+    parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True)
+
+    class MPTTMeta:
+        order_insertion_by = ['name']
+
+    def __str__(self):
+        return self.name
+
+
+class Activity(MPTTModel):
+    name = models.CharField(max_length=50, unique=True)
+    parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True)
+
+    class MPTTMeta:
+        order_insertion_by = ['name']
+
+    def __str__(self):
+        return self.name
+
 
 class Funder(models.Model):
     funder_name = models.CharField(max_length=255,unique=True)
