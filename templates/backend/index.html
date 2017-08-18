@@ -1,16 +1,20 @@
 <!DOCTYPE html>
-{% load staticfiles %}
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-    <link rel="stylesheet" href="{% static "css/mystyle.css" %}" />
-  </head>
-  <body>
-    <h1>Hello</h1>
-    {{ insert_var }}
+{% extends "backend/base.html" %}
+  {% block body_block %}
+
+    <h2>Home</h2>
     <p>
-      a picture: <dir><img src="{% static "images/3.png" %}" /></dir>
+      {% if user.is_authenticated %}
+          Logged in as {{ user.username }}
+      {% else %}
+        <a href="{% url 'vol_reg:login' %}">Log in</a>
+      {% endif %}
     </p>
-  </body>
-</html>
+    <p>
+      <a href="{% url 'vol_reg:index' %}">Volunteer</a>
+    </p>
+    <p>
+      <a href="http://127.0.0.1:8000/admin/">Admin</a>
+    </p>
+
+  {% endblock %}
