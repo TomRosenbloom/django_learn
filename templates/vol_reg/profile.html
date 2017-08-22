@@ -15,6 +15,7 @@
           {% if field.name != 'activitys' %}
             {{ field }}
           {% else %}
+          
             <ul>
               {% for activity in form.fields.activitys.queryset %}
                 <li>
