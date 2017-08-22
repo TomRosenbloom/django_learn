@@ -1,3 +1,20 @@
+SKILL_CHOICES = (
+    ('Creative',
+        (
+            ('craft','Craft'),
+            ('design','Design'),
+            ('photography','Photography')
+        )
+    ),
+    ('Practical',
+        (
+            ('building','Building work'),
+            ('carpentry','Carpentry')
+        )
+    )
+)
+
+
 RANGE_CHOICES = (
     (1,'Within 1 mile'),
     (2,'Within 2 miles'),

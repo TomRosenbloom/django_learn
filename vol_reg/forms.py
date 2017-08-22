@@ -1,5 +1,5 @@
 from django import forms
-from backend.models import Profile
+from backend.models import Profile, Activity
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -8,10 +8,11 @@ from localflavor.gb.forms import GBPostcodeField
 
 class ProfileForm(forms.ModelForm):
     postcode = GBPostcodeField()
+    activitys = forms.ModelMultipleChoiceField(queryset=Activity.objects.all(),label='Activities')
 
     class Meta:
         model = Profile
-        fields = ('postcode','range',)
+        fields = ('postcode','range','skills','activitys')
         labels = { 'range': 'Travel range'}
 
 

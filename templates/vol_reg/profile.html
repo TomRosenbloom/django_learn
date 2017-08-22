@@ -10,8 +10,20 @@
       {% csrf_token %}
       {% for field in form %}
         <div class="form-group">
+
           <label for="{{ field.name }}">{{ field.label_tag }}</label><br />
-          {{ field }}
+          {% if field.name != 'activitys' %}
+            {{ field }}
+          {% else %}
+            <ul>
+              {% for activity in form.fields.activitys.queryset %}
+                <li>
+                  {{ activity.name }}
+                </li>
+              {% endfor %}
+            </ul>
+
+          {% endif %}
           {% for error in field.errors %}
             <p style="color: red">{{ error }}</p>
           {% endfor %}

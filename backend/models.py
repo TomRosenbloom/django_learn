@@ -69,6 +69,9 @@ class Role(models.Model):
 
 
 class Profile(models.Model):
+
+    queryset=Activity.objects.all()
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     title = models.CharField(
         max_length=4,
@@ -86,6 +89,8 @@ class Profile(models.Model):
     range = models.PositiveSmallIntegerField(choices=RANGE_CHOICES,null=True)
     is_volunteer = models.NullBooleanField()
     is_org_member = models.NullBooleanField()
+    skills = models.ManyToManyField(Skill,choices=SKILL_CHOICES)
+    activitys = models.ManyToManyField(Activity)
 
     def __str__(self):
         return ('%s %s' % (self.user.first_name, self.user.last_name))
