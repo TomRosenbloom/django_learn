@@ -53,12 +53,31 @@ def signup(request):
     return render(request, 'vol_reg/signup.html', {'form': form})
 
 
+@login_required
 def profile(request):
-    form = ProfileForm()
+
+    import logging
+    logging.basicConfig(filename='mylog.log', level=logging.DEBUG)
+
+    user = request.user
+    profile = user.profile
+
+    form = ProfileForm(instance=profile)
+
     if request.method == 'POST':
-        form = ProfileForm(request.POST)
+
+        logging.debug('post data received from form')
+
+        form = ProfileForm(request.POST,instance=profile)
+
+        #logging.debug('form=%s', form)
+        logging.debug(request.POST)
+
         if form.is_valid():
-            instance = form.save(commit=True)
+            logging.debug(form.cleaned_data.get('activitys')) 
+            profile = form.save(commit=False)
+            profile.user_id = request.user.id
+            profile.save()
 
     return render(request,'vol_reg/profile.html', {'form': form})
 
