@@ -23,5 +23,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^volunteer/', include('vol_reg.urls')),
     url(r'^test/', include('vol_reg_alt.urls')),
-    url(r'^logout/$',vol_views.user_logout,name='logout'),    
+    url(r'^logout/$',vol_views.user_logout,name='logout'),
 ]

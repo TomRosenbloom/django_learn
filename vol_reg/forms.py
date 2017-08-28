@@ -8,12 +8,11 @@ from localflavor.gb.forms import GBPostcodeField
 
 class ProfileForm(forms.ModelForm):
     postcode = GBPostcodeField()
-    activitys = forms.ModelMultipleChoiceField(queryset=Activity.objects.all(),label='Activities')
 
     class Meta:
         model = Profile
         fields = ('postcode','range','skills','activitys')
-        labels = { 'range': 'Travel range'}
+        labels = { 'range': 'Travel range', 'activitys': 'Activities'}
 
 
 class SignUpForm(UserCreationForm):

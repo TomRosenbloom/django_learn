@@ -15,12 +15,22 @@
           {% if field.name != 'activitys' %}
             {{ field }}
           {% else %}
-          
+
             <ul>
               {% for activity in form.fields.activitys.queryset %}
+                {% if activity.level == 0 %}
                 <li>
                   {{ activity.name }}
                 </li>
+                {% endif %}
+                {% if activity.level == 1 %}
+                <ul>
+                  <li>
+                    <input type="checkbox" name="activitys" value="{{ activity.id }}" />
+                    {{ activity.name }}
+                  </li>
+                </ul>
+                {% endif %}
               {% endfor %}
             </ul>
 
