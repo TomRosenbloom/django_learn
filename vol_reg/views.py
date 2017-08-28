@@ -74,9 +74,10 @@ def profile(request):
         logging.debug(request.POST)
 
         if form.is_valid():
-            logging.debug(form.cleaned_data.get('activitys')) 
+            logging.debug(form.cleaned_data.get('activitys')) # <TreeQuerySet [<Activity: Building Work>, <Activity: Gardening>]>
             profile = form.save(commit=False)
             profile.user_id = request.user.id
+            profile.activitys = form.cleaned_data.get('activitys')
             profile.save()
 
     return render(request,'vol_reg/profile.html', {'form': form})
