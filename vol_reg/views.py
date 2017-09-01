@@ -56,31 +56,28 @@ def signup(request):
 @login_required
 def profile(request):
 
-    import logging
-    logging.basicConfig(filename='mylog.log', level=logging.DEBUG)
-
     user = request.user
     profile = user.profile
+    activityQuerySet = user.profile.activitys.all()
+
+    activityDict = {}
+    import mptt
+    activities = mptt.utils.tree_item_iterator(activityQuerySet, ancestors=False)
+    for activity in activities:
+        activityDict[activity[0].name] = activity[0].name
 
     form = ProfileForm(instance=profile)
 
     if request.method == 'POST':
-
-        logging.debug('post data received from form')
-
         form = ProfileForm(request.POST,instance=profile)
 
-        #logging.debug('form=%s', form)
-        logging.debug(request.POST)
-
         if form.is_valid():
-            logging.debug(form.cleaned_data.get('activitys')) # <TreeQuerySet [<Activity: Building Work>, <Activity: Gardening>]>
             profile = form.save(commit=False)
             profile.user_id = request.user.id
             profile.activitys = form.cleaned_data.get('activitys')
             profile.save()
 
-    return render(request,'vol_reg/profile.html', {'form': form})
+    return render(request,'vol_reg/profile.html', {'form': form, 'activities': activityDict})
 
 
 def index(request):

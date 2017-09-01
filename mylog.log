@@ -1,3 +1,88 @@
-DEBUG:root:post data received from form
-DEBUG:root:<QueryDict: {'csrfmiddlewaretoken': ['jJo5gUUspQpJc79arr05Bam15XdlpdVZf0KzIqzETjnOAtZJ0MJYQ1FWlOw4Y5to'], 'postcode': ['EX4 4SB'], 'range': ['5'], 'skills': ['craft'], 'activitys': ['6', '5']}>
-DEBUG:root:<TreeQuerySet [<Activity: Building Work>, <Activity: Gardening>]>
+DEBUG:root:<TreeQuerySet [<Activity: Gardening>, <Activity: Financial Control>]>
+DEBUG:root:(<Activity: Gardening>, {'new_level': True, 'closed_levels': []})
+DEBUG:root:(<Activity: Financial Control>, {'new_level': False, 'closed_levels': [1]})
+DEBUG:root:<TreeQuerySet [(5, 'Gardening', 4, 4, 5, 1, 1), (2, 'Financial Control', 1, 2, 3, 2, 1)]>
+DEBUG:root:<TreeQuerySet []>
+DEBUG:root:<TreeQuerySet [<Activity: Gardening>, <Activity: Financial Control>]>
+DEBUG:root:(<Activity: Gardening>, {'new_level': True, 'closed_levels': []})
+DEBUG:root:(<Activity: Financial Control>, {'new_level': False, 'closed_levels': [1]})
+DEBUG:root:values_list <TreeQuerySet [(5, 'Gardening', 4, 4, 5, 1, 1), (2, 'Financial Control', 1, 2, 3, 2, 1)]>
+DEBUG:root:<TreeQuerySet []>
+DEBUG:root:<TreeQuerySet [<Activity: Gardening>, <Activity: Financial Control>]>
+DEBUG:root:(<Activity: Gardening>, {'new_level': True, 'closed_levels': []})
+DEBUG:root:Gardening
+DEBUG:root:{'new_level': True, 'closed_levels': []}
+DEBUG:root:(<Activity: Financial Control>, {'new_level': False, 'closed_levels': [1]})
+DEBUG:root:Financial Control
+DEBUG:root:{'new_level': False, 'closed_levels': [1]}
+DEBUG:root:values_list <TreeQuerySet [(5, 'Gardening', 4, 4, 5, 1, 1), (2, 'Financial Control', 1, 2, 3, 2, 1)]>
+DEBUG:root:<TreeQuerySet []>
+DEBUG:root:<TreeQuerySet [<Activity: Gardening>, <Activity: Financial Control>]>
+DEBUG:root:(<Activity: Gardening>, {'new_level': True, 'closed_levels': []})
+DEBUG:root:Gardening
+DEBUG:root:{'new_level': True, 'closed_levels': []}
+DEBUG:root:(<Activity: Financial Control>, {'new_level': False, 'closed_levels': [1]})
+DEBUG:root:Financial Control
+DEBUG:root:{'new_level': False, 'closed_levels': [1]}
+DEBUG:root:values_list <TreeQuerySet [(5, 'Gardening', 4, 4, 5, 1, 1), (2, 'Financial Control', 1, 2, 3, 2, 1)]>
+DEBUG:root:<TreeQuerySet []>
+DEBUG:root:<TreeQuerySet [<Activity: Gardening>, <Activity: Financial Control>]>
+DEBUG:root:values_list <TreeQuerySet [(5, 'Gardening', 4, 4, 5, 1, 1), (2, 'Financial Control', 1, 2, 3, 2, 1)]>
+DEBUG:root:<TreeQuerySet []>
+DEBUG:root:<TreeQuerySet [<Activity: Gardening>, <Activity: Financial Control>]>
+ERROR:django.request:Internal Server Error: /volunteer/profile/
+Traceback (most recent call last):
+  File "C:\Users\Tom\Envs\myproject\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "C:\Users\Tom\Envs\myproject\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\Tom\Envs\myproject\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Tom\Envs\myproject\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Tom\Envs\mysite\vol_reg\views.py", line 73, in profile
+    print(foo.name)
+AttributeError: 'dict' object has no attribute 'name'
+DEBUG:root:<TreeQuerySet [<Activity: Gardening>, <Activity: Financial Control>]>
+DEBUG:root:values_list <TreeQuerySet [(5, 'Gardening', 4, 4, 5, 1, 1), (2, 'Financial Control', 1, 2, 3, 2, 1)]>
+DEBUG:root:<TreeQuerySet []>
+DEBUG:root:<TreeQuerySet [<Activity: Gardening>, <Activity: Financial Control>]>
+DEBUG:root:values_list <TreeQuerySet [(5, 'Gardening', 4, 4, 5, 1, 1), (2, 'Financial Control', 1, 2, 3, 2, 1)]>
+DEBUG:root:<TreeQuerySet []>
+DEBUG:root:<TreeQuerySet [<Activity: Gardening>, <Activity: Financial Control>]>
+DEBUG:root:values_list <TreeQuerySet [(5, 'Gardening', 4, 4, 5, 1, 1), (2, 'Financial Control', 1, 2, 3, 2, 1)]>
+DEBUG:root:<TreeQuerySet []>
+DEBUG:root:values_list <TreeQuerySet [(5, 'Gardening', 4, 4, 5, 1, 1), (2, 'Financial Control', 1, 2, 3, 2, 1)]>
+DEBUG:root:<TreeQuerySet []>
+DEBUG:root:values_list <TreeQuerySet [(5, 'Gardening', 4, 4, 5, 1, 1), (2, 'Financial Control', 1, 2, 3, 2, 1)]>
+DEBUG:root:<TreeQuerySet []>
+DEBUG:root:values_list <TreeQuerySet [(5, 'Gardening', 4, 4, 5, 1, 1), (2, 'Financial Control', 1, 2, 3, 2, 1)]>
+DEBUG:root:<TreeQuerySet []>
+DEBUG:root:values_list <TreeQuerySet [(5, 'Gardening', 4, 4, 5, 1, 1), (2, 'Financial Control', 1, 2, 3, 2, 1)]>
+DEBUG:root:<TreeQuerySet []>
+DEBUG:root:values_list <TreeQuerySet [(5, 'Gardening', 4, 4, 5, 1, 1), (2, 'Financial Control', 1, 2, 3, 2, 1)]>
+DEBUG:root:<TreeQuerySet []>
+DEBUG:root:values_list <TreeQuerySet [(5, 'Gardening', 4, 4, 5, 1, 1), (2, 'Financial Control', 1, 2, 3, 2, 1)]>
+DEBUG:root:<TreeQuerySet []>
+DEBUG:root:values_list <TreeQuerySet [(5, 'Gardening', 4, 4, 5, 1, 1), (2, 'Financial Control', 1, 2, 3, 2, 1)]>
+DEBUG:root:<TreeQuerySet []>
+DEBUG:root:values_list <TreeQuerySet [(5, 'Gardening', 4, 4, 5, 1, 1), (2, 'Financial Control', 1, 2, 3, 2, 1)]>
+DEBUG:root:<TreeQuerySet []>
+DEBUG:root:values_list <TreeQuerySet [(5, 'Gardening', 4, 4, 5, 1, 1), (2, 'Financial Control', 1, 2, 3, 2, 1)]>
+DEBUG:root:<TreeQuerySet []>
+DEBUG:root:values_list <TreeQuerySet [(5, 'Gardening', 4, 4, 5, 1, 1), (2, 'Financial Control', 1, 2, 3, 2, 1)]>
+DEBUG:root:<TreeQuerySet []>
+DEBUG:root:values_list <TreeQuerySet [(5, 'Gardening', 4, 4, 5, 1, 1), (2, 'Financial Control', 1, 2, 3, 2, 1)]>
+DEBUG:root:<TreeQuerySet []>
+DEBUG:root:values_list <TreeQuerySet [(5, 'Gardening', 4, 4, 5, 1, 1), (2, 'Financial Control', 1, 2, 3, 2, 1)]>
+DEBUG:root:<TreeQuerySet []>
+DEBUG:root:values_list <TreeQuerySet [(5, 'Gardening', 4, 4, 5, 1, 1), (2, 'Financial Control', 1, 2, 3, 2, 1)]>
+DEBUG:root:<TreeQuerySet []>
+DEBUG:root:values_list <TreeQuerySet [(5, 'Gardening', 4, 4, 5, 1, 1), (2, 'Financial Control', 1, 2, 3, 2, 1)]>
+DEBUG:root:<TreeQuerySet []>
+DEBUG:root:values_list <TreeQuerySet [(5, 'Gardening', 4, 4, 5, 1, 1), (2, 'Financial Control', 1, 2, 3, 2, 1)]>
+DEBUG:root:<TreeQuerySet []>
+DEBUG:root:values_list <TreeQuerySet [(5, 'Gardening', 4, 4, 5, 1, 1), (2, 'Financial Control', 1, 2, 3, 2, 1)]>
+DEBUG:root:<TreeQuerySet []>
+DEBUG:root:values_list <TreeQuerySet [(5, 'Gardening', 4, 4, 5, 1, 1), (2, 'Financial Control', 1, 2, 3, 2, 1)]>
+DEBUG:root:<TreeQuerySet []>

@@ -1,5 +1,5 @@
-<!DOCTYPE html>
 {% extends "vol_reg/base.html" %}
+{% load mptt_tags %}
   {% block body_block %}
 
     <h2>Profile</h2>
@@ -25,7 +25,13 @@
                 {% endif %}
                 {% if activity.level == 1 %}
                 <li class="list-group-item">
-                  <input type="checkbox" name="activitys" value="{{ activity.id }}" />
+
+                  {% if activity.name in activities %}
+                    <input type="checkbox" name="activitys" value="{{ activity.id }}" checked />
+                  {% else %}
+                    <input type="checkbox" name="activitys" value="{{ activity.id }}" />
+                  {% endif %}
+
                   {{ activity.name }}
                 </li>
                 {% endif %}
@@ -40,5 +46,5 @@
       {% endfor %}
       <button type="submit" class="btn btn-primary">Update profile</button>
     </form>
-
+{{ foo }}
     {% endblock %}

@@ -73,7 +73,7 @@ class Role(models.Model):
 
 class Profile(models.Model):
 
-    queryset=Activity.objects.all()
+    #queryset=Activity.objects.all() # what was this for?
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     title = models.CharField(
