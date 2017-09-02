@@ -58,8 +58,10 @@ def profile(request):
 
     user = request.user
     profile = user.profile
+    form = ProfileForm(instance=profile)
 
     import mptt
+    # obvs need to make a function of some sort here as I am repeating myself
     activityDict = {}
     activities = mptt.utils.tree_item_iterator(user.profile.activitys.all(), ancestors=False)
     for activity in activities:
@@ -69,8 +71,6 @@ def profile(request):
     skills = mptt.utils.tree_item_iterator(user.profile.skills.all(), ancestors=False)
     for skill in skills:
         skillDict[skill[0].name] = skill[0].name
-
-    form = ProfileForm(instance=profile)
 
     if request.method == 'POST':
         form = ProfileForm(request.POST,instance=profile)

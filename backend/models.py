@@ -7,8 +7,6 @@ from backend.model_choices import *
 
 # Create your models here.
 
-
-
 class Skill(MPTTModel):
     name = models.CharField(max_length=50, unique=True)
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True)
@@ -73,8 +71,6 @@ class Role(models.Model):
 
 class Profile(models.Model):
 
-    #queryset=Activity.objects.all() # what was this for?
-
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     title = models.CharField(
         max_length=4,
@@ -92,7 +88,6 @@ class Profile(models.Model):
     range = models.PositiveSmallIntegerField(choices=RANGE_CHOICES,null=True)
     is_volunteer = models.NullBooleanField()
     is_org_member = models.NullBooleanField()
-    #skills = models.ManyToManyField(Skill,choices=SKILL_CHOICES)
     skills = models.ManyToManyField(Skill)
     activitys = models.ManyToManyField(Activity)
 
