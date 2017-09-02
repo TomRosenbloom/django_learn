@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 
 from . import forms
 from .forms import SignUpForm, ProfileForm
-from backend.models import Profile
+from backend.models import Profile, Skill, Activity
 
 # Create your views here.
 
@@ -58,13 +58,17 @@ def profile(request):
 
     user = request.user
     profile = user.profile
-    activityQuerySet = user.profile.activitys.all()
 
-    activityDict = {}
     import mptt
-    activities = mptt.utils.tree_item_iterator(activityQuerySet, ancestors=False)
+    activityDict = {}
+    activities = mptt.utils.tree_item_iterator(user.profile.activitys.all(), ancestors=False)
     for activity in activities:
         activityDict[activity[0].name] = activity[0].name
+
+    skillDict = {}
+    skills = mptt.utils.tree_item_iterator(user.profile.skills.all(), ancestors=False)
+    for skill in skills:
+        skillDict[skill[0].name] = skill[0].name
 
     form = ProfileForm(instance=profile)
 
@@ -75,9 +79,17 @@ def profile(request):
             profile = form.save(commit=False)
             profile.user_id = request.user.id
             profile.activitys = form.cleaned_data.get('activitys')
+            profile.skills = form.cleaned_data.get('skills')
             profile.save()
+            return redirect('vol_reg:profile')
 
-    return render(request,'vol_reg/profile.html', {'form': form, 'activities': activityDict})
+    return render(request,'vol_reg/profile.html', {
+    'form': form,
+    'allActivities': Activity.objects.all(),
+    'profileActivities': activityDict,
+    'allSkills': Skill.objects.all(),
+    'profileSkills': skillDict
+    })
 
 
 def index(request):

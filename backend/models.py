@@ -92,7 +92,8 @@ class Profile(models.Model):
     range = models.PositiveSmallIntegerField(choices=RANGE_CHOICES,null=True)
     is_volunteer = models.NullBooleanField()
     is_org_member = models.NullBooleanField()
-    skills = models.ManyToManyField(Skill,choices=SKILL_CHOICES)
+    #skills = models.ManyToManyField(Skill,choices=SKILL_CHOICES)
+    skills = models.ManyToManyField(Skill)
     activitys = models.ManyToManyField(Activity)
 
     def __str__(self):
