@@ -52,14 +52,32 @@ class Project(models.Model):
         return self.project_name
 
 
+class OrganisationType(models.Model):
+    name = models.CharField(max_length=255,unique=True)
+    acronym = models.CharField(max_length=255,unique=True,null=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Organisation(models.Model):
     organisation_name = models.CharField(max_length=255,unique=True)
     aims_and_activities = models.TextField()
     email = models.EmailField(blank=True)
     address = AddressField(blank=True, null=True)
+    types = models.ManyToManyField(OrganisationType,through='OrganisationRegistration')
 
     def __str__(self):
         return self.organisation_name
+
+
+class OrganisationRegistration(models.Model):
+    organisation = models.ForeignKey(Organisation)
+    type = models.ForeignKey(OrganisationType)
+    reg_number = models.CharField(max_length=100)
+
+    def __str__(self):
+        return ('%s %s' % (self.type, self.reg_number))
 
 
 class Role(models.Model):

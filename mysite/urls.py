@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^$',views.index,name='index'),
     url(r'^admin/', admin.site.urls),
     url(r'^volunteer/', include('vol_reg.urls')),
+    url(r'^organisation/', include('org_reg.urls')),
     url(r'^test/', include('vol_reg_alt.urls')),
     url(r'^logout/$',vol_views.user_logout,name='logout'),
 ]

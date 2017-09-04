@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'address',
     'mptt',
     'backend',
-    'vol_reg'
+    'vol_reg',
+    'org_reg'
 ]
 
 MIDDLEWARE = [
