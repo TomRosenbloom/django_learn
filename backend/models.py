@@ -54,7 +54,7 @@ class Project(models.Model):
 
 class OrganisationType(models.Model):
     name = models.CharField(max_length=255,unique=True)
-    acronym = models.CharField(max_length=255,unique=True,null=True)
+    acronym = models.CharField(max_length=255,unique=True,blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -63,7 +63,9 @@ class OrganisationType(models.Model):
 class Organisation(models.Model):
     organisation_name = models.CharField(max_length=255,unique=True)
     aims_and_activities = models.TextField()
-    email = models.EmailField(blank=True)
+    email = models.EmailField(blank=True,null=True)
+    telephone = models.CharField(max_length=100,blank=True,null=True)
+    postcode = models.CharField(max_length=100,blank=True,null=True)
     address = AddressField(blank=True, null=True)
     types = models.ManyToManyField(OrganisationType,through='OrganisationRegistration')
 
