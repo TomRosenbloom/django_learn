@@ -8,5 +8,5 @@ class OrganisationForm(forms.ModelForm):
 
     class Meta:
         model = Organisation
-        fields = ('organisation_name','types','email','telephone','postcode')
+        fields = ('name','types','email','telephone','postcode')
         labels = { 'types': 'Organisation type(s)'}

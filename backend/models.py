@@ -61,7 +61,7 @@ class OrganisationType(models.Model):
 
 
 class Organisation(models.Model):
-    organisation_name = models.CharField(max_length=255,unique=True)
+    name = models.CharField(max_length=255,unique=True)
     aims_and_activities = models.TextField()
     email = models.EmailField(blank=True,null=True)
     telephone = models.CharField(max_length=100,blank=True,null=True)
@@ -70,7 +70,7 @@ class Organisation(models.Model):
     types = models.ManyToManyField(OrganisationType,through='OrganisationRegistration')
 
     def __str__(self):
-        return self.organisation_name
+        return self.name
 
 
 class OrganisationRegistration(models.Model):

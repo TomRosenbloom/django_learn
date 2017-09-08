@@ -1,0 +1,13 @@
+{% extends "org_reg/base.html" %}
+  {% block body_block %}
+
+    <h2>List of organisations</h2>
+    <ul>
+      {% for organisation in organisations %}
+      <li>
+        <a href="{{ organisation.id }}">{{ organisation.name }}</a>
+      </li>
+      {% endfor %}
+    </ul>
+
+  {% endblock %}

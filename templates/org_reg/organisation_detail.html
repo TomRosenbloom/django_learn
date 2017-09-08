@@ -1,0 +1,19 @@
+{% extends "org_reg/base.html" %}
+  {% block body_block %}
+
+    <h2>Organisation details</h2>
+    <p>
+      {{ organisation_detail.name }}
+    </p>
+
+    <p>
+      Type(s):
+    </p>
+    <ul>
+    {% for type in organisation_detail.types.all }
+      <li>
+        {{ type.name }}
+      </li>
+    {% endfor %}
+    </ul>
+  {% endblock %}
