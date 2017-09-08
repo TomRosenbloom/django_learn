@@ -9,10 +9,18 @@ from mptt.admin import DraggableMPTTAdmin
 from backend.models import Funder, Project, Organisation, Person, Role, Person_org_role, Profile, Skill, Activity, OrganisationType, OrganisationRegistration
 
 
+
+class OrganisationRegistrationInLine(admin.TabularInline):
+    model = OrganisationRegistration
+    extra = 1
+
+
 class OrganisationAdmin(admin.ModelAdmin):
     formfield_overrides = {
         AddressField: {'widget': AddressWidget(attrs={'style': 'width: 300px;'})}
     }
+    inlines = (OrganisationRegistrationInLine,)
+
 
 # Register your models here.
 admin.site.register(Funder)
