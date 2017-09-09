@@ -9,11 +9,17 @@
     <p>
       Type(s):
     </p>
-    <ul>
-    {% for type in organisation_detail.types.all %}
-      <li>
-        {{ type.name }}
-      </li>
-    {% endfor %}
-    </ul>
+    {% if organisation_detail.types.all.count > 0 %}
+      <ul>
+      {% for type in organisation_detail.types.all %}
+        <li>
+          {{ type.name }} ({{ type.acronym }})
+        </li>
+      {% endfor %}
+      </ul>
+    {% else %}
+      <p>
+        No type has been entered
+      </p>
+    {% endif %}
   {% endblock %}
