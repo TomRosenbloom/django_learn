@@ -9,5 +9,5 @@ urlpatterns = [
     url(r'^profile/$',views.ProfileView.as_view(),name='profile'),
     url(r'^login/$',views.OrgLoginView.as_view(),name='login'),
     url(r'^list/$',views.OrganisationListView.as_view(),name='list'),
-    url(r'^(?P<pk>[-\W]+)/$',views.OrganisationDetailView.as_view(),name='detail')
+    url(r'^list/(?P<pk>\d+)$',views.OrganisationDetailView.as_view())
 ]
