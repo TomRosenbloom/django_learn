@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 {% extends "backend/base.html" %}
   {% block body_block %}
 
@@ -9,6 +8,9 @@
       {% else %}
         <a href="{% url 'vol_reg:login' %}">Log in</a>
       {% endif %}
+    </p>
+    <p>
+      <a href="{% url 'directory:index' %}">Directory</a>
     </p>
     <p>
       <a href="{% url 'vol_reg:index' %}">Volunteer</a>

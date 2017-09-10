@@ -1,20 +1,10 @@
 from django.shortcuts import render
-from django.views.generic import View, TemplateView, FormView, ListView, DetailView
+from django.views.generic import View, TemplateView, FormView
 from . import forms
 from .forms import OrganisationForm
 from backend.models import OrganisationType, Organisation
 
 # Create your views here.
-
-class OrganisationListView(ListView):
-    context_object_name = 'organisations'
-    model = Organisation
-    template_name = 'org_reg/organisation_list.html'
-
-class OrganisationDetailView(DetailView):
-    context_object_name = 'organisation_detail'
-    model = Organisation
-    template_name = 'org_reg/organisation_detail.html'
 
 class ProfileView(FormView):
     form_class = OrganisationForm

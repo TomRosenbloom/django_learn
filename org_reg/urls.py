@@ -7,7 +7,5 @@ urlpatterns = [
     url(r'^$',views.IndexView.as_view(),name='index'),
     url(r'^signup/$',views.OrgSignUpView.as_view(),name='signup'),
     url(r'^profile/$',views.ProfileView.as_view(),name='profile'),
-    url(r'^login/$',views.OrgLoginView.as_view(),name='login'),
-    url(r'^list/$',views.OrganisationListView.as_view(),name='list'),
-    url(r'^list/(?P<pk>[-\w+])$',views.OrganisationDetailView.as_view())
+    url(r'^login/$',views.OrgLoginView.as_view(),name='login')
 ]
