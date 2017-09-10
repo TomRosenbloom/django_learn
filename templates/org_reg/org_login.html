@@ -2,23 +2,34 @@
   {% block body_block %}
 
     <h2>Login</h2>
-    <form action="{% url 'org_reg:login' %}" method="post">
+    <form id="loginForm" action="{% url 'org_reg:login' %}" method="post"  class="col-xs-3">
       {% csrf_token %}
       <div class="form-group">
-        <label for="username">Username:</label><br />
-        <input type="text" name="username" placeholder="Enter Username" />
+        <label for="username">Username:</label>
+        <input type="text" class="form-control" name="username" placeholder="Enter Username" />
         {% for error in field.errors %}
           <p style="color: red">{{ error }}</p>
         {% endfor %}
       </div>
       <div class="form-group">
         <label for="password">Password:</label><br />
-        <input type="text" name="password" />
+        <input type="text" class="form-control" name="password" />
         {% for error in field.errors %}
           <p style="color: red">{{ error }}</p>
         {% endfor %}
       </div>
+      <div class="form-group">
+        {% if messages %}
+        <div id="messages" class="alert alert-danger">
+            {% for message in messages %}
+              <a href="#" class="close" data-dismiss="alert">&times;</a>
+              {{ message }}
+            {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+      <div class="form-group">
         <button type="submit" class="btn btn-primary">Login</button>
+      </div>
     </form>
-
-    {% endblock %}
+  {% endblock %}

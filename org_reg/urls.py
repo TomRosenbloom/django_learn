@@ -7,6 +7,6 @@ urlpatterns = [
     url(r'^$',views.IndexView.as_view(),name='index'),
     url(r'^signup/$',views.OrgSignUpView.as_view(),name='signup'),
     url(r'^profile/$',views.ProfileView.as_view(),name='profile'),
-    url(r'^login/$',views.OrgLoginView.as_view(),name='login'),
+    url(r'^login/$',views.org_login,name='login'),
     url(r'^logout/$',views.org_logout,name='logout'),
 ]
