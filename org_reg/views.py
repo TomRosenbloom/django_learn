@@ -4,6 +4,12 @@ from . import forms
 from .forms import OrganisationForm
 from backend.models import OrganisationType, Organisation
 
+
+from django.http import HttpResponse, HttpResponseRedirect
+from django.core.urlresolvers import reverse
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 
 class ProfileView(FormView):
@@ -17,6 +23,11 @@ class ProfileView(FormView):
 
 class OrgLoginView(TemplateView):
     template_name = 'org_reg/org_login.html'
+
+@login_required
+def org_logout(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('org_reg:index'))
 
 class OrgSignUpView(TemplateView):
     template_name = 'org_reg/signup.html'

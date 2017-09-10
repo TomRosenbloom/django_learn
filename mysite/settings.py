@@ -131,4 +131,4 @@ STATICFILES_DIRS = [
     STATIC_DIR,
 ]
 
-LOGIN_URL = '/vol_reg/user_login'
+LOGIN_URL = '/user_login'

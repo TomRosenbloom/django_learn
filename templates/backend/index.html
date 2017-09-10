@@ -5,8 +5,19 @@
     <p>
       {% if user.is_authenticated %}
           Logged in as {{ user.username }}
+          <a class="navbar-link" href="{% url 'logout' %}">Logout</a>
+          {% if is_volunteer %}
+            <p>
+              Registered as volunteer
+            </p>
+          {% endif %}
+          {% if is_org_member %}
+            <p>
+              Registered as organisational user
+            </p>
+          {% endif %}
       {% else %}
-        <a href="{% url 'vol_reg:login' %}">Log in</a>
+        <a href="{% url 'login' %}">Log in</a>
       {% endif %}
     </p>
     <p>
