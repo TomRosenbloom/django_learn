@@ -19,7 +19,7 @@
             <a  class="navbar-link" href="{% url 'vol_reg:profile' %}">Profile</a>
           </li>
           <li>
-            <a class="navbar-link" href="{% url 'logout' %}">Logout {{ user.username }}</a>
+            <a class="navbar-link" href="{% url 'vol_reg:logout' %}">Logout {{ user.username }}</a>
           </li>
           {% else %}
           <li>

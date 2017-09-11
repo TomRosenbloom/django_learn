@@ -3,6 +3,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import View, TemplateView
 
 from . import forms
 from .forms import SignUpForm, ProfileForm
@@ -10,12 +12,14 @@ from backend.models import Profile, Skill, Activity
 
 # Create your views here.
 
-def user_login(request):
-    if request.method == 'POST':
+class VolLogin(TemplateView):
+    template_name = 'vol_reg/vol_login.html'
+
+    def post(self, request, *args, **kwargs):
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        user = authenticate(username=username, password=password) # this is going to check these credentials against db
+        user = authenticate(username=username, password=password)
         if user:
             if user.is_active:
                 login(request,user)
@@ -26,15 +30,14 @@ def user_login(request):
             print("Failed login")
             print("Username: {} and password {}".format(username,password))
             return HttpResponse("invalid login")
-    else:
-        return render(request,'vol_reg/user_login.html',{})
+    def get(self, request, *args, **kwargs):
+            return render(request,'vol_reg/vol_login.html',{})
 
 
-@login_required
-def user_logout(request):
-    logout(request)
-    return HttpResponseRedirect(reverse('vol_reg:index'))
-
+class VolLogout(LoginRequiredMixin, View):
+    def get(self, request):
+        logout(request)
+        return HttpResponseRedirect(reverse('vol_reg:index'))
 
 def signup(request):
     if request.method == 'POST':
