@@ -12,3 +12,5 @@ There are four classes of user:
   - Volunteer (signup/login as volunteer) – create/edit profile and find matching roles
   
   - Organisation member (signup/login as organisation) – create/edit organisation profile and create roles
+
+A user can be both a volunteer and an organisation member.
