@@ -10,6 +10,8 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.mixins import UserPassesTestMixin
 
 # Create your views here.
 
@@ -21,9 +23,16 @@ class ProfileView(FormView):
         context['types'] = OrganisationType.objects.all()
         return context
 
+def org_user_check(user):
+    print('foo')
+    if hasattr(user, 'profile'):
+        profile = user.profile
+        is_org_member = profile.is_org_member
+    else:
+        is_org_member = 0
+    # return is_org_member == 1
+    return False
 
-# class OrgLoginView(TemplateView):
-#     template_name = 'org_reg/org_login.html'
 
 def org_login(request):
     if request.method == 'POST':
@@ -67,5 +76,11 @@ def org_logout(request):
 class OrgSignUpView(TemplateView):
     template_name = 'org_reg/signup.html'
 
-class IndexView(TemplateView):
-    template_name = 'org_reg/index.html'
+# class IndexView(UserPassesTestMixin,TemplateView):
+#     template_name = 'org_reg/index.html'
+#     def test_func(self):
+#         return False
+
+@user_passes_test(org_user_check, login_url='/login/')
+def index(request):
+    return render(request,'org_reg/index.html')
