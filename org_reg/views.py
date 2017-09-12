@@ -1,8 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import View, TemplateView, FormView
 from . import forms
-from .forms import OrganisationForm
-from backend.models import OrganisationType, Organisation
+from .forms import OrganisationForm, SignUpForm
+from backend.models import OrganisationType, Organisation, Profile
 
 
 from django.http import HttpResponse, HttpResponseRedirect
@@ -30,8 +30,8 @@ def org_user_check(user):
         is_org_member = profile.is_org_member
     else:
         is_org_member = 0
-    # return is_org_member == 1
-    return False
+    return is_org_member == 1
+    # return False
 
 
 def org_login(request):
@@ -75,12 +75,31 @@ def org_logout(request):
 
 class OrgSignUpView(TemplateView):
     template_name = 'org_reg/signup.html'
+    def post(self, request, *args, **kwargs):
+
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            Profile.objects.create(user_id=user.pk,is_org_member=True)
+
+            return redirect('org_reg:index')
+        else:
+            return render(request, 'org_reg/signup.html', {'form': form})
+
+    def get(self, request, *args, **kwargs):
+        form = SignUpForm()
+        return render(request, 'org_reg/signup.html', {'form': form})
+
 
 # class IndexView(UserPassesTestMixin,TemplateView):
 #     template_name = 'org_reg/index.html'
 #     def test_func(self):
 #         return False
 
-@user_passes_test(org_user_check, login_url='/login/')
+@user_passes_test(org_user_check, login_url='login/')
 def index(request):
     return render(request,'org_reg/index.html')
