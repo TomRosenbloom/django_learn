@@ -1,0 +1,36 @@
+{% extends "org_reg/base.html" %}
+  {% block body_block %}
+
+    <h2>Organisation details</h2>
+    <p>
+      {{ organisation_detail.name }}
+    </p>
+    <p>
+      {{ organisation_detail.aims_and_activities }}
+    </p>
+    <p>
+      {{ organisation_detail.postcode }}
+    </p>
+
+    <p>
+      Type(s):
+    </p>
+    {% if organisation_detail.types.all.count > 0 %}
+      <ul>
+      {% for type in organisation_detail.types.all %}
+        <li>
+          {{ type.name }} ({{ type.acronym }})
+        </li>
+      {% endfor %}
+      </ul>
+    {% else %}
+      <p>
+        No type has been entered
+      </p>
+    {% endif %}
+
+    <p>
+      <a class="btn btn-warning" href="{% url 'org_reg:update' pk=organisation_detail.pk %}">Update</a>
+    </p>
+
+  {% endblock %}

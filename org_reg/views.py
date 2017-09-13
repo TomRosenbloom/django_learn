@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect
-from django.views.generic import View, TemplateView, FormView
+from django.views.generic import (View, TemplateView, FormView,
+                                ListView, DetailView, CreateView,
+                                UpdateView, DeleteView)
 from . import forms
 from .forms import OrganisationForm, SignUpForm
 from backend.models import OrganisationType, Organisation, Profile
 
 
 from django.http import HttpResponse, HttpResponseRedirect
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -14,6 +16,30 @@ from django.contrib.auth.decorators import user_passes_test, permission_required
 from django.contrib.auth.mixins import UserPassesTestMixin
 
 # Create your views here.
+
+class OrganisationDetailView(DetailView):
+    context_object_name = 'organisation_detail'
+    model = Organisation
+    template_name = 'org_reg/organisation_detail.html'
+
+class OrganisationCreateView(CreateView):
+    fields = ('name','aims_and_activities','postcode','email','telephone')
+    model = Organisation
+    template_name = 'org_reg/organisation_form.html'
+    def get_success_url(self):
+        return reverse('org_reg:detail',kwargs={'pk':self.object.pk})
+
+class OrganisationUpdateView(UpdateView):
+    fields = ('name','aims_and_activities','postcode','email','telephone')
+    model = Organisation
+    template_name = 'org_reg/organisation_form.html'
+    def get_success_url(self):
+        return reverse('org_reg:detail',kwargs={'pk':self.object.pk})
+
+class OrganisationDeleteView(DeleteView):
+    model = Organisation
+    template_name = 'org_reg/organisation_confirm_delete.html'
+    success_url = reverse_lazy('org_reg:list')
 
 class ProfileView(FormView):
     form_class = OrganisationForm
