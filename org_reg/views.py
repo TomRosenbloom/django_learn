@@ -10,7 +10,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import user_passes_test, permission_required
 from django.contrib.auth.mixins import UserPassesTestMixin
 
 # Create your views here.
@@ -24,14 +24,12 @@ class ProfileView(FormView):
         return context
 
 def org_user_check(user):
-    print('foo')
     if hasattr(user, 'profile'):
         profile = user.profile
         is_org_member = profile.is_org_member
     else:
         is_org_member = 0
     return is_org_member == 1
-    # return False
 
 
 def org_login(request):
@@ -101,5 +99,6 @@ class OrgSignUpView(TemplateView):
 #         return False
 
 @user_passes_test(org_user_check, login_url='login/')
+#@permission_required()
 def index(request):
     return render(request,'org_reg/index.html')
