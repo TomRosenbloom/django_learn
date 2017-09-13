@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'backend',
     'vol_reg',
     'org_reg',
-    'directory'
+    'directory',
+    'volmatch'
 ]
 
 MIDDLEWARE = [
