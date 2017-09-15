@@ -1,25 +1,38 @@
 {% extends "directory/base.html" %}
   {% block body_block %}
 
-    <h2>Organisation details</h2>
-    <p>
-      {{ organisation_detail.name }}
-    </p>
+    <div class="card" style="margin-top:20px">
 
-    <p>
-      Type(s):
-    </p>
-    {% if organisation_detail.types.all.count > 0 %}
-      <ul>
-      {% for type in organisation_detail.types.all %}
-        <li>
-          {{ type.name }} ({{ type.acronym }})
-        </li>
-      {% endfor %}
-      </ul>
-    {% else %}
-      <p>
-        No type has been entered
-      </p>
-    {% endif %}
+        <div class="card-header"><div class="row">
+          <div class="col-sm-9">
+          <h2 class="card-title">{{ organisation_detail.name }}</h2>
+        </div>
+          <div class="col-sm-3">
+            <i class="fa fa-facebook"></i>
+          </div>
+      </div>
+
+
+      </div>
+      <div class="card-body">
+
+        <p class="card-text">
+          {{ organisation_detail.aims_and_activities }}
+        </p>
+        <p class="card-text">
+          {{ organisation_detail.email }}
+        </p>
+
+      </div>
+      <div class="card-body">
+      {% if organisation_detail.types.all.count > 0 %}
+        <ul>
+          {% for type in organisation_detail.types.all %}
+          <li class="list-group-item">{{ type.name }} ({{ type.acronym }})</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+      </div>
+    </div>
+
   {% endblock %}

@@ -2,12 +2,18 @@
   {% block body_block %}
 
     <h2>List of organisations</h2>
-    <ul>
+
+    <div class="list-group">
       {% for organisation in organisations %}
-      <li>
-        <a href="{{ organisation.id }}">{{ organisation.name }}</a>
-      </li>
+      <div class="list-group-item">
+        <a href="{{ organisation.id }}">
+          <h3 class="list-group-item-heading">{{ organisation.name }}</h3>
+        </a>
+        <p class="list-group-item-text">{{ organisation.aims_and_activities }}</p>        
+      </div>
+
+
       {% endfor %}
-    </ul>
+    </div>
 
   {% endblock %}
