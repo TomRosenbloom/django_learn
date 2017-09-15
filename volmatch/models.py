@@ -1,33 +1,8 @@
 from django.db import models
-from mptt.models import MPTTModel, TreeForeignKey
 from django.contrib.auth.models import User
-from .model_choices import *
+from backend.model_choices import *
+from backend.models import Skill,Activity
 
-# Create your models here.
-
-class Skill(MPTTModel):
-    name = models.CharField(max_length=50, unique=True)
-    parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True)
-
-    class MPTTMeta:
-        order_insertion_by = ['name']
-
-    def __str__(self):
-        return self.name
-
-
-class Activity(MPTTModel):
-    name = models.CharField(max_length=50, unique=True)
-    parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True)
-
-    class Meta:
-        ordering = ['tree_id','level','name']
-
-    class MPTTMeta:
-        order_insertion_by = ['name']
-
-    def __str__(self):
-        return self.name
 
 
 class UserProfile(models.Model):
