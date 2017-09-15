@@ -1,7 +1,5 @@
 {% extends "backend/base.html" %}
   {% block body_block %}
-
-    <h2>Home</h2>
     <p>
       {% if user.is_authenticated %}
           Logged in as {{ user.username }}
@@ -20,17 +18,34 @@
         <a href="{% url 'login' %}">Log in</a>
       {% endif %}
     </p>
+    
+    <h2>Components</h2>
+
+    <h3>Directory</h3>
     <p>
-      <a href="{% url 'directory:index' %}">Directory</a>
+      The <a href="{% url 'directory:index' %}">Directory</a> is a publicly accessible front end
+      allowing un-registered users to browse organisations and volunteer roles.
     </p>
+    <h3>Volunteer portal</h3>
     <p>
-      <a href="{% url 'vol_reg:index' %}">Volunteer</a>
+      The <a href="{% url 'vol_reg:index' %}">Volunteer portal</a> allows a prospective volunteer
+      to signup and create a profile that will enable the system to find suitable roles, and to apply
+      for roles.
     </p>
+    <h3>Organisation portal</h3>
     <p>
-      <a href="{% url 'org_reg:index' %}">Organisation</a>
+      The <a href="{% url 'org_reg:index' %}">Organisation portal</a> allows organisations to register
+      themselves and add roles. An organisation is registered by an 'organisation member' who must first
+      sign up as a user and then create the organisation, or attach themselves to an existing organisation.
     </p>
+    <h3>Django Admin</h3>
     <p>
-      <a href="http://127.0.0.1:8000/admin/">Admin</a>
+      <a href="http://127.0.0.1:8000/admin/">Django admin</a>, accessible to Django superusers only.
+    </p>
+    <h3>Voluntary Service portal</h3>
+    <p>
+      Instead of giving Voluntary Service officers access to the Django Admin, there should be a dedicated
+      portal for these users too?
     </p>
 
   {% endblock %}
