@@ -1,0 +1,14 @@
+{% extends "directory/base.html" %}
+  {% block body_block %}
+
+  <form method="get">
+    {{ filter.form.as_p }}
+    <button type="submit">Search</button>
+  </form>
+  <ul>
+  {% for org in filter.qs %}
+    <li>{{ org.name }}</li>
+  {% endfor %}
+  </ul>
+
+  {% endblock %}

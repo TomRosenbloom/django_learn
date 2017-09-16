@@ -1,8 +1,14 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView, DetailView
 from backend.models import Organisation
+from .filters import OrganisationFilter
 
 # Create your views here.
+
+def search(request):
+    org_list = Organisation.objects.all()
+    org_filter = OrganisationFilter(request.GET, queryset = org_list)
+    return render(request, 'directory/organisation_filter.html', {'filter': org_filter})
 
 class OrganisationListView(ListView):
     context_object_name = 'organisations'
