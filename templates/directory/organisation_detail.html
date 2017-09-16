@@ -1,37 +1,55 @@
 {% extends "directory/base.html" %}
   {% block body_block %}
 
-    <div class="card" style="margin-top:20px">
 
-        <div class="card-header"><div class="row">
+    <div class="card" style="margin-top:50px">
+
+      <div class="card-header">
+        <div class="row">
           <div class="col-sm-9">
-          <h2 class="card-title">{{ organisation_detail.name }}</h2>
-        </div>
-          <div class="col-sm-3">
-            <i class="fa fa-facebook"></i>
+            <h2 class="card-title">{{ organisation_detail.name }}</h2>
           </div>
+          <div class="col-sm-3">
+            <i class="fa fa-external-link"></i>
+            <i class="fa fa-envelope-o"></i>
+            <i class="fa fa-facebook"></i>
+            <a href="#" class="fa fa-twitter"></a>
+          </div>
+        </div>
       </div>
 
-
-      </div>
       <div class="card-body">
 
-        <p class="card-text">
-          {{ organisation_detail.aims_and_activities }}
-        </p>
-        <p class="card-text">
-          {{ organisation_detail.email }}
-        </p>
+        <dl class="row">
+          <dt class="col-sm-2">
+            Aims and activities
+          </dt>
+          <dd class="col-sm-10">
+            {{ organisation_detail.aims_and_activities }}
+          </dd>
+          <dt class="col-sm-2">
+            Email
+          </dt>
+          <dd class="col-sm-10">
+            {{ organisation_detail.email }}
+          </dd>
+          {% if organisation_detail.types.all.count > 0 %}
+          <dt class="col-sm-2">
+            Type(s)
+          </dt>
+          <dd class="col-sm-10">
 
-      </div>
-      <div class="card-body">
-      {% if organisation_detail.types.all.count > 0 %}
-        <ul>
-          {% for type in organisation_detail.types.all %}
-          <li class="list-group-item">{{ type.name }} ({{ type.acronym }})</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
+                {% for type in organisation_detail.types.all %}
+                <p class="card-text">{{ type.name }} ({{ type.acronym }})</p>
+                {% endfor %}
+          </dd>
+          {% endif %}
+        </dl>
+
+
+
+
+
       </div>
     </div>
 
