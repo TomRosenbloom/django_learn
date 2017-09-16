@@ -28,6 +28,18 @@
             {{ organisation_detail.aims_and_activities }}
           </dd>
           <dt class="col-sm-2">
+            Address
+          </dt>
+          <dd class="col-sm-10">
+            {{ organisation_detail.address }}, {{ organisation_detail.postcode }}
+          </dd>
+          <dt class="col-sm-2">
+            Tel.
+          </dt>
+          <dd class="col-sm-10">
+            {{ organisation_detail.telephone }}
+          </dd>
+          <dt class="col-sm-2">
             Email
           </dt>
           <dd class="col-sm-10">
@@ -38,9 +50,16 @@
             Type(s)
           </dt>
           <dd class="col-sm-10">
-
-                {% for type in organisation_detail.types.all %}
-                <p class="card-text">{{ type.name }} ({{ type.acronym }})</p>
+                {% for org_type in organisation_detail.organisationregistration_set.all %}
+                <p class="card-text">
+                  {{ org_type.type.name }}
+                  {% if org_type.type.acronym %} 
+                    ({{ org_type.type.acronym }})
+                  {% endif %}
+                  {% if org_type.reg_number %}
+                    {{ org_type.reg_number }}
+                  {% endif %}
+                </p>
                 {% endfor %}
           </dd>
           {% endif %}
