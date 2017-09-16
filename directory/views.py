@@ -8,6 +8,7 @@ class OrganisationListView(ListView):
     context_object_name = 'organisations'
     model = Organisation
     template_name = 'directory/organisation_list.html'
+    paginate_by = 5
 
 class OrganisationDetailView(DetailView):
     context_object_name = 'organisation_detail'
