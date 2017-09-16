@@ -1,14 +1,55 @@
 {% extends "directory/base.html" %}
+
+{% load widget_tweaks %}
+
   {% block body_block %}
 
   <form method="get">
-    {{ filter.form.as_p }}
-    <button type="submit">Search</button>
+    <div class="well">
+      <h4 style="margin-top: 0">Filter</h4>
+      <div class="row">
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.name.label_tag }}
+          {% render_field filter.form.name class="form-control" %}
+        </div>
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.aims_and_activities.label_tag }}
+          {% render_field filter.form.aims_and_activities class="form-control" %}
+        </div>
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.postcode.label_tag }}
+          {% render_field filter.form.postcode class="form-control" %}
+        </div>
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.address.label_tag }}
+          {% render_field filter.form.address class="form-control" %}
+        </div>
+        <div class="form-group col-sm-8 col-md-6">
+          {{ filter.form.types.label_tag }}
+          <div>
+            {% for choice in filter.form.types %}
+              <label class="checkbox-inline">
+                {{ choice.tag }} {{ choice.choice_label }}
+              </label>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">
+        <span class="glyphicon glyphicon-search"></span> Search
+      </button>
+    </div>
   </form>
-  <ul>
-  {% for org in filter.qs %}
-    <li>{{ org.name }}</li>
-  {% endfor %}
-  </ul>
+
+  <div class="list-group">
+    {% for organisation in filter.qs %}
+    <div class="list-group-item">
+      <a href="{{ organisation.id }}">
+        <h3 class="list-group-item-heading">{{ organisation.name }}</h3>
+      </a>
+      <p class="list-group-item-text">{{ organisation.aims_and_activities }}</p>
+    </div>
+    {% endfor %}
+  </div>
 
   {% endblock %}
