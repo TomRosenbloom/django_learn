@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'org_reg',
     'directory',
     'volmatch',
-    'widget_tweaks'
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
