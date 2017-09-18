@@ -1,9 +1,25 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView, DetailView
 from backend.models import Organisation
 from .filters import OrganisationFilter
+import csv
 
 # Create your views here.
+
+def export_organisations_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="organisations.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Name', 'Aims and activities', 'Postcode', 'Email address'])
+
+    organisations = Organisation.objects.all().values_list('name', 'aims_and_activities', 'postcode', 'email')
+    for organisation in organisations:
+        writer.writerow(organisation)
+
+    return response
+
 
 def search(request):
     org_list = Organisation.objects.all()
