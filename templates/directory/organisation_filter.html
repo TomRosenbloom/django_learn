@@ -38,18 +38,37 @@
       <button type="submit" class="btn btn-primary">
         <span class="glyphicon glyphicon-search"></span> Search
       </button>
+      <button id="clear-form" class="btn btn-default">Clear form</button>
     </div>
   </form>
 
-  <div class="list-group">
-    {% for organisation in filter.qs %}
-    <div class="list-group-item">
-      <a href="{{ organisation.id }}">
-        <h3 class="list-group-item-heading">{{ organisation.name }}</h3>
-      </a>
-      <p class="list-group-item-text">{{ organisation.aims_and_activities }}</p>
+  {% if filter.qs %}
+    <div class="list-group">
+      {% for organisation in filter.qs %}
+      <div class="list-group-item">
+        <a href="{{ organisation.id }}">
+          <h3 class="list-group-item-heading">{{ organisation.name }}</h3>
+        </a>
+        <p class="list-group-item-text">{{ organisation.aims_and_activities }}</p>
+      </div>
+      {% endfor %}
     </div>
-    {% endfor %}
-  </div>
+  {% else %}
+    <p>
+      No results
+    </p>
+  {% endif %}
+
+  <script>
+    $(document).ready(function()
+    {
+      $('#clear-form').on('click', function()
+        {
+          var theForm = $(this).closest('form');
+          theForm.find('input:text, input:password, select, textarea').val('');
+          theForm.find('input:radio, input:checkbox').prop('checked', false);
+        });
+    });
+  </script>
 
   {% endblock %}
