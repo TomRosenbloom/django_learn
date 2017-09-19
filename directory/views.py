@@ -3,8 +3,9 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, ListView, DetailView
 from backend.models import Organisation
 from .filters import OrganisationFilter
+import django_filters
+from filters.views import FilterMixin
 import csv
-
 # Create your views here.
 
 def export_organisations_csv(request):
@@ -25,6 +26,16 @@ def search(request):
     org_list = Organisation.objects.all()
     org_filter = OrganisationFilter(request.GET, queryset = org_list)
     return render(request, 'directory/organisation_filter.html', {'filter': org_filter})
+
+
+
+class OrganisationFilterView(FilterMixin, django_filters.views.FilterView):
+    filterset_class = OrganisationFilter
+    context_object_name = 'organisations'
+    model = Organisation
+    template_name = 'directory/organisation_filterpag.html'
+    paginate_by = 5
+
 
 class OrganisationListView(ListView):
     context_object_name = 'organisations'

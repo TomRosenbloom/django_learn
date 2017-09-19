@@ -69,6 +69,9 @@ class Organisation(models.Model):
     address = AddressField(blank=True, null=True)
     types = models.ManyToManyField(OrganisationType,through='OrganisationRegistration')
 
+    class Meta:
+        ordering = ['name']
+
     def __str__(self):
         return self.name
 

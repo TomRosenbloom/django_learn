@@ -1,0 +1,90 @@
+{% extends "directory/base.html" %}
+
+{% load widget_tweaks %}
+
+  {% block body_block %}
+
+    <h2>Directory: organisations</h2>
+
+    <form method="get">
+      <div class="well">
+        <h4 style="margin-top: 0">Filter</h4>
+        <div class="row">
+          <div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.name.label_tag }}
+            {% render_field filter.form.name class="form-control" %}
+          </div>
+          <div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.aims_and_activities.label_tag }}
+            {% render_field filter.form.aims_and_activities class="form-control" %}
+          </div>
+          <div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.postcode.label_tag }}
+            {% render_field filter.form.postcode class="form-control" %}
+          </div>
+          <div class="form-group col-sm-4 col-md-3">
+            {{ filter.form.address.label_tag }}
+            {% render_field filter.form.address class="form-control" %}
+          </div>
+          <div class="form-group col-sm-8 col-md-6">
+            {{ filter.form.types.label_tag }}
+            <div>
+              {% for choice in filter.form.types %}
+                <label class="checkbox-inline">
+                  {{ choice.tag }} {{ choice.choice_label }}
+                </label>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary">
+              <span class="glyphicon glyphicon-search"></span> Search
+            </button>
+          <button id="clear-form" class="btn btn-default">Clear form</button>
+          </div>
+          <div class="col-sm-2">
+            <a href="{% url 'directory:export_organisations_csv' %}" class="fa fa-download"></a>
+          </div>
+        </div>
+      </div>
+    </form>
+
+
+    {% if is_paginated %}
+      <ul class="pagination">
+        {% if page_obj.has_previous %}
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+        {% endif %}
+        {% for i in paginator.page_range %}
+          {% if page_obj.number == i %}
+            <li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+          {% else %}
+            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+          {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+        {% endif %}
+      </ul>
+    {% endif %}
+
+    <div class="list-group">
+      {% for organisation in organisations %}
+      <div class="list-group-item">
+        <a href="{{ organisation.id }}">
+          <h3 class="list-group-item-heading">{{ organisation.name }}</h3>
+        </a>
+        <p class="list-group-item-text">{{ organisation.aims_and_activities }}</p>
+      </div>
+
+
+      {% endfor %}
+    </div>
+
+  {% endblock %}

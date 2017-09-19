@@ -16,4 +16,5 @@ urlpatterns = [
     url(r'^filter/$',FilterView.as_view(filterset_class=OrganisationFilter,
         template_name='directory/organisation_filter.html'),name='filter'),
     url(r'^export/csv/$', views.export_organisations_csv, name='export_organisations_csv'),
+    url(r'^test/$',views.OrganisationFilterView.as_view())
 ]
