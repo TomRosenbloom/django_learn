@@ -45,7 +45,7 @@
           <button id="clear-form" class="btn btn-default">Clear form</button>
           </div>
           <div class="col-sm-2">
-            <a href="{% url 'directory:export_organisations_csv' %}" class="fa fa-download" data-toggle="tooltip" data-offset="0 0" title="Download"></a>
+            <a href="{% url 'directory:export_organisations_csv' %}" class="fa fa-download" data-toggle="tooltip" data-offset="0 0" title="Download organisation list"></a>
           </div>
         </div>
       </div>
@@ -77,7 +77,7 @@
     <div class="list-group">
       {% for organisation in organisations %}
       <div class="list-group-item">
-        <a href="{{ organisation.id }}">
+        <a href="{% url 'directory:detail' pk=organisation.id %}">
           <h3 class="list-group-item-heading">{{ organisation.name }}</h3>
         </a>
         <p class="list-group-item-text">{{ organisation.aims_and_activities }}</p>
