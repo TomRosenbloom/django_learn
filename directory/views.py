@@ -22,18 +22,11 @@ def export_organisations_csv(request):
     return response
 
 
-def search(request):
-    org_list = Organisation.objects.all()
-    org_filter = OrganisationFilter(request.GET, queryset = org_list)
-    return render(request, 'directory/organisation_filter.html', {'filter': org_filter})
-
-
-
 class OrganisationFilterView(FilterMixin, django_filters.views.FilterView):
     filterset_class = OrganisationFilter
     context_object_name = 'organisations'
     model = Organisation
-    template_name = 'directory/organisation_filterpag.html'
+    template_name = 'directory/organisation_filter.html'
     paginate_by = 5
 
 

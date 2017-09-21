@@ -11,10 +11,7 @@ urlpatterns = [
     url(r'^$',views.IndexView.as_view(),name='index'),
     url(r'^list/$',views.OrganisationListView.as_view(),name='list'),
     url(r'^list/(?P<pk>[-\w+])$',views.OrganisationDetailView.as_view()),
-    url(r'^search/$',views.search, name='search'),
-    # filter CBV version
-    url(r'^filter/$',FilterView.as_view(filterset_class=OrganisationFilter,
-        template_name='directory/organisation_filter.html'),name='filter'),
+    #url(r'^search/$',views.search, name='search'),
     url(r'^export/csv/$', views.export_organisations_csv, name='export_organisations_csv'),
-    url(r'^test/$',views.OrganisationFilterView.as_view())
+    url(r'^filter/$',views.OrganisationFilterView.as_view(), name='filter')
 ]
