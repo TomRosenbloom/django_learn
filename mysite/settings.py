@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'vol_reg',
     'org_reg',
     'directory',
-    'volmatch',
+    'user_types',
     'widget_tweaks'
 ]
 

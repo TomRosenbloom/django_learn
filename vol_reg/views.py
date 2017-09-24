@@ -10,6 +10,8 @@ from . import forms
 from .forms import SignUpForm, ProfileForm
 from backend.models import Profile, Skill, Activity
 
+from user_types.models import Volunteer
+
 # Create your views here.
 
 class VolLogin(TemplateView):
@@ -49,6 +51,7 @@ def signup(request):
             user = authenticate(username=username, password=raw_password)
             login(request, user)
             Profile.objects.create(user_id=user.pk,is_volunteer=True)
+            Volunteer.objects.create(user_id=user.pk)
 
             return redirect('vol_reg:profile')
     else:
@@ -60,18 +63,19 @@ def signup(request):
 def profile(request):
 
     user = request.user
-    profile = user.profile
+    #profile = user.profile
+    profile = user.userprofile.volunteer
     form = ProfileForm(instance=profile)
 
     import mptt
     # obvs need to make a function of some sort here as I am repeating myself
     activityDict = {}
-    activities = mptt.utils.tree_item_iterator(user.profile.activitys.all(), ancestors=False)
+    activities = mptt.utils.tree_item_iterator(profile.activitys.all(), ancestors=False)
     for activity in activities:
         activityDict[activity[0].name] = activity[0].name
 
     skillDict = {}
-    skills = mptt.utils.tree_item_iterator(user.profile.skills.all(), ancestors=False)
+    skills = mptt.utils.tree_item_iterator(profile.skills.all(), ancestors=False)
     for skill in skills:
         skillDict[skill[0].name] = skill[0].name
 
