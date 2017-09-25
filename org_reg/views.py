@@ -4,7 +4,7 @@ from django.views.generic import (View, TemplateView, FormView,
                                 UpdateView, DeleteView)
 from . import forms
 from .forms import OrganisationForm, SignUpForm
-from backend.models import OrganisationType, Organisation, Profile
+from backend.models import OrganisationType, Organisation
 
 
 from django.http import HttpResponse, HttpResponseRedirect

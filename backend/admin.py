@@ -6,7 +6,7 @@ from address.forms import AddressWidget
 from mptt.admin import MPTTModelAdmin
 from mptt.admin import DraggableMPTTAdmin
 
-from backend.models import Funder, Project, Organisation, Person, Role, Person_org_role, Profile, Skill, Activity, OrganisationType, OrganisationRegistration
+from backend.models import Funder, Project, Organisation, Role, Skill, Activity, OrganisationType, OrganisationRegistration
 
 
 
@@ -28,10 +28,7 @@ admin.site.register(Project)
 admin.site.register(Organisation, OrganisationAdmin)
 admin.site.register(OrganisationType)
 admin.site.register(OrganisationRegistration)
-admin.site.register(Person)
 admin.site.register(Role)
-admin.site.register(Person_org_role)
-admin.site.register(Profile)
 admin.site.register(Skill, MPTTModelAdmin)
 
 admin.site.register(

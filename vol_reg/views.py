@@ -2,17 +2,23 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View, TemplateView
 
 from . import forms
 from .forms import SignUpForm, ProfileForm
-from backend.models import Profile, Skill, Activity
+from backend.models import Skill, Activity
 
 from user_types.models import Volunteer
 
 # Create your views here.
+
+
+def is_volunteer(user):
+    return user.groups.filter(name='volunteer').exists()
+    # this works (with user_passes_test) but you get a horrible django error
 
 class VolLogin(TemplateView):
     template_name = 'vol_reg/vol_login.html'
@@ -50,8 +56,12 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
+
             Profile.objects.create(user_id=user.pk,is_volunteer=True)
             Volunteer.objects.create(user_id=user.pk)
+
+            g = Group.objects.get(name='volunteer')
+            g.user_set.add(user)
 
             return redirect('vol_reg:profile')
     else:
@@ -59,7 +69,9 @@ def signup(request):
     return render(request, 'vol_reg/signup.html', {'form': form})
 
 
+
 @login_required
+@user_passes_test(is_volunteer)
 def profile(request):
 
     user = request.user

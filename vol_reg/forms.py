@@ -1,5 +1,5 @@
 from django import forms
-from backend.models import Profile, Activity
+from user_types.models import UserProfile, Volunteer
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -10,7 +10,7 @@ class ProfileForm(forms.ModelForm):
     postcode = GBPostcodeField()
 
     class Meta:
-        model = Profile
+        model = Volunteer
         fields = ('postcode','range','skills','activitys')
         labels = { 'range': 'Travel range', 'activitys': 'Activities'}
 
