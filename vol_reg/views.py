@@ -17,8 +17,7 @@ from user_types.models import Volunteer
 
 
 def is_volunteer(user):
-    return user.groups.filter(name='volunteer').exists()
-    # this works (with user_passes_test) but you get a horrible django error
+    return user.groups.filter(name__in=['volunteer',]).exists()
 
 class VolLogin(TemplateView):
     template_name = 'vol_reg/vol_login.html'
@@ -56,8 +55,6 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-
-            Profile.objects.create(user_id=user.pk,is_volunteer=True)
             Volunteer.objects.create(user_id=user.pk)
 
             g = Group.objects.get(name='volunteer')
