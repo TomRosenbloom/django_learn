@@ -4,6 +4,26 @@
     <meta charset="utf-8">
     <title>Volunteer dashboard</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <style>
+    #menuwrapper ul li {
+      height: 42px;
+    }
+    #menuwrapper ul li ul {
+        position: relative;
+        display: none;
+    }
+    #menuwrapper ul li:hover {
+      background-color: white;
+    }
+    #menuwrapper ul li:hover ul  {
+        position: relative;
+        left:100%;
+        padding-left: 15px;
+        top:-31px;
+        display:block;
+        z-index: 999;
+    }
+    </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   </head>
