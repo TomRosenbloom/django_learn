@@ -14,6 +14,11 @@
               Registered as organisational user
             </p>
           {% endif %}
+          {% if user.is_superuser %}
+          <p>
+            Registered as superuser
+          </p>
+          {% endif %}
       {% else %}
         <a href="{% url 'login' %}">Log in</a>
       {% endif %}

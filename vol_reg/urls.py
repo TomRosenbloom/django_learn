@@ -9,5 +9,6 @@ urlpatterns = [
     url(r'^profile/$',views.profile,name='profile'),
     url(r'^login/$',views.VolLogin.as_view(),name='login'),
     url(r'^logout/$',views.VolLogout.as_view(),name='logout'),
+    url(r'^not_authorised/$',views.NotAuthorised.as_view(),name='not_authorised'),
 
 ]

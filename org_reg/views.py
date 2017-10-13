@@ -6,6 +6,8 @@ from . import forms
 from .forms import OrganisationForm, SignUpForm
 from backend.models import OrganisationType, Organisation
 
+from user_types.models import Org_user
+from user_types.models import UserProfile
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse, reverse_lazy
@@ -13,7 +15,19 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test, permission_required
-from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+
+
+def org_user_check(user):
+    if hasattr(user, 'userprofile'):
+        profile = user.userprofile
+        if hasattr(profile, 'org_user'):
+            is_org_member = 1
+        else:
+            is_org_member = 0
+    else:
+        is_org_member = 0
+    return is_org_member == 1
 
 # Create your views here.
 
@@ -49,53 +63,39 @@ class ProfileView(FormView):
         context['types'] = OrganisationType.objects.all()
         return context
 
-def org_user_check(user):
-    if hasattr(user, 'profile'):
-        profile = user.profile
-        is_org_member = profile.is_org_member
-    else:
-        is_org_member = 0
-    return is_org_member == 1
 
+class OrgLogin(TemplateView):
+    template_name = 'org_reg/org_login.html'
 
-def org_login(request):
-    if request.method == 'POST':
+    def post(self, request, *args, **kwargs):
         username = request.POST.get('username')
         password = request.POST.get('password')
-
         user = authenticate(username=username, password=password)
 
-        # check if volunteer/org user
-        if hasattr(user, 'profile'):
-            profile = user.profile
-            is_volunteer = profile.is_volunteer
-            is_org_member = profile.is_org_member
-        else:
-            is_volunteer = is_org_member = 0
-
-        if user and is_org_member:
+        if user:
             if user.is_active:
-                login(request,user)
-                return HttpResponseRedirect(reverse('org_reg:index'))
+                #is_org_user = org_user_check(user)
+                if org_user_check(user):
+                    login(request,user)
+                    return HttpResponseRedirect(reverse('org_reg:index'))
+                else:
+                    return HttpResponse("Not org user")
             else:
                 return HttpResponse("Account not active")
         else:
-            if is_volunteer and not is_org_member:
-                messages.add_message(
-                    request, messages.ERROR, "Volunteer trying to log in as org user"
-                    )
-            else:
-                messages.add_message(
-                    request, messages.ERROR, "Incorrect username or password"
-                    )
-            return HttpResponseRedirect(reverse( 'org_reg:login' ))
-    else:
-        return render(request,'org_reg/org_login.html',{})
+            print("Failed login")
+            print("Username: {} and password {}".format(username,password))
+            return HttpResponse("invalid login")
 
-@login_required
-def org_logout(request):
-    logout(request)
-    return HttpResponseRedirect(reverse('org_reg:index'))
+    def get(self, request, *args, **kwargs):
+            return render(request,'org_reg/org_login.html',{})
+
+
+class OrgLogout(LoginRequiredMixin, View):
+    def get(self, request):
+        logout(request)
+        return HttpResponseRedirect(reverse('org_reg:index'))
+
 
 class OrgSignUpView(TemplateView):
     template_name = 'org_reg/signup.html'
@@ -108,7 +108,8 @@ class OrgSignUpView(TemplateView):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            Profile.objects.create(user_id=user.pk,is_org_member=True)
+            profile = UserProfile.objects.create(user_id=user.pk)
+            Org_user.objects.create(user_profile_id=profile.pk)
 
             return redirect('org_reg:index')
         else:
@@ -119,12 +120,7 @@ class OrgSignUpView(TemplateView):
         return render(request, 'org_reg/signup.html', {'form': form})
 
 
-# class IndexView(UserPassesTestMixin,TemplateView):
-#     template_name = 'org_reg/index.html'
-#     def test_func(self):
-#         return False
-
-@user_passes_test(org_user_check, login_url='login/')
-#@permission_required()
-def index(request):
-    return render(request,'org_reg/index.html')
+class IndexView(UserPassesTestMixin,TemplateView):
+    template_name = 'org_reg/index.html'
+    def test_func(self):
+        return org_user_check(self.request.user)

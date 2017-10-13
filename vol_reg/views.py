@@ -13,11 +13,12 @@ from backend.models import Skill, Activity
 
 from user_types.models import Volunteer
 
-# Create your views here.
-
-
+# this method, using groups, is defunct
 def is_volunteer(user):
     return user.groups.filter(name__in=['volunteer',]).exists()
+
+
+# Create your views here.
 
 class VolLogin(TemplateView):
     template_name = 'vol_reg/vol_login.html'
@@ -46,6 +47,10 @@ class VolLogout(LoginRequiredMixin, View):
         logout(request)
         return HttpResponseRedirect(reverse('vol_reg:index'))
 
+class NotAuthorised(TemplateView):
+    template_name = 'vol_reg/not_authorised.html'
+
+
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -67,8 +72,8 @@ def signup(request):
 
 
 
-@login_required
-@user_passes_test(is_volunteer)
+@login_required(login_url='/volunteer/not_authorised/')
+@user_passes_test(is_volunteer,login_url='/volunteer/not_authorised/')
 def profile(request):
 
     user = request.user

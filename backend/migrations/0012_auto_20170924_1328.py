@@ -27,13 +27,13 @@ def forwards_func(apps, schema_editor):
         Skill(name="Photography", lft=6, rght=7, tree_id=1, level=1, parent_id=1),
         Skill(name="Practical", lft=1, rght=6, tree_id=2, level=0),
         Skill(name="Building Work", lft=2, rght=3, tree_id=2, level=1, parent_id=5),
-        Skill(name="Carpentry", lft=4, rght=5, tree_id=2, level=1, parent_id=5),        
+        Skill(name="Carpentry", lft=4, rght=5, tree_id=2, level=1, parent_id=5),
     ])
 
 def reverse_func(apps, schema_editor):
     Activity = apps.get_model("backend", "Activity")
     db_alias = schema_editor.connection.alias
-    Activity.objects.using(db_alias).filter(name="foo").delete()
+    Activity.objects.using(db_alias).delete()
 
 class Migration(migrations.Migration):
 
