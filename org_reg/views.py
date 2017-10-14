@@ -15,7 +15,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test, permission_required
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, AccessMixin
 
 
 def org_user_check(user):
@@ -30,6 +30,11 @@ def org_user_check(user):
     return is_org_member == 1
 
 # Create your views here.
+
+class OrganisationSelect(ListView):
+    context_object_name = 'organisations'
+    model = Organisation
+    template_name = 'org_reg/organisation_select.html'
 
 class OrganisationDetailView(DetailView):
     context_object_name = 'organisation_detail'
@@ -122,5 +127,11 @@ class OrgSignUpView(TemplateView):
 
 class IndexView(UserPassesTestMixin,TemplateView):
     template_name = 'org_reg/index.html'
+    login_url = 'login/'
+
+    def get(self, request, *args, **kwargs):
+        orgs = request.user.userprofile.org_user.organisations
+        return render(request, 'org_reg/index.html', {'orgs': orgs})
+
     def test_func(self):
         return org_user_check(self.request.user)

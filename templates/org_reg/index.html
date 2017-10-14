@@ -6,9 +6,19 @@
       <p>
         Logged in as {{ user.username }}
       </p>
+
+      {% if orgs|length == 0 %}
       <p>
-        Hello {{ user.first_name }}, how about <a href="{% url 'org_reg:profile' %}">updating your organisation profile</a>?
+        <a href="{% url 'org_reg:create' %}">Add new organisation</a>
       </p>
+      <p>
+        <a href="{% url 'org_reg:select' %}">Join an existing organisation</a>
+      </p>
+
+      {% else %}
+        Your organisations...
+      {% endif %}
+
     {% else %}
 
       <a href="{% url 'org_reg:signup' %}">Sign up</a> or <a href="{% url 'org_reg:login' %}">Log in</a>

@@ -14,4 +14,5 @@ urlpatterns = [
     url(r'^create/$',views.OrganisationCreateView.as_view(),name='create'),
     url(r'^update/(?P<pk>[-\w+])$',views.OrganisationUpdateView.as_view(),name='update'),
     url(r'^delete/(?P<pk>[-\w+])$',views.OrganisationDeleteView.as_view(),name='delete'),
+    url(r'^select/$',views.OrganisationSelect.as_view(),name='select')    
 ]

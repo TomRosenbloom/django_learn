@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'org_reg',
     'directory',
     'user_types',
-    'widget_tweaks'
+    'widget_tweaks',
+    'csvimport'
 ]
 
 MIDDLEWARE = [

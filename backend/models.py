@@ -62,7 +62,7 @@ class OrganisationType(models.Model):
 
 class Organisation(models.Model):
     name = models.CharField(max_length=255,unique=True)
-    aims_and_activities = models.TextField()
+    aims_and_activities = models.TextField(blank=True,null=True)
     email = models.EmailField(blank=True,null=True)
     telephone = models.CharField(max_length=100,blank=True,null=True)
     postcode = models.CharField(max_length=100,blank=True,null=True)
