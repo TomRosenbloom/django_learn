@@ -7,6 +7,7 @@ from backend.model_choices import *
 
 # Create your models here.
 
+
 class Skill(MPTTModel):
     name = models.CharField(max_length=50, unique=True)
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True)
@@ -68,6 +69,7 @@ class Organisation(models.Model):
     postcode = models.CharField(max_length=100,blank=True,null=True)
     address = AddressField(blank=True, null=True)
     types = models.ManyToManyField(OrganisationType,through='OrganisationRegistration')
+    #opportunitys = models.ManyToManyField(Opportunity)
 
     class Meta:
         ordering = ['name']
@@ -83,6 +85,22 @@ class OrganisationRegistration(models.Model):
 
     def __str__(self):
         return ('%s %s' % (self.type, self.reg_number))
+
+
+
+class Opportunity(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    skills = models.ManyToManyField(Skill)
+    activitys = models.ManyToManyField(Activity)
+
+    def __str__(self):
+        return self.name
+        return ('%s %s' % (self.name, self.organisation.name))
+
 
 
 class Role(models.Model):
