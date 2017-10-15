@@ -15,7 +15,7 @@
         <ul>
           {% for organisation in orgs %}
             <li>
-              {{ organisation.name }}
+              {{ organisation.name }} <a href="{% url 'org_reg:update' pk=organisation.pk %}">Edit this organisation</a>
             </li>
           {% endfor %}
         </ul>
