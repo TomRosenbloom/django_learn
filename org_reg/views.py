@@ -5,7 +5,7 @@ from django.views.generic import (View, TemplateView, FormView,
 from . import forms
 from .forms import OrganisationForm, SignUpForm
 
-from backend.models import OrganisationType, Organisation
+from backend.models import OrganisationType, Organisation, Opportunity
 
 from user_types.models import Org_user
 from user_types.models import UserProfile
@@ -31,6 +31,30 @@ def org_user_check(user):
     return is_org_member == 1
 
 # Create your views here.
+
+
+class OpportunityCreateView(CreateView):
+    fields = ('name','description','start_date','end_date')
+    model = Opportunity
+    template_name = 'org_reg/opportunity_form.html'
+
+    # I want to receive the org id via the url, then make it into a hidden form field
+    # below a few things found on SO
+    # First, redefining the form, adding in organisation - but haven't managed to  anything with this in the template
+    def get_form(self):
+        print(self.kwargs['organisation']) # prints the id of the org passed in url
+        form = super(OpportunityCreateView, self).get_form(self.form_class)
+        form.instance.organisation = Organisation.objects.get(pk=self.kwargs['organisation'])
+        return form
+
+    # second, adding organisation to the context data - this does work and I can access organisation.name for e.g. in template
+    def get_context_data(self, **kwargs):
+        context = super(OpportunityCreateView, self).get_context_data(**kwargs)
+        context['organisation'] = Organisation.objects.get(pk=self.kwargs['organisation'])
+        return context
+
+    def get_success_url(self):
+        return reverse('org_reg:detail',kwargs={'pk':self.object.organisation.pk})
 
 class OrganisationSelect(View):
 

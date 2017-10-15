@@ -12,19 +12,26 @@
             Your organisations...
         </p>
 
-        <ul>
+        <div class="list-group row">
           {% for organisation in orgs %}
-            <li>
-              {{ organisation.name }} <a href="{% url 'org_reg:update' pk=organisation.pk %}">Edit this organisation</a>
-            </li>
+          <div class="list-group-item col-sm-8">
+            <a href="{% url 'org_reg:update' pk=organisation.pk %}">
+              <h3 class="list-group-item-heading">{{ organisation.name }}</h3>
+            </a>
+            <p class="list-group-item-text">
+              No current opportunities
+            </p>
+            <p>
+              <a href="{% url 'org_reg:opportunity' organisation=organisation.pk %}">Add an opportunity</a>
+            </p>
+          </div>
           {% endfor %}
-        </ul>
-
+        </div>
 
       {% endif %}
 
       <p>
-        <a href="{% url 'org_reg:create' %}">Add new organisation</a>
+        <a href="{% url 'org_reg:create' %}">Add a new organisation</a>
       </p>
       {% if orgs|length > 0 %}
       <p>

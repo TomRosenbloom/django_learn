@@ -1,15 +1,9 @@
 {% extends "org_reg/base.html" %}
   {% block body_block %}
-    <h2>
-      {% if not form.instance.pk %}
-      Create Organisation
-      {% else %}
-      Organisation details
-      {% endif %}
-    </h2>
+    <h2>Add opportunity for {{ organisation.name }}</h2>
 
-    <div class="row">
-      <div class="col-md-7">
+
+
         <form method="post">
           {% csrf_token %}
           {% for field in form %}
@@ -30,14 +24,7 @@
 
           <input type="submit" class="btn btn-primary" value="Submit" />
         </form>
-      </div>
-      <div class="col-md-5">
-        <h3>Opportunities</h3>
-        <p>
-          <a href="{% url 'org_reg:opportunity' %}">Add an opportunity for {{ organisation.name }}</a>
-        </p>
-      </div>
-    </div>
+
 
 
   {% endblock %}
