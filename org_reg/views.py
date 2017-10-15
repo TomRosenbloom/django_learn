@@ -4,6 +4,7 @@ from django.views.generic import (View, TemplateView, FormView,
                                 UpdateView, DeleteView)
 from . import forms
 from .forms import OrganisationForm, SignUpForm
+
 from backend.models import OrganisationType, Organisation
 
 from user_types.models import Org_user
@@ -31,10 +32,17 @@ def org_user_check(user):
 
 # Create your views here.
 
-class OrganisationSelect(ListView):
-    context_object_name = 'organisations'
-    model = Organisation
-    template_name = 'org_reg/organisation_select.html'
+class OrganisationSelect(View):
+
+    def post(self, request, *args, **kwargs):
+        organisation = request.POST.get('organisation')
+        # use the current user, or send in form?
+        user = request.user
+        user.userprofile.org_user.organisations.add(organisation)
+        return redirect('org_reg:index')
+
+    def get(self, request):
+        return render(request, 'org_reg/organisation_select.html', {'organisations': Organisation.objects.all()})
 
 class OrganisationDetailView(DetailView):
     context_object_name = 'organisation_detail'
@@ -59,6 +67,7 @@ class OrganisationDeleteView(DeleteView):
     model = Organisation
     template_name = 'org_reg/organisation_confirm_delete.html'
     success_url = reverse_lazy('org_reg:list')
+    #success_message = "%(name)s was deleted"
 
 class ProfileView(FormView):
     form_class = OrganisationForm
@@ -84,13 +93,12 @@ class OrgLogin(TemplateView):
                     login(request,user)
                     return HttpResponseRedirect(reverse('org_reg:index'))
                 else:
-                    return HttpResponse("Not org user")
+                    messages.error(request, 'You have not registered as an organisational user')
             else:
-                return HttpResponse("Account not active")
+                messages.error(request, 'Account not active')
         else:
-            print("Failed login")
-            print("Username: {} and password {}".format(username,password))
-            return HttpResponse("invalid login")
+            messages.error(request, 'Incorrect username or password')
+        return render(request,'org_reg/org_login.html')
 
     def get(self, request, *args, **kwargs):
             return render(request,'org_reg/org_login.html',{})
@@ -113,8 +121,7 @@ class OrgSignUpView(TemplateView):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            profile = UserProfile.objects.create(user_id=user.pk)
-            Org_user.objects.create(user_profile_id=profile.pk)
+            Org_user.objects.create(user_id=user.pk)
 
             return redirect('org_reg:index')
         else:
@@ -130,7 +137,7 @@ class IndexView(UserPassesTestMixin,TemplateView):
     login_url = 'login/'
 
     def get(self, request, *args, **kwargs):
-        orgs = request.user.userprofile.org_user.organisations
+        orgs = request.user.userprofile.org_user.organisations.all
         return render(request, 'org_reg/index.html', {'orgs': orgs})
 
     def test_func(self):

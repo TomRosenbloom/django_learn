@@ -31,8 +31,9 @@ class Volunteer(UserProfile): # extends UserProfile
         return ('%s %s' % (self.user.first_name, self.user.last_name))
 
 
-class Org_user(models.Model): # has one to one rel with UserProfile
-    user_profile = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
+#class Org_user(models.Model): # has one to one rel with UserProfile
+class Org_user(UserProfile):
+    #user_profile = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
     organisations = models.ManyToManyField(Organisation)
 
     def __str__(self):

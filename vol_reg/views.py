@@ -14,9 +14,18 @@ from backend.models import Skill, Activity
 from user_types.models import Volunteer
 
 # this method, using groups, is defunct
+# def is_volunteer(user):
+#     return user.groups.filter(name__in=['volunteer',]).exists()
 def is_volunteer(user):
-    return user.groups.filter(name__in=['volunteer',]).exists()
-
+    if hasattr(user, 'userprofile'):
+        profile = user.userprofile
+        if hasattr(profile, 'volunteer'):
+            result = 1
+        else:
+            result = 0
+    else:
+        result = 0
+    return result == 1
 
 # Create your views here.
 

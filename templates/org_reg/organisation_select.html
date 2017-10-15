@@ -5,7 +5,7 @@
 
     <form method="post">
       {% csrf_token %}
-      <select multiple name="orgs[]" size="20" id="select-org">
+      <select name="organisation" size="20" id="select-org">
         {% for organisation in organisations %}
           <option value="{{ organisation.id }}">
             {{ organisation.name }}
@@ -16,7 +16,13 @@
     </form>
 
     <script type="text/javascript">
-      $('select').select2();
+      $(document).ready(function() {
+        $('#select-org').select2({
+          placeholder: "Select an organisation to join",
+          allowClear: true,
+          theme: "classic"
+        });
+      });
     </script>
-    
+
   {% endblock %}

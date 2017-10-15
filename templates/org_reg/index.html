@@ -7,17 +7,36 @@
         Logged in as {{ user.username }}
       </p>
 
-      {% if orgs|length == 0 %}
+      {% if orgs|length > 0 %}
+        <p>
+            Your organisations...
+        </p>
+
+        <ul>
+          {% for organisation in orgs %}
+            <li>
+              {{ organisation.name }}
+            </li>
+          {% endfor %}
+        </ul>
+
+
+      {% endif %}
+
       <p>
         <a href="{% url 'org_reg:create' %}">Add new organisation</a>
       </p>
+      {% if orgs|length > 0 %}
+      <p>
+        <a href="{% url 'org_reg:select' %}">Join another organisation</a>
+      </p>
+      {% else %}
       <p>
         <a href="{% url 'org_reg:select' %}">Join an existing organisation</a>
       </p>
-
-      {% else %}
-        Your organisations...
       {% endif %}
+
+
 
     {% else %}
 
