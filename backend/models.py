@@ -89,7 +89,7 @@ class OrganisationRegistration(models.Model):
 
 
 class Opportunity(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, verbose_name=('Opportunity title'))
     description = models.TextField()
     organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE)
     start_date = models.DateField()
