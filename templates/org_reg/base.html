@@ -21,9 +21,6 @@
           </li>
           {% if user.is_authenticated %}
           <li>
-            <a  class="navbar-link" href="{% url 'org_reg:profile' %}">Organisation profile</a>
-          </li>
-          <li>
             <a class="navbar-link" href="{% url 'org_reg:logout' %}">Logout {{ user.username }}</a>
           </li>
           {% else %}
