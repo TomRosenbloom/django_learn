@@ -2,8 +2,10 @@ from django.shortcuts import render, redirect
 from django.views.generic import (View, TemplateView, FormView,
                                 ListView, DetailView, CreateView,
                                 UpdateView, DeleteView)
-from . import forms
-from .forms import OrganisationForm, SignUpForm
+from django import forms
+
+#from . import forms
+from .forms import OrganisationForm, SignUpForm, OpportunityForm
 
 from backend.models import OrganisationType, Organisation, Opportunity
 
@@ -30,31 +32,36 @@ def org_user_check(user):
         is_org_member = 0
     return is_org_member == 1
 
+
 # Create your views here.
 
-
 class OpportunityCreateView(CreateView):
-    fields = ('name','description','start_date','end_date')
+    #fields = ('name','description','start_date','end_date') # issues with date formats
+    fields = ('name','description')
     model = Opportunity
     template_name = 'org_reg/opportunity_form.html'
 
-    # I want to receive the org id via the url, then make it into a hidden form field
-    # below a few things found on SO
-    # First, redefining the form, adding in organisation - but haven't managed to  anything with this in the template
-    def get_form(self):
-        print(self.kwargs['organisation']) # prints the id of the org passed in url
-        form = super(OpportunityCreateView, self).get_form(self.form_class)
-        form.instance.organisation = Organisation.objects.get(pk=self.kwargs['organisation'])
-        return form
+    def form_invalid(self, form):
+        print(form.errors)
+        return HttpResponse('wut')
 
-    # second, adding organisation to the context data - this does work and I can access organisation.name for e.g. in template
     def get_context_data(self, **kwargs):
         context = super(OpportunityCreateView, self).get_context_data(**kwargs)
         context['organisation'] = Organisation.objects.get(pk=self.kwargs['organisation'])
         return context
 
+    def form_valid(self, form, **kwargs):
+        opportunity = form.save(commit=False)
+        opportunity.organisation = Organisation.objects.get(pk=self.kwargs['organisation'])
+        return super(OpportunityCreateView, self).form_valid(form)
+
     def get_success_url(self):
-        return reverse('org_reg:detail',kwargs={'pk':self.object.organisation.pk})
+        return reverse('org_reg:index',kwargs={'pk':self.object.organisation.pk})
+
+    class Meta:
+        labels = {
+            'name': 'Opportunity title'
+        }
 
 class OrganisationSelect(View):
 
@@ -77,8 +84,12 @@ class OrganisationCreateView(CreateView):
     fields = ('name','aims_and_activities','postcode','email','telephone')
     model = Organisation
     template_name = 'org_reg/organisation_form.html'
-    def get_success_url(self):
-        return reverse('org_reg:detail',kwargs={'pk':self.object.pk})
+
+    def form_invalid(self, form):
+        print(form.errors)
+
+    # def get_success_url(self):
+    #     return reverse('org_reg:detail',kwargs={'pk':self.object.pk})
 
 class OrganisationUpdateView(UpdateView):
     fields = ('name','aims_and_activities','postcode','email','telephone')

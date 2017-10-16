@@ -1,10 +1,17 @@
 from django import forms
-from backend.models import Organisation, OrganisationType
+from backend.models import Organisation, OrganisationType, Opportunity
 
 from localflavor.gb.forms import GBPostcodeField
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+
+class OpportunityForm(forms.ModelForm):
+
+    class Meta:
+        model = Opportunity
+        fields = ('name','description','start_date','end_date')
+        labels = {'name': 'Opportunity title'}
 
 class OrganisationForm(forms.ModelForm):
     postcode = GBPostcodeField()

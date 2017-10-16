@@ -2,6 +2,7 @@ from django.db import models
 from address.models import AddressField
 from mptt.models import MPTTModel, TreeForeignKey
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 
 from backend.model_choices import *
 
@@ -77,6 +78,9 @@ class Organisation(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse("org_reg:detail", kwargs={'pk':self.pk})
+
 
 class OrganisationRegistration(models.Model):
     organisation = models.ForeignKey(Organisation)
@@ -91,9 +95,9 @@ class OrganisationRegistration(models.Model):
 class Opportunity(models.Model):
     name = models.CharField(max_length=255, verbose_name=('Opportunity title'))
     description = models.TextField()
+    start_date = models.DateField(blank=True,null=True)
+    end_date = models.DateField(blank=True,null=True)
     organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE)
-    start_date = models.DateField()
-    end_date = models.DateField()
     skills = models.ManyToManyField(Skill)
     activitys = models.ManyToManyField(Activity)
 
