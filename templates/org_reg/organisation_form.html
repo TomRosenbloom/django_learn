@@ -33,9 +33,32 @@
       </div>
       <div class="col-md-5">
         <h3>Opportunities</h3>
-        <p>
-          <a href="#">Add an opportunity for {{ organisation.name }}</a>
-        </p>
+
+          {% if organisation.opportunity_set.all|length > 0 %}
+            <p>
+              {{ organisation.opportunity_set.all|length }} current
+              {% if organisation.opportunity_set.all|length == 1 %}
+                opportunity:
+              {% else %}
+                opportunities:
+              {% endif %}
+            </p>
+            {% for opp in organisation.opportunity_set.all %}
+              <p>
+                {{ opp.name }}
+              </p>
+            {% endfor %}
+          {% else %}
+            <p>
+              No current opportunities
+            </p>
+
+          {% endif %}
+
+          <p>
+            <a href="#">Add an opportunity</a>
+          </p>
+          
       </div>
     </div>
 

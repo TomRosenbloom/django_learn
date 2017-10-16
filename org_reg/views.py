@@ -88,8 +88,7 @@ class OrganisationCreateView(CreateView):
     def form_invalid(self, form):
         print(form.errors)
 
-    # def get_success_url(self):
-    #     return reverse('org_reg:detail',kwargs={'pk':self.object.pk})
+
 
 class OrganisationUpdateView(UpdateView):
     fields = ('name','aims_and_activities','postcode','email','telephone')
