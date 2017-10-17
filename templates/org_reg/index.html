@@ -30,7 +30,7 @@
                 </p>
                 {% for opp in organisation.opportunity_set.all %}
                   <p>
-                    {{ opp.name }} <a href="{% url 'org_reg:update_opp' pk=opp.pk %}">Edit</a>
+                    {{ opp.name }} <a href="{% url 'org_reg:update_opp' pk=opp.pk %}">Edit</a> <a href="{% url 'org_reg:delete_opp' pk=opp.pk %}">Delete</a>
                   </p>
                 {% endfor %}
               {% else %}
@@ -50,12 +50,12 @@
       {% endif %}
 
       <p>
-        <a href="{% url 'org_reg:create' %}">Add an organisation</a> - if you have a role with an organisation
+        <a href="{% url 'org_reg:create' %}">Create a new organisation</a> - if you have a role with an organisation
         that is not yet in our system (<a href="#">Search existing organisations</a>)
       </p>
 
       <p>
-        <a href="{% url 'org_reg:select' %}">Join an organisation</a> - if you have a role with an existing
+        <a href="{% url 'org_reg:select' %}">Join an existing organisation</a> - if you have a role with an existing
         organisation
       </p>
 

@@ -35,6 +35,12 @@ def org_user_check(user):
 
 # Create your views here.
 
+class OpportunityDeleteView(DeleteView):
+    model = Opportunity
+    template_name = 'org_reg/opportunity_confirm_delete.html'
+    success_url = reverse_lazy('org_reg:index')
+
+
 class OpportunityUpdateView(UpdateView):
     fields = ('name','description')
     model = Opportunity
@@ -70,7 +76,7 @@ class OpportunityCreateView(CreateView):
         return super(OpportunityCreateView, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse('org_reg:index',kwargs={'pk':self.object.organisation.pk})
+        return reverse('org_reg:index')
 
     class Meta:
         labels = {
