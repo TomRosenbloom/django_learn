@@ -45,17 +45,7 @@ class OpportunityUpdateView(UpdateView):
     fields = ('name','description','start_date','end_date')
     model = Opportunity
     template_name = 'org_reg/opportunity_form.html'
-
-    # need to get the org this belongs to and pass to view
-    # also in view need to make the title conditional to change from 'Add opportunity for..'
-
-    def form_valid(self, form, **kwargs):
-        opportunity = form.save(commit=False)
-        opportunity.organisation = Organisation.objects.get(pk=self.kwargs['organisation'])
-        return super(OpportunityCreateView, self).form_valid(form)
-
-    def get_success_url(self):
-        return reverse('org_reg:index',kwargs={'pk':self.object.organisation.pk})
+    success_url = reverse_lazy('org_reg:index')
 
     class Meta:
         labels = {
