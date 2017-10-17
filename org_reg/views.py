@@ -35,15 +35,29 @@ def org_user_check(user):
 
 # Create your views here.
 
+class OpportunityUpdateView(UpdateView):
+    fields = ('name','description')
+    model = Opportunity
+    template_name = 'org_reg/opportunity_form.html'
+
+    def form_valid(self, form, **kwargs):
+        opportunity = form.save(commit=False)
+        opportunity.organisation = Organisation.objects.get(pk=self.kwargs['organisation'])
+        return super(OpportunityCreateView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('org_reg:index',kwargs={'pk':self.object.organisation.pk})
+
+    class Meta:
+        labels = {
+            'name': 'Opportunity title'
+        }
+
 class OpportunityCreateView(CreateView):
     #fields = ('name','description','start_date','end_date') # issues with date formats
     fields = ('name','description')
     model = Opportunity
     template_name = 'org_reg/opportunity_form.html'
-
-    def form_invalid(self, form):
-        print(form.errors)
-        return HttpResponse('wut')
 
     def get_context_data(self, **kwargs):
         context = super(OpportunityCreateView, self).get_context_data(**kwargs)

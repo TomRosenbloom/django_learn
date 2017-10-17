@@ -16,4 +16,5 @@ urlpatterns = [
     url(r'^delete/(?P<pk>\d+)$',views.OrganisationDeleteView.as_view(),name='delete'),
     url(r'^select/$',views.OrganisationSelect.as_view(),name='select'),
     url(r'^opportunity/org_id/(?P<organisation>\d+)$',views.OpportunityCreateView.as_view(),name='opportunity'),
+    url(r'^opportunity/(?P<pk>\d+)$',views.OpportunityUpdateView.as_view(),name='update_opp')
 ]

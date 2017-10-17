@@ -30,7 +30,7 @@
                 </p>
                 {% for opp in organisation.opportunity_set.all %}
                   <p>
-                    {{ opp.name }}
+                    {{ opp.name }} <a href="{% url 'org_reg:update_opp' pk=opp.pk %}">Edit</a>
                   </p>
                 {% endfor %}
               {% else %}
