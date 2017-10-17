@@ -42,9 +42,12 @@ class OpportunityDeleteView(DeleteView):
 
 
 class OpportunityUpdateView(UpdateView):
-    fields = ('name','description')
+    fields = ('name','description','start_date','end_date')
     model = Opportunity
     template_name = 'org_reg/opportunity_form.html'
+
+    # need to get the org this belongs to and pass to view
+    # also in view need to make the title conditional to change from 'Add opportunity for..'
 
     def form_valid(self, form, **kwargs):
         opportunity = form.save(commit=False)
@@ -60,8 +63,7 @@ class OpportunityUpdateView(UpdateView):
         }
 
 class OpportunityCreateView(CreateView):
-    #fields = ('name','description','start_date','end_date') # issues with date formats
-    fields = ('name','description')
+    fields = ('name','description','start_date','end_date')
     model = Opportunity
     template_name = 'org_reg/opportunity_form.html'
 
@@ -73,6 +75,7 @@ class OpportunityCreateView(CreateView):
     def form_valid(self, form, **kwargs):
         opportunity = form.save(commit=False)
         opportunity.organisation = Organisation.objects.get(pk=self.kwargs['organisation'])
+        #return HttpResponse(form.instance.start_date) # coming as yyy-mm-dd
         return super(OpportunityCreateView, self).form_valid(form)
 
     def get_success_url(self):
