@@ -4,6 +4,8 @@ from mptt.models import MPTTModel, TreeForeignKey
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
+from ckeditor.fields import RichTextField
+
 from backend.model_choices import *
 
 # Create your models here.
@@ -64,7 +66,7 @@ class OrganisationType(models.Model):
 
 class Organisation(models.Model):
     name = models.CharField(max_length=255,unique=True)
-    aims_and_activities = models.TextField(blank=True,null=True)
+    aims_and_activities = RichTextField(blank=True,null=True)
     email = models.EmailField(blank=True,null=True)
     telephone = models.CharField(max_length=100,blank=True,null=True)
     postcode = models.CharField(max_length=100,blank=True,null=True)
@@ -94,7 +96,7 @@ class OrganisationRegistration(models.Model):
 
 class Opportunity(models.Model):
     name = models.CharField(max_length=255, verbose_name=('Opportunity title'))
-    description = models.TextField()
+    description = RichTextField()
     start_date = models.DateField(blank=True,null=True)
     end_date = models.DateField(blank=True,null=True)
     organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE)

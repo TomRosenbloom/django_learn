@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'directory',
     'user_types',
     'widget_tweaks',
-    'csvimport'
+    'csvimport',
+    'ckeditor'
 ]
 
 MIDDLEWARE = [
@@ -129,9 +130,27 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
+#STATIC_ROOT = '/Users/Tom/Envs/mysite/static'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     STATIC_DIR,
 ]
 
+# authentication related
 LOGIN_URL = '/user_login'
+
+# ckeditor config
+CKEDITOR_CONFIGS = {
+    'default': {
+        'height': 200,
+        'width': 500,
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Bold', 'Italic'],
+            ['Paste'],
+            ['NumberedList', 'BulletedList'],
+            ['Link', 'Unlink'],
+            ['RemoveFormat', 'Source']
+        ]
+    }
+}

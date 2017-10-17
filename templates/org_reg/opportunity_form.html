@@ -28,7 +28,11 @@
           <input type="submit" class="btn btn-primary" value="Submit" />
         </form>
 
+        {% load static %}
+        <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+        <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
         <script>
+        
         $(document).ready(function() {
             $('#id_start_date, #id_end_date').datepicker({
               dateFormat: 'd.m.y',
