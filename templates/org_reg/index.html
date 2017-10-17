@@ -28,10 +28,41 @@
                     opportunities:
                   {% endif %}
                 </p>
+                <div class="row">
+                  <div class="col-md-4">
+                    Title
+                  </div>
+                  <div class="col-md-2">
+                    Start date
+                  </div>
+                  <div class="col-md-2">
+                    End date
+                  </div>
+                  <div class="col-md-1">
+
+                  </div>
+                  <div class="col-md-1">
+
+                  </div>
+                </div>
                 {% for opp in organisation.opportunity_set.all %}
-                  <p>
-                    {{ opp.name }} <a href="{% url 'org_reg:update_opp' pk=opp.pk %}">Edit</a> <a href="{% url 'org_reg:delete_opp' pk=opp.pk %}">Delete</a>
-                  </p>
+                  <div class="row">
+                    <div class="col-md-4">
+                      {{ opp.name }}
+                    </div>
+                    <div class="col-md-2">
+                      {{ opp.start_date }}
+                    </div>
+                    <div class="col-md-2">
+                      {{ opp.end_date }}
+                    </div>
+                    <div class="col-md-1">
+                      <a href="{% url 'org_reg:update_opp' pk=opp.pk %}">Edit</a>
+                    </div>
+                    <div class="col-md-1">
+                      <a href="{% url 'org_reg:delete_opp' pk=opp.pk %}">Delete</a>
+                    </div>
+                  </div>
                 {% endfor %}
               {% else %}
                 <p>
@@ -41,6 +72,7 @@
               {% endif %}
 
             <p>
+              <br />
               <a href="{% url 'org_reg:opportunity' organisation=organisation.pk %}">Add an opportunity</a>
             </p>
           </div>
