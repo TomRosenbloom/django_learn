@@ -1,11 +1,6 @@
-{% extends "org_reg/base.html" %}
-  {% block body_block %}
+
     <h2>
-      {% if not form.instance.pk %}
-        Create opportunity
-      {% else %}
-        Edit opportunity
-      {% endif %}
+      {{ title_text }}
     </h2>
 
 
@@ -14,14 +9,20 @@
               <strong>Organisation:</strong>
           </div>
           <div class="col-md-4">
-            {{ opportunity.organisation.name }}
+            {{ org_var_name.name }}
           </div>
         </div>
 
         <form method="post">
           {% csrf_token %}
 
-          <input type="hidden" name="organisation_id" value="{{ organisation.id }}" />
+          {% if 'org_id' in request.get_full_path %}
+            {% comment %}
+              org_id is present in url only if form being used to create a new opportunity
+              and not if being used to edit existing opp, when org will be related property of opp
+            {% endcomment %}
+            <input type="hidden" name="organisation_id" value="{{ organisation.id }}" />
+          {% endif %}
 
           {% for field in form %}
             <div class="form-group row">
@@ -55,5 +56,3 @@
             });
         });
         </script>
-
-  {% endblock %}

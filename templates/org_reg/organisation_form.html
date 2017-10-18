@@ -56,7 +56,7 @@
           {% endif %}
 
           <p>
-            <a href="#">Add an opportunity</a>
+            <a href="{% url 'org_reg:opportunity' organisation=organisation.pk %}">Add an opportunity</a>
           </p>
 
       </div>
@@ -66,5 +66,5 @@
     <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
     <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
     <script>
-    
+
   {% endblock %}

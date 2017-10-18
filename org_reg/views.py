@@ -44,7 +44,7 @@ class OpportunityDeleteView(DeleteView):
 class OpportunityUpdateView(UpdateView):
     fields = ('name','description','start_date','end_date')
     model = Opportunity
-    template_name = 'org_reg/opportunity_form.html'
+    template_name = 'org_reg/opportunity_update.html'
     success_url = reverse_lazy('org_reg:index')
 
     class Meta:
@@ -55,10 +55,11 @@ class OpportunityUpdateView(UpdateView):
 class OpportunityCreateView(CreateView):
     fields = ('name','description','start_date','end_date')
     model = Opportunity
-    template_name = 'org_reg/opportunity_form.html'
+    template_name = 'org_reg/opportunity_create.html'
 
     def get_context_data(self, **kwargs):
         context = super(OpportunityCreateView, self).get_context_data(**kwargs)
+        print(self.kwargs['organisation'])
         context['organisation'] = Organisation.objects.get(pk=self.kwargs['organisation'])
         return context
 
