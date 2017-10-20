@@ -77,11 +77,26 @@ class OpportunityCreateView(CreateView):
             'name': 'Opportunity title'
         }
 
+# disconnect org user from org - a confirmation form. User gets here via link
+class OrganisationLeave(View):
+    def post(self, request,  *args, **kwargs):
+        org_id = request.POST.get('org_id')
+        #print(organisation) # 'none'
+        user = request.user
+        user.userprofile.org_user.organisations.remove(org_id)
+        #return HttpResponse(user.userprofile.org_user.organisations.get(id=))
+        return redirect('org_reg:index')
+
+    def get(self, request,  *args, **kwargs):
+        return render(request, 'org_reg/organisation_confirm_leave.html', {'organisation': Organisation.objects.get(pk=self.kwargs['organisation'])})
+
+
+
+# connect org user to org - user selects org from list
 class OrganisationSelect(View):
 
     def post(self, request, *args, **kwargs):
         organisation = request.POST.get('organisation')
-        # use the current user, or send in form?
         user = request.user
         user.userprofile.org_user.organisations.add(organisation)
         return redirect('org_reg:index')
@@ -100,9 +115,6 @@ class OrganisationCreateView(CreateView):
     template_name = 'org_reg/organisation_form.html'
     success_url = reverse_lazy('org_reg:index')
 
-    # issues:
-    # needs to pick up authenticated user and assign org to him...
-    # return to index page
     def form_valid(self, form, **kwargs):
         organisation = form.save()
         user = self.request.user

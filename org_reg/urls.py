@@ -5,7 +5,6 @@ app_name = 'org_reg'
 
 urlpatterns = [
     url(r'^$',views.IndexView.as_view(),name='index'),
-    #url(r'^$',views.index,name='index'),
     url(r'^signup/$',views.OrgSignUpView.as_view(),name='signup'),
     url(r'^profile/$',views.ProfileView.as_view(),name='profile'),
     url(r'^login/$',views.OrgLogin.as_view(),name='login'),
@@ -18,4 +17,6 @@ urlpatterns = [
     url(r'^opportunity/org_id/(?P<organisation>\d+)$',views.OpportunityCreateView.as_view(),name='opportunity'),
     url(r'^opportunity/(?P<pk>\d+)$',views.OpportunityUpdateView.as_view(),name='update_opp'),
     url(r'^opportunity/delete/(?P<pk>\d+)$',views.OpportunityDeleteView.as_view(),name='delete_opp'),
+    url(r'^leave/(?P<organisation>\d+)$',views.OrganisationLeave.as_view(),name='leave'),
+    # this is for an org user 'leaving' an org - should this be here or in user_types app?
 ]

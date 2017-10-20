@@ -75,6 +75,9 @@
               <br />
               <a href="{% url 'org_reg:opportunity' organisation=organisation.pk %}">Add an opportunity</a>
             </p>
+            <p>
+              <a href="{% url 'org_reg:leave' organisation=organisation.pk %}">Leave this organisation</a>
+            </p>
           </div>
           {% endfor %}
         </div>
