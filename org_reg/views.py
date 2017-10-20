@@ -98,11 +98,18 @@ class OrganisationCreateView(CreateView):
     fields = ('name','aims_and_activities','postcode','email','telephone')
     model = Organisation
     template_name = 'org_reg/organisation_form.html'
+    success_url = reverse_lazy('org_reg:index')
 
-    def form_invalid(self, form):
-        print(form.errors)
-
-
+    # issues:
+    # needs to pick up authenticated user and assign org to him...
+    # return to index page
+    def form_valid(self, form, **kwargs):
+        organisation = form.save()
+        user = self.request.user
+        user.userprofile.org_user.organisations.add(organisation)
+        # now we can get org_user and so on, but how to validate all of this?
+        # if this user isn't an org user, we need to raise an error...
+        return super(OraganisationCreateView, self).form_valid(form)
 
 class OrganisationUpdateView(UpdateView):
     fields = ('name','aims_and_activities','postcode','email','telephone')

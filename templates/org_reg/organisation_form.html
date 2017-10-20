@@ -23,15 +23,26 @@
             </div>
           {% endfor %}
 
-          {% for error in field.errors %}
-            <p style="color: red">{{ error }}</p>
-          {% endfor %}
-
+          {% if form.errors %}
+              {% for field in form %}
+                  {% for error in field.errors %}
+                      <div class="alert alert-danger">
+                          <strong>{{ error|escape }}</strong>
+                      </div>
+                  {% endfor %}
+              {% endfor %}
+              {% for error in form.non_field_errors %}
+                  <div class="alert alert-danger">
+                      <strong>{{ error|escape }}</strong>
+                  </div>
+              {% endfor %}
+          {% endif %}
 
           <input type="submit" class="btn btn-primary" value="Submit" />
         </form>
       </div>
       <div class="col-md-5">
+{% if 'org_id' in request.get_full_path %}
         <h3>Opportunities</h3>
 
           {% if organisation.opportunity_set.all|length > 0 %}
@@ -55,9 +66,11 @@
 
           {% endif %}
 
+
           <p>
             <a href="{% url 'org_reg:opportunity' organisation=organisation.pk %}">Add an opportunity</a>
           </p>
+{% endif %}
 
       </div>
     </div>
