@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'user_types',
     'widget_tweaks',
     'csvimport',
-    'ckeditor'
+    'ckeditor',
+    'mathfilters'
 ]
 
 MIDDLEWARE = [
