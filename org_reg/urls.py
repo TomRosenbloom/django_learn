@@ -6,7 +6,6 @@ app_name = 'org_reg'
 urlpatterns = [
     url(r'^$',views.IndexView.as_view(),name='index'),
     url(r'^signup/$',views.OrgSignUpView.as_view(),name='signup'),
-    url(r'^profile/$',views.ProfileView.as_view(),name='profile'),
     url(r'^login/$',views.OrgLogin.as_view(),name='login'),
     url(r'^logout/$',views.OrgLogout.as_view(),name='logout'),
     url(r'^detail/(?P<pk>\d+)$',views.OrganisationDetailView.as_view(),name='detail'),

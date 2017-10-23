@@ -13,13 +13,7 @@ class OpportunityForm(forms.ModelForm):
         fields = ('name','description','start_date','end_date')
         labels = {'name': 'Opportunity title'}
 
-class OrganisationForm(forms.ModelForm):
-    postcode = GBPostcodeField()
 
-    class Meta:
-        model = Organisation
-        fields = ('name','types','email','telephone','postcode')
-        labels = { 'types': 'Organisation type(s)'}
 
 class SignUpForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')

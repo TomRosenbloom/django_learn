@@ -28,13 +28,13 @@
           </div>
           <div class="form-group col-sm-8 col-md-6">
             {{ filter.form.types.label_tag }}
-            <div>
-              {% for choice in filter.form.types %}
-                <label class="checkbox-inline">
-                  {{ choice.tag }} {{ choice.choice_label }}
-                </label>
-              {% endfor %}
+            {% for choice in filter.form.types %}
+            <div class="checkbox">
+              <label>
+                {{ choice.tag }} {{ choice.choice_label }}
+              </label>
             </div>
+            {% endfor %}
           </div>
         </div>
         <div class="row">

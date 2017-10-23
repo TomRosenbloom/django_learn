@@ -5,7 +5,7 @@ from django.views.generic import (View, TemplateView, FormView,
 from django import forms
 
 #from . import forms
-from .forms import OrganisationForm, SignUpForm, OpportunityForm
+from .forms import SignUpForm, OpportunityForm
 
 from backend.models import OrganisationType, Organisation, Opportunity
 
@@ -115,6 +115,11 @@ class OrganisationCreateView(CreateView):
     template_name = 'org_reg/organisation_form.html'
     success_url = reverse_lazy('org_reg:index')
 
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        context['types'] = OrganisationType.objects.all()
+        return context
+
     def form_valid(self, form, **kwargs):
         organisation = form.save()
         user = self.request.user
@@ -124,9 +129,15 @@ class OrganisationCreateView(CreateView):
         return super(OraganisationCreateView, self).form_valid(form)
 
 class OrganisationUpdateView(UpdateView):
-    fields = ('name','aims_and_activities','postcode','email','telephone')
+    fields = ('name','aims_and_activities','postcode','email','telephone','types')
     model = Organisation
     template_name = 'org_reg/organisation_form.html'
+
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        context['types'] = OrganisationType.objects.all()
+        return context
+
     def get_success_url(self):
         return reverse('org_reg:detail',kwargs={'pk':self.object.pk})
 
@@ -135,14 +146,6 @@ class OrganisationDeleteView(DeleteView):
     template_name = 'org_reg/organisation_confirm_delete.html'
     success_url = reverse_lazy('org_reg:list')
     #success_message = "%(name)s was deleted"
-
-class ProfileView(FormView):
-    form_class = OrganisationForm
-    template_name = 'org_reg/profile.html'
-    def get_context_data(self,**kwargs):
-        context = super().get_context_data(**kwargs)
-        context['types'] = OrganisationType.objects.all()
-        return context
 
 
 class OrgLogin(TemplateView):
