@@ -9,18 +9,49 @@
     </h2>
 
     <div class="row">
-      <div class="col-md-7">
+
         <form method="post">
           {% csrf_token %}
           {% for field in form %}
-            <div class="form-group row">
-              <div class="col-md-3">
-                  <label for="{{ field.name }}">{{ field.label_tag }}</label>
+
+            {% if field.name != 'types' %}
+              <div class="form-group row">
+                <div class="col-md-2">
+                    <label for="{{ field.name }}">{{ field.label_tag }}</label>
+                </div>
+                <div class="col-md-4">
+                  {{ field }}
+                </div>
               </div>
-              <div class="col-md-4">
-                {{ field }}
+
+            {% elif field.name == 'types' %}
+
+              <div class="row">
+                <div class="col-md-2">
+                  <label for="{{ field.name }}">Type(s):</label>
+                </div>
+                <div class="col-md-6">
+                  Type
+                </div>
+                <div class="col-md-2">
+                  Registration number
+                </div>
               </div>
-            </div>
+              {% for type in types %}
+                <div class="row">
+                  <div class="col-md-2">
+
+                  </div>
+                  <div class="col-md-6">
+                    <input type="checkbox" name="types[id]" value="{{ type.id }}" /> {{ type.name }} {% if type.acronym %}({{ type.acronym }}){% endif %}
+                  </div>
+                  <div class="col-md-2">
+                    <input type="text" name="types[number]" />
+                  </div>
+                </div>
+              {% endfor %}
+
+            {% endif %}
           {% endfor %}
 
           {% if form.errors %}
@@ -40,39 +71,7 @@
 
           <input type="submit" class="btn btn-primary" value="Submit" />
         </form>
-      </div>
-      <div class="col-md-5">
-{% if 'org_id' in request.get_full_path %}
-        <h3>Opportunities</h3>
 
-          {% if organisation.opportunity_set.all|length > 0 %}
-            <p>
-              {{ organisation.opportunity_set.all|length }} current
-              {% if organisation.opportunity_set.all|length == 1 %}
-                opportunity:
-              {% else %}
-                opportunities:
-              {% endif %}
-            </p>
-            {% for opp in organisation.opportunity_set.all %}
-              <p>
-                {{ opp.name }}
-              </p>
-            {% endfor %}
-          {% else %}
-            <p>
-              No current opportunities
-            </p>
-
-          {% endif %}
-
-
-          <p>
-            <a href="{% url 'org_reg:opportunity' organisation=organisation.pk %}">Add an opportunity</a>
-          </p>
-{% endif %}
-
-      </div>
     </div>
 
     {% load static %}
