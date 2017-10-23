@@ -4,7 +4,7 @@
     <h2>Directory: organisations</h2>
 
     {% if is_paginated %}
-      {% include "./include/paginator.html" with range=3 %}
+      {% load paginator %}{% paginator 2 %}
     {% endif %}
 
     <div class="list-group">
