@@ -6,12 +6,10 @@ register = template.Library()
 
 def paginator(context, adjacent_pages = 3):
 
-
     page_obj = context['page_obj']
     paginator = context['paginator']
     page = page_obj.number
     num_pages = paginator.num_pages
-    print(paginator.num_pages)
 
     startPage = max(page - adjacent_pages, 1)
     if startPage <= 3: startPage = 1
@@ -29,6 +27,4 @@ def paginator(context, adjacent_pages = 3):
         'show_last': num_pages not in adjacent_range,
     }
 
-
-
-register.inclusion_tag('paginator.html', takes_context=True)(paginator)
+register.inclusion_tag('generic\paginator.html', takes_context=True)(paginator)
