@@ -40,7 +40,6 @@
               {% for type in types %}
                 <div class="row">
                   <div class="col-md-2">
-
                   </div>
                   <div class="col-md-6">
                     <input type="checkbox" name="types[id]" value="{{ type.id }}" /> {{ type.name }} {% if type.acronym %}({{ type.acronym }}){% endif %}
@@ -52,6 +51,7 @@
               {% endfor %}
 
             {% endif %}
+            
           {% endfor %}
 
           {% if form.errors %}
