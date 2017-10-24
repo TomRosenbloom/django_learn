@@ -7,7 +7,7 @@ from django import forms
 #from . import forms
 from .forms import SignUpForm, OpportunityForm
 
-from backend.models import OrganisationType, Organisation, Opportunity
+from backend.models import OrganisationType, Organisation, OrganisationRegistration, Opportunity
 
 from user_types.models import Org_user
 from user_types.models import UserProfile
@@ -137,6 +137,19 @@ class OrganisationUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['types'] = OrganisationType.objects.all()
         return context
+
+    def form_valid(self, form):
+        organisation = form.save(commit=False)
+        types = self.request.POST.getlist('types')
+        reg_numbers = self.request.POST.getlist('reg_number')
+        for org_type in types:
+            OrganisationRegistration.objects.create(
+                organisation = organisation,
+                type = OrganisationType.objects.get(pk=org_type),
+                reg_number = reg_numbers[int(org_type)-1]
+                )
+
+        return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
         return reverse('org_reg:detail',kwargs={'pk':self.object.pk})

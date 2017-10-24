@@ -71,7 +71,7 @@ class Organisation(models.Model):
     telephone = models.CharField(max_length=100,blank=True,null=True)
     postcode = models.CharField(max_length=100,blank=True,null=True)
     address = AddressField(blank=True, null=True)
-    types = models.ManyToManyField(OrganisationType,through='OrganisationRegistration')
+    types = models.ManyToManyField(OrganisationType,through='OrganisationRegistration',blank=True)
     #opportunitys = models.ManyToManyField(Opportunity)
 
     class Meta:
@@ -87,7 +87,7 @@ class Organisation(models.Model):
 class OrganisationRegistration(models.Model):
     organisation = models.ForeignKey(Organisation)
     type = models.ForeignKey(OrganisationType)
-    reg_number = models.CharField(max_length=100)
+    reg_number = models.CharField(max_length=100,blank=True,null=True)
 
     def __str__(self):
         return ('%s %s' % (self.type, self.reg_number))

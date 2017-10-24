@@ -15,14 +15,17 @@
     <p>
       Type(s):
     </p>
-    {% if organisation_detail.types.all.count > 0 %}
+    {% if organisation_detail.organisationregistration_set.all.count > 0 %}
       <ul>
-      {% for type in organisation_detail.types.all %}
-        <li>
-          {{ type.name }} ({{ type.acronym }})
-        </li>
-      {% endfor %}
+        {% for registration in organisation_detail.organisationregistration_set.all %}
+          <li>
+            {{ registration.type.name }}
+            {% if registration.type.acronym %}({{ registration.type.acronym }}){% endif %}
+            {% if registration.reg_number %} No. {{ registration.reg_number }}{% endif %}
+          </li>
+        {% endfor %}
       </ul>
+
     {% else %}
       <p>
         No type has been entered
