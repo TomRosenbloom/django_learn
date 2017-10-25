@@ -142,6 +142,7 @@ class OrganisationUpdateView(UpdateView):
         organisation = form.save(commit=False)
         types = self.request.POST.getlist('types')
         reg_numbers = self.request.POST.getlist('reg_number')
+        OrganisationRegistration.objects.filter(organisation=organisation).delete()
         for org_type in types:
             OrganisationRegistration.objects.create(
                 organisation = organisation,
