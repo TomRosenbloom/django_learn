@@ -2,38 +2,72 @@
   {% block body_block %}
 
     <h2>Organisation details</h2>
-    <p>
-      {{ organisation_detail.name }}
-    </p>
-    <p>
-      {{ organisation_detail.aims_and_activities }}
-    </p>
-    <p>
-      {{ organisation_detail.postcode }}
-    </p>
 
-    <p>
-      Type(s):
-    </p>
-    {% if organisation_detail.organisationregistration_set.all.count > 0 %}
-      <ul>
-        {% for registration in organisation_detail.organisationregistration_set.all %}
-          <li>
-            {{ registration.type.name }}
-            {% if registration.type.acronym %}({{ registration.type.acronym }}){% endif %}
-            {% if registration.reg_number %} No. {{ registration.reg_number }}{% endif %}
-          </li>
-        {% endfor %}
-      </ul>
+    <div class="row">
+      <div class="col-md-2">
+        Name:
+      </div>
+      <div class="col-md-6">
+        {{ organisation_detail.name }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">
+        Aims and activities:
+      </div>
+      <div class="col-md-6">
+        {{ organisation_detail.aims_and_activities|safe }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">
+        Postcode:
+      </div>
+      <div class="col-md-6">
+        {{ organisation_detail.postcode }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">
+        Email:
+      </div>
+      <div class="col-md-6">
+        {{ organisation_detail.email|default_if_none:"not entered" }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">
+        Telephone:
+      </div>
+      <div class="col-md-6">
+        {{ organisation_detail.telephone|default:"not entered" }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">
+        Type(s):
+      </div>
+      <div class="col-md-6">
+        {% if organisation_detail.organisationregistration_set.all.count > 0 %}
+          <ul>
+            {% for registration in organisation_detail.organisationregistration_set.all %}
+              <li>
+                {{ registration.type.name }}
+                {% if registration.type.acronym %}({{ registration.type.acronym }}){% endif %}
+                {% if registration.reg_number %} No. {{ registration.reg_number }}{% endif %}
+              </li>
+            {% endfor %}
+          </ul>
 
-    {% else %}
-      <p>
-        No type has been entered
-      </p>
-    {% endif %}
-
-    <p>
+        {% else %}
+          <p>
+            No type has been entered
+          </p>
+        {% endif %}
+      </div>
+    </div>
+    <div class="row">
       <a class="btn btn-warning" href="{% url 'org_reg:update' pk=organisation_detail.pk %}">Update</a>
-    </p>
+    </div>
 
   {% endblock %}
