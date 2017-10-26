@@ -1,0 +1,94 @@
+{% extends "crm/base.html" %}
+  {% block body_block %}
+    <h2>
+      {% if not form.instance.pk %}
+      Create Organisation
+      {% else %}
+      Update Organisation
+      {% endif %}
+    </h2>
+
+    <div class="row">
+
+        <form method="post" style="width: 100%">
+          {% csrf_token %}
+          {% for field in form %}
+
+              <div class="form-group row">
+                <div class="col-md-2">
+                    <label for="{{ field.name }}">{{ field.label_tag }}</label>
+                </div>
+                <div class="col-md-10">
+                  {{ field }}
+                </div>
+              </div>
+          {% endfor %}
+
+          <div class="row">
+            <div class="col-md-2">
+              <label for="">Type(s):</label>
+            </div>
+            <div class="col-md-6">
+              Type
+            </div>
+            <div class="col-md-2">
+              Registration number
+            </div>
+          </div>
+          
+          {{ type_reg_formset.management_form }}
+
+          {% for type_form in type_reg_formset %}
+            <div class="row type-reg-formset">
+              <div class="col-md-2">
+              </div>
+              <div class="col-md-6">
+                {{ type_form.type }}
+              </div>
+              <div class="col-md-2">
+                {{ type_form.reg_number }}
+              </div>
+              {% if formset.can_delete %}
+              <div class="col-md-1">
+                {{ type_form.DELETE }}
+              </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+
+
+          {% if form.errors %}
+              {% for field in form %}
+                  {% for error in field.errors %}
+                      <div class="alert alert-danger">
+                          <strong>{{ field.name }}: {{ error|escape }}</strong>
+                      </div>
+                  {% endfor %}
+              {% endfor %}
+              {% for error in form.non_field_errors %}
+                  <div class="alert alert-danger">
+                      <strong>{{ error|escape }}</strong>
+                  </div>
+              {% endfor %}
+          {% endif %}
+
+          <div class="row">
+              <input type="submit" class="btn btn-primary" value="Submit" />
+          </div>
+
+        </form>
+
+    </div>
+
+    {% load static %}
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+    <script src="{% static 'js/jquery.formset.js' %}"></script>
+    <script>
+        $('.type-reg-formset').formset({
+            addText: 'add another type',
+            deleteText: 'remove'
+        });
+    </script>
+
+  {% endblock %}

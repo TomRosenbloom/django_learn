@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'vol_reg',
     'org_reg',
     'directory',
+    'crm',
     'user_types',
     'widget_tweaks',
     'csvimport',
