@@ -3,7 +3,7 @@ from django.views.generic import (View, TemplateView, FormView,
                                 ListView, DetailView, CreateView,
                                 UpdateView, DeleteView)
 from django import forms
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.forms import formset_factory
 from backend.models import Organisation, OrganisationRegistration
 from crm.forms import OrganisationRegistrationForm
@@ -17,6 +17,7 @@ class OrganisationListView(ListView):
     template_name = 'crm/organisation_list.html'
     paginate_by = 5
 
+
 class OrganisationUpdateView(UpdateView):
     RegistrationFormset = formset_factory(OrganisationRegistrationForm, can_delete=True)
     fields = ('name','aims_and_activities','postcode','email','telephone')
@@ -25,7 +26,11 @@ class OrganisationUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(OrganisationUpdateView, self).get_context_data(**kwargs)
-        context['type_reg_formset'] = self.RegistrationFormset
+        organisation = Organisation.objects.get(pk=self.kwargs['pk'])
+        org_type_data = OrganisationRegistration.objects.filter(organisation=organisation)
+        type_reg_data = [{'type':d.type, 'reg_number': d.reg_number}
+                            for d in org_type_data]
+        context['type_reg_formset'] = self.RegistrationFormset(initial=type_reg_data)
         return context
 
     def form_valid(self, form):
@@ -42,9 +47,8 @@ class OrganisationUpdateView(UpdateView):
                     type = type,
                     reg_number = reg_number
                     )
+        return HttpResponseRedirect(self.get_success_url())
 
-        #return HttpResponseRedirect(self.get_success_url())
-        return HttpResponse('hello')
 
 class IndexView(TemplateView):
     template_name = 'crm/index.html'
