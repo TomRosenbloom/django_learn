@@ -5,6 +5,11 @@ from django.views.generic import (View, TemplateView, FormView,
 from django import forms
 from django.http import HttpResponse, HttpResponseRedirect
 from django.forms import formset_factory
+from django.db import IntegrityError, transaction
+from django.core.urlresolvers import reverse, reverse_lazy
+from django.contrib import messages
+
+
 from backend.models import Organisation, OrganisationRegistration
 from crm.forms import OrganisationRegistrationForm
 
@@ -23,6 +28,7 @@ class OrganisationUpdateView(UpdateView):
     fields = ('name','aims_and_activities','postcode','email','telephone')
     model = Organisation
     template_name = 'crm/organisation_form.html'
+    success_url = reverse_lazy('crm:list')
 
     def get_context_data(self, **kwargs):
         context = super(OrganisationUpdateView, self).get_context_data(**kwargs)
@@ -37,16 +43,18 @@ class OrganisationUpdateView(UpdateView):
         organisation = form.save(commit=False)
         type_reg_formset = self.RegistrationFormset(self.request.POST)
         if type_reg_formset.is_valid():
-            for type_reg_form in type_reg_formset:
-                type = type_reg_form.cleaned_data.get('type')
-                reg_number = type_reg_form.cleaned_data.get('reg_number')
-                print(type)
-                print(reg_number)
-                OrganisationRegistration.objects.create(
-                    organisation = organisation,
-                    type = type,
-                    reg_number = reg_number
-                    )
+            try:
+                with transaction.atomic():
+                    OrganisationRegistration.objects.filter(organisation=organisation).delete()
+                    for type_reg_form in type_reg_formset:
+                        type = type_reg_form.cleaned_data.get('type')
+                        reg_number = type_reg_form.cleaned_data.get('reg_number')
+                        if(type):
+                            OrganisationRegistration.objects.create(organisation = organisation,type = type,reg_number = reg_number)
+            except IntegrityError as e:
+                print(e.args[0])
+                messages.error(self.request, 'There was an error updating this organisation.')
+                return redirect(reverse('crm:update',kwargs={'pk':self.object.pk}))
         return HttpResponseRedirect(self.get_success_url())
 
 
