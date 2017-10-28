@@ -1,0 +1,18 @@
+{% extends "crm/base.html" %}
+  {% block body_block %}
+
+    <h2>CRM: opportunities</h2>
+
+    {% if is_paginated %}
+      {% load paginator %}{% paginator 2 %}
+    {% endif %}
+
+    <div class="list-group">
+      {% for opportunity in opportunities %}
+      <div class="list-group-item">
+        <p class="list-group-item-text">{{ opportunity.name }}</p>
+      </div>
+      {% endfor %}
+    </div>
+
+  {% endblock %}

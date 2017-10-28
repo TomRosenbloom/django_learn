@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'csvimport',
     'ckeditor',
-    'mathfilters'
+    'mathfilters',
+    'django_tables2'
 ]
 
 MIDDLEWARE = [

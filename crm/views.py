@@ -9,12 +9,24 @@ from django.db import IntegrityError, transaction
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib import messages
 
+from django_tables2 import SingleTableView
 
-from backend.models import Organisation, OrganisationRegistration
+from backend.models import Organisation, OrganisationRegistration, Opportunity
 from crm.forms import OrganisationRegistrationForm
-
+from crm.tables import OpportunityTable
 
 # Create your views here.
+
+class OpportunityTable(SingleTableView):
+    model = Opportunity
+    table_class = OpportunityTable
+    template_name = 'crm/opportunity_table.html'
+
+class OpportunityListView(ListView):
+    context_object_name = 'opportunities'
+    model = Opportunity
+    template_name = 'crm/opportunity_list.html'
+    paginate_by = 10
 
 class OrganisationListView(ListView):
     context_object_name = 'organisations'

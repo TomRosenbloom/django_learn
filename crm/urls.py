@@ -6,6 +6,7 @@ app_name = 'crm'
 urlpatterns = [
     url(r'^$',views.IndexView.as_view(),name='index'),
     url(r'^list/$',views.OrganisationListView.as_view(),name='list'),
+    url(r'^opportunities/list/$',views.OpportunityTable.as_view(),name='list-opps'),
     # url(r'^login/$',views.OrgLogin.as_view(),name='login'),
     # url(r'^logout/$',views.OrgLogout.as_view(),name='logout'),
     #url(r'^detail/(?P<pk>\d+)$',views.OrganisationDetailView.as_view(),name='detail'),
