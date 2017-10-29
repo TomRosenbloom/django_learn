@@ -17,6 +17,22 @@ from crm.tables import OpportunityTable
 
 # Create your views here.
 
+class OpportunityDeleteView(DeleteView):
+    model = Opportunity
+    template_name = 'crm/opportunity_confirm_delete.html'
+    success_url = reverse_lazy('crm:list-opps')
+
+class OpportunityUpdateView(UpdateView):
+    fields = ('name','description','start_date','end_date')
+    model = Opportunity
+    template_name = 'crm/opportunity_update.html'
+    success_url = reverse_lazy('crm:list-opps')
+
+    class Meta:
+        labels = {
+            'name': 'Opportunity title'
+        }
+
 class OpportunityTable(SingleTableView):
     model = Opportunity
     table_class = OpportunityTable

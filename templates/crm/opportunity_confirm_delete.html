@@ -1,0 +1,20 @@
+{% extends "crm/base.html" %}
+  {% block body_block %}
+    <h2>
+      Delete Opportuity
+    </h2>
+    <p>
+      {{ opportunity.organisation.name }}
+    </p>
+    <p>
+      {{ opportunity.name }}
+    </p>
+    <p>Really delete?</p>
+
+    <form method="post">
+      {% csrf_token %}
+      <input type="submit" class="btn btn-danger" value="Delete" />
+      <button onclick="window.history.back();" class="btn btn-default" type="button">Cancel</button>
+    </form>
+
+  {% endblock %}

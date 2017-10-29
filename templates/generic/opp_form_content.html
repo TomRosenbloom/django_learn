@@ -1,0 +1,58 @@
+
+    <h2>
+      {{ title_text }}
+    </h2>
+
+
+        <div class="form-group row">
+          <div class="col-md-3">
+              <strong>Organisation:</strong>
+          </div>
+          <div class="col-md-4">
+            {{ org_var_name.name }}
+          </div>
+        </div>
+
+        <form method="post">
+          {% csrf_token %}
+
+          {% if 'org_id' in request.get_full_path %}
+            {% comment %}
+              org_id is present in url only if form being used to create a new opportunity
+              and not if being used to edit existing opp, when org will be related property of opp
+            {% endcomment %}
+            <input type="hidden" name="organisation_id" value="{{ organisation.id }}" />
+          {% endif %}
+
+          {% for field in form %}
+            <div class="form-group row">
+              <div class="col-md-3">
+                  <label for="{{ field.name }}">{{ field.label_tag }}</label>
+              </div>
+              <div class="col-md-4">
+                {{ field }}
+              </div>
+            </div>
+          {% endfor %}
+
+          {% for error in field.errors %}
+            <p style="color: red">{{ error }}</p>
+          {% endfor %}
+
+
+          <input type="submit" class="btn btn-primary" value="Submit" />
+        </form>
+
+        {% load static %}
+        <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+        <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+        <script>
+
+        $(document).ready(function() {
+            $('#id_start_date, #id_end_date').datepicker({
+              dateFormat: 'd/m/y',
+              altField: ".date_alternate",
+              altFormat: "yyyy-mm-dd"
+            });
+        });
+        </script>
