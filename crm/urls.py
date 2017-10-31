@@ -9,11 +9,9 @@ urlpatterns = [
     url(r'^opportunities/list/$',views.OpportunityTable.as_view(),name='list-opps'),
     url(r'^opportunity/(?P<pk>\d+)$',views.OpportunityUpdateView.as_view(),name='update-opp'),
     url(r'^opportunity/delete/(?P<pk>\d+)$',views.OpportunityDeleteView.as_view(),name='delete-opp'),
-    url(r'^opportunity/create/$',views.OpportunityCreateView.as_view(),name='create-opp'),    
-    # url(r'^login/$',views.OrgLogin.as_view(),name='login'),
-    # url(r'^logout/$',views.OrgLogout.as_view(),name='logout'),
-    #url(r'^detail/(?P<pk>\d+)$',views.OrganisationDetailView.as_view(),name='detail'),
-    # url(r'^create/$',views.OrganisationCreateView.as_view(),name='create'),
-    url(r'^update/(?P<pk>\d+)$',views.OrganisationUpdateView.as_view(),name='update'),
-    # url(r'^delete/(?P<pk>\d+)$',views.OrganisationDeleteView.as_view(),name='delete'),
+    url(r'^opportunity/create/$',views.OpportunityCreateView.as_view(),name='create-opp'),
+
+    url(r'^ajax/org_opps/$',views.get_org_opps, name='ajax_org_opps'),
+
+    url(r'^update/(?P<pk>\d+)$',views.OrganisationUpdateView.as_view(),name='update'), # need 'organisation' in url
 ]

@@ -3,17 +3,25 @@ from django.views.generic import (View, TemplateView, FormView,
                                 ListView, DetailView, CreateView,
                                 UpdateView, DeleteView)
 from django import forms
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.forms import formset_factory
 from django.db import IntegrityError, transaction
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib import messages
+from django.core import serializers
 
 from django_tables2 import SingleTableView
 
 from backend.models import Organisation, OrganisationRegistration, Opportunity
 from crm.forms import OrganisationRegistrationForm
 from crm.tables import OpportunityTable
+
+def get_org_opps(request):
+    org_id = request.GET.get('org_id')
+    org = Organisation.objects.get(id=org_id)
+    opps = Opportunity.objects.filter(organisation=org)
+    data = serializers.serialize('json',opps)
+    return JsonResponse(data, safe=False)
 
 # Create your views here.
 
