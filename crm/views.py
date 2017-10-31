@@ -33,6 +33,24 @@ class OpportunityUpdateView(UpdateView):
             'name': 'Opportunity title'
         }
 
+class OpportunityCreateView(CreateView):
+    fields = ('organisation','name','description','start_date','end_date')
+    model = Opportunity
+    template_name = 'crm/opportunity_create.html'
+    success_url = reverse_lazy('crm:list-opps')
+
+# this is going to work a bit differently from the org_reg version
+# in that case the organisation id comes via the url, but in this case
+# we want org name as the first field
+# (and then with an ajax look up that displays existing opps once the org is selected)
+
+
+
+    class Meta:
+        labels = {
+            'name': 'Opportunity title'
+        }
+
 class OpportunityTable(SingleTableView):
     model = Opportunity
     table_class = OpportunityTable

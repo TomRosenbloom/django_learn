@@ -1,0 +1,49 @@
+<!--
+in CRM we need to specify org when adding opp
+perhaps later re-unite this with opp_form_content but add org_disabled flag
+-->
+    <h2>
+      {{ title_text }}
+    </h2>
+
+        <form method="post">
+          {% csrf_token %}
+
+          {% for field in form %}
+            <div class="form-group row">
+              <div class="col-md-3">
+                  <label for="{{ field.name }}">{{ field.label_tag }}</label>
+              </div>
+              <div class="col-md-4">
+                {{ field }}
+              </div>
+            </div>
+          {% endfor %}
+
+          {% for error in field.errors %}
+            <p style="color: red">{{ error }}</p>
+          {% endfor %}
+
+
+          <input type="submit" class="btn btn-primary" value="Submit" />
+        </form>
+
+        {% load static %}
+        <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+        <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+        <script>
+
+        $(document).ready(function() {
+
+
+          $("#id_organisation").change(function () {
+            console.log( $(this).val() );
+          });
+
+          $('#id_start_date, #id_end_date').datepicker({
+            dateFormat: 'd/m/y',
+            altField: ".date_alternate",
+            altFormat: "yyyy-mm-dd"
+          });
+        });
+        </script>

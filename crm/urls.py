@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^opportunities/list/$',views.OpportunityTable.as_view(),name='list-opps'),
     url(r'^opportunity/(?P<pk>\d+)$',views.OpportunityUpdateView.as_view(),name='update-opp'),
     url(r'^opportunity/delete/(?P<pk>\d+)$',views.OpportunityDeleteView.as_view(),name='delete-opp'),
+    url(r'^opportunity/create/$',views.OpportunityCreateView.as_view(),name='create-opp'),    
     # url(r'^login/$',views.OrgLogin.as_view(),name='login'),
     # url(r'^logout/$',views.OrgLogout.as_view(),name='logout'),
     #url(r'^detail/(?P<pk>\d+)$',views.OrganisationDetailView.as_view(),name='detail'),
