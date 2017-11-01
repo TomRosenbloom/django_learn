@@ -1,4 +1,14 @@
 {% extends "crm/base.html" %}
+
+  {% block styles %}
+  #opp-list {
+    margin-top: -20px;
+  }
+  #opp-list p {
+    margin-bottom: 0;
+  }
+  {% endblock %}
+
   {% block body_block %}
 
   {% include "../generic/opp_form_with_org_content.html" with title_text="Create Opportunity" org_var_name=organisation %}

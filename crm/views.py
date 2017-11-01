@@ -9,6 +9,7 @@ from django.db import IntegrityError, transaction
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib import messages
 from django.core import serializers
+import json
 
 from django_tables2 import SingleTableView
 
@@ -19,9 +20,10 @@ from crm.tables import OpportunityTable
 def get_org_opps(request):
     org_id = request.GET.get('org_id')
     org = Organisation.objects.get(id=org_id)
-    opps = Opportunity.objects.filter(organisation=org)
-    data = serializers.serialize('json',opps)
-    return JsonResponse(data, safe=False)
+    opps = Opportunity.objects.filter(organisation=org).values('name','description')
+    return HttpResponse(json.dumps(list(opps)))
+    # data = serializers.serialize('json',opps)
+    #return JsonResponse(opps, safe=False)
 
 # Create your views here.
 
