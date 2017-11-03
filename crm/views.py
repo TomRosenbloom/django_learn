@@ -15,7 +15,7 @@ from django_tables2 import SingleTableView
 
 from backend.models import Organisation, OrganisationRegistration, Opportunity
 from crm.forms import OrganisationRegistrationForm
-from crm.tables import OpportunityTable
+from crm.tables import OpportunityTable, OrganisationTable
 
 def get_org_opps(request):
     org_id = request.GET.get('org_id')
@@ -71,6 +71,15 @@ class OpportunityListView(ListView):
     model = Opportunity
     template_name = 'crm/opportunity_list.html'
     paginate_by = 10
+
+
+class OrganisationTable(SingleTableView):
+    model = Organisation
+    table_class = OrganisationTable
+    template_name = 'crm/organisation_table.html'
+    table_pagination = {
+        'per_page': 10
+    }
 
 class OrganisationListView(ListView):
     context_object_name = 'organisations'

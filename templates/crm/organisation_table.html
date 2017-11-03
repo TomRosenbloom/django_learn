@@ -1,0 +1,12 @@
+{% extends "crm/base.html" %}
+  {% block body_block %}
+
+
+    <h2>CRM: organisations</h2>
+
+    {% load render_table from django_tables2 %}
+    {% render_table table %}
+
+    <!-- <p><br /><a href="{% url 'crm:create-opp' %}">Add an opportunity</a></p> -->
+
+  {% endblock %}
