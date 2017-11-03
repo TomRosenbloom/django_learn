@@ -1,11 +1,19 @@
 {% extends "crm/base.html" %}
 
   {% block styles %}
-  #opp-list {
+  /* a horrible temporary bodge (width of name field in opp form): */
+  #id_name {
+    width: 500px
+  }
+  #opp-row {
     margin-top: -20px;
   }
-  #opp-list p {
+  #opp-row p {
     margin-bottom: 0;
+  }
+  #opp-list{
+    background-color: #9acd32;
+    margin-left: 15px;
   }
   {% endblock %}
 

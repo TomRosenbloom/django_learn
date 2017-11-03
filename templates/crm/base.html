@@ -11,10 +11,6 @@
     <link rel="stylesheet" href="{% static 'django_tables2/themes/paleblue/css/screen.css' %}" />
 
     <style>
-    /* a horrible temporary bodge (width of name field in opp form): */
-    #id_name {
-      width: 300px
-    }
     .fa {
       padding: 10px;
       font-size: 20px;
@@ -73,6 +69,9 @@
           </li>
           <li class="nav-item">
             <a  class="nav-link" href="{% url 'crm:list' %}">Organisations</a>
+          </li>
+          <li class="nav-item">
+            <a  class="nav-link" href="{% url 'crm:list-opps' %}">Opportunities</a>
           </li>
         </ul>
     </nav>
