@@ -52,7 +52,9 @@ INSTALLED_APPS = [
     'csvimport',
     'ckeditor',
     'mathfilters',
-    'django_tables2'
+    'django_tables2',
+    'bootstrap3',
+    'crispy_forms'
 ]
 
 MIDDLEWARE = [

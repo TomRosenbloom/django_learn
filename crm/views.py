@@ -12,8 +12,11 @@ from django.core import serializers
 import json
 
 from django_tables2 import SingleTableView
+from django_filters.views import FilterView
+from django_tables2.views import SingleTableMixin
 
 from backend.models import Organisation, OrganisationRegistration, Opportunity
+from crm.filters import OrganisationFilter
 from crm.forms import OrganisationRegistrationForm
 from crm.tables import OpportunityTable, OrganisationTable
 
@@ -49,13 +52,6 @@ class OpportunityCreateView(CreateView):
     template_name = 'crm/opportunity_create.html'
     success_url = reverse_lazy('crm:list-opps')
 
-# this is going to work a bit differently from the org_reg version
-# in that case the organisation id comes via the url, but in this case
-# we want org name as the first field
-# (and then with an ajax look up that displays existing opps once the org is selected)
-
-
-
     class Meta:
         labels = {
             'name': 'Opportunity title'
@@ -73,13 +69,14 @@ class OpportunityListView(ListView):
     paginate_by = 10
 
 
-class OrganisationTable(SingleTableView):
+class OrganisationTable(SingleTableMixin,FilterView):
     model = Organisation
     table_class = OrganisationTable
     template_name = 'crm/organisation_table.html'
     table_pagination = {
         'per_page': 10
     }
+    filterset_class = OrganisationFilter
 
 class OrganisationListView(ListView):
     context_object_name = 'organisations'
