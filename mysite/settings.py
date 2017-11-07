@@ -54,7 +54,8 @@ INSTALLED_APPS = [
     'mathfilters',
     'django_tables2',
     'bootstrap3',
-    'crispy_forms'
+    'crispy_forms',
+    'haystack',
 ]
 
 MIDDLEWARE = [
@@ -158,4 +159,10 @@ CKEDITOR_CONFIGS = {
             ['RemoveFormat', 'Source']
         ]
     }
+}
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
+    },
 }
