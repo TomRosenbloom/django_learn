@@ -15,7 +15,7 @@ from django_tables2 import SingleTableView
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
 
-from backend.models import Organisation, OrganisationRegistration, Opportunity
+from backend.models import Organisation, OrganisationRegistration, Opportunity, Activity, Skill
 from crm.filters import OrganisationFilter
 from crm.forms import OrganisationRegistrationForm
 from crm.tables import OpportunityTable, OrganisationTable
@@ -36,14 +36,34 @@ class OpportunityDeleteView(DeleteView):
     success_url = reverse_lazy('crm:list-opps')
 
 class OpportunityUpdateView(UpdateView):
-    fields = ('name','description','start_date','end_date')
+    fields = ('name','description','start_date','end_date','skills','activitys')
     model = Opportunity
     template_name = 'crm/opportunity_update.html'
     success_url = reverse_lazy('crm:list-opps')
 
+    def get_context_data(self, **kwargs):
+        context = super(OpportunityUpdateView, self).get_context_data(**kwargs)
+        opportunity = Opportunity.objects.get(pk=self.kwargs['pk'])
+        import mptt
+        # obvs need to make a function of some sort here as I am repeating myself
+        activityDict = {}
+        activities = mptt.utils.tree_item_iterator(opportunity.activitys.all(), ancestors=False)
+        for activity in activities:
+            activityDict[activity[0].name] = activity[0].name
+        context['profileActivities'] = activityDict
+        context['allActivities'] = Activity.objects.all()
+        skillDict = {}
+        skills = mptt.utils.tree_item_iterator(opportunity.skills.all(), ancestors=False)
+        for skill in skills:
+            skillDict[skill[0].name] = skill[0].name
+        context['allSkills'] = Skill.objects.all()
+        context['profileSkills'] = skillDict
+        return context
+
     class Meta:
         labels = {
-            'name': 'Opportunity title'
+            'name': 'Opportunity title',
+            'activitys': 'Activities'
         }
 
 class OpportunityCreateView(CreateView):

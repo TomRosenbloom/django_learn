@@ -1,4 +1,4 @@
-
+{% load mptt_tags %}
     <h2>
       {{ title_text }}
     </h2>
@@ -25,14 +25,103 @@
           {% endif %}
 
           {% for field in form %}
-            <div class="form-group row">
-              <div class="col-md-3">
-                  <label for="{{ field.name }}">{{ field.label_tag }}</label>
+
+            {% if field.name != 'activitys' and field.name != 'skills' %}
+
+              <div class="form-group row">
+                <div class="col-md-3">
+                    <label for="{{ field.name }}">{{ field.label_tag }}</label>
+                </div>
+                <div class="col-md-4">
+                  {{ field }}
+                </div>
               </div>
-              <div class="col-md-4">
-                {{ field }}
+
+            {% elif field.name == 'activitys' %}
+
+              <div class="form-group row">
+                <div class="col-md-3">
+                    <label for="{{ field.name }}">{{ field.label_tag }}</label>
+                </div>
+                <div class="col-md-4">
+                  <div id="menuwrapper">
+                    <ul class="list-group" style="width: 400px">
+                        {% recursetree allActivities %}
+                          {% if node.level == 0 %}
+                            <li class="list-group-item  list-group-item-info">
+                              <a href="#parentActivity{{ node.id }}">
+                                {{ node.name }}
+                              </a>
+                          {% else %}
+                            <li class="list-group-item">
+                              {% if node.name in profileActivities %}
+                                <input type="checkbox" name="activitys" value="{{ node.id }}" checked />
+                              {% else %}
+                                <input type="checkbox" name="activitys" value="{{ node.id }}" />
+                              {% endif %}
+                              {{ node.name }}
+                          {% endif %}
+
+                          {% if not node.is_leaf_node %}
+                            <div id="parentActivity{{ node.id }}">
+                                <ul>
+                                    {{ children }}
+                                </ul>
+                            </div>
+                          {% endif %}
+
+                          </li>
+
+                        {% endrecursetree %}
+                    </ul>
+                  </div>
+                </div>
               </div>
-            </div>
+
+            {% elif field.name == 'skills' %}
+
+              <div class="form-group row">
+                <div class="col-md-3">
+                    <label for="{{ field.name }}">{{ field.label_tag }}</label>
+                </div>
+                <div class="col-md-4">
+                  <div id="menuwrapper">
+                    <ul class="list-group" style="width: 400px">
+                        {% recursetree allSkills %}
+                          {% if node.level == 0 %}
+                            <li class="list-group-item  list-group-item-info">
+                              <a href="#parentSkill{{ node.id }}">
+                                {{ node.name }}
+                              </a>
+                          {% else %}
+                            <li class="list-group-item">
+                              {% if node.name in profileSkills %}
+                                <input type="checkbox" name="skills" value="{{ node.id }}" checked />
+                              {% else %}
+                                <input type="checkbox" name="skills" value="{{ node.id }}" />
+                              {% endif %}
+                              {{ node.name }}
+                          {% endif %}
+
+                          {% if not node.is_leaf_node %}
+                            <div id="parentSkill{{ node.id }}">
+                                <ul>
+                                    {{ children }}
+                                </ul>
+                            </div>
+                          {% endif %}
+
+                          </li>
+
+                        {% endrecursetree %}
+
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+            {% endif %}
+
           {% endfor %}
 
           {% for error in field.errors %}
