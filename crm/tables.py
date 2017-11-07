@@ -18,6 +18,7 @@ class OrganisationTable(tables.Table):
 
 class OpportunityTable(tables.Table):
     description = tables.Column()
+    organisation = tables.LinkColumn('crm:update-org', args=[A('organisation.pk')])
     edit = tables.LinkColumn('crm:update-opp', args=[A('pk')], orderable=False, empty_values=(), text='Edit')
     delete = tables.LinkColumn('crm:delete-opp', args=[A('pk')], orderable=False, empty_values=(), text='Delete')
 
