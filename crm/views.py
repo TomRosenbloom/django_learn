@@ -10,6 +10,7 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib import messages
 from django.core import serializers
 import json
+import mptt
 
 from django_tables2 import SingleTableView
 from django_filters.views import FilterView
@@ -28,6 +29,27 @@ def get_org_opps(request):
     # data = serializers.serialize('json',opps)
     #return JsonResponse(opps, safe=False)
 
+
+def category_belonging_dict(belongingObject, ManyRelatedManagerName):
+    """Create a dictionary of MPTT category belonging
+    Given the name of an MPTTModel that defines hierarchical categories
+    and an object that has belonging of one or more of those categories,
+    return a dictionary of categories the object belongs to
+    If the MPTT model is say 'Skill', then the ManyRelatedManagerName
+    will by default be 'skills', i.e. it is the name used in defining the
+    relationship between the model of the category-belonging object and the
+    category model with for eg:
+    skills = models.ManyToManyField(Skill)
+    In django terminology, skills is of type ManyRelatedManager
+    """
+    catDict = {}
+    cats = getattr(belongingObject,ManyRelatedManagerName)
+    mpttCats = mptt.utils.tree_item_iterator(cats.all(), ancestors=False)
+    for cat in mpttCats:
+         catDict[cat[0].name] = cat[0].name
+    return catDict
+
+
 # Create your views here.
 
 class OpportunityDeleteView(DeleteView):
@@ -44,20 +66,10 @@ class OpportunityUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(OpportunityUpdateView, self).get_context_data(**kwargs)
         opportunity = Opportunity.objects.get(pk=self.kwargs['pk'])
-        import mptt
-        # obvs need to make a function of some sort here as I am repeating myself
-        activityDict = {}
-        activities = mptt.utils.tree_item_iterator(opportunity.activitys.all(), ancestors=False)
-        for activity in activities:
-            activityDict[activity[0].name] = activity[0].name
-        context['profileActivities'] = activityDict
+        context['profileActivities'] = category_belonging_dict(opportunity, 'activitys')
         context['allActivities'] = Activity.objects.all()
-        skillDict = {}
-        skills = mptt.utils.tree_item_iterator(opportunity.skills.all(), ancestors=False)
-        for skill in skills:
-            skillDict[skill[0].name] = skill[0].name
+        context['profileSkills'] = category_belonging_dict(opportunity, 'skills')
         context['allSkills'] = Skill.objects.all()
-        context['profileSkills'] = skillDict
         return context
 
     class Meta:
