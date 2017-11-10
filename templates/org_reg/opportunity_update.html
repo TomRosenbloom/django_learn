@@ -1,4 +1,26 @@
 {% extends "org_reg/base.html" %}
+
+  {% block styles %}
+    #menuwrapper ul li {
+      height: 42px;
+    }
+    #menuwrapper ul li ul {
+      position: relative;
+      display: none;
+      left:100%;
+      padding-left: 15px;
+      top:-31px;
+      z-index: 999;
+    }
+    #menuwrapper ul li:hover {
+      background-color: white;
+    }
+    #menuwrapper ul li:hover ul  {
+      position: relative;
+      display:block;
+    }
+  {% endblock %}
+
   {% block body_block %}
 
     {% include "./include/opp_form_content.html" with title_text="Edit Opportunity" org_var_name=opportunity.organisation %}

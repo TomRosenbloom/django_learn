@@ -100,8 +100,8 @@ class Opportunity(models.Model):
     start_date = models.DateField(blank=True,null=True)
     end_date = models.DateField(blank=True,null=True)
     organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE)
-    skills = models.ManyToManyField(Skill)
-    activitys = models.ManyToManyField(Activity)
+    skills = models.ManyToManyField(Skill,blank=True)
+    activitys = models.ManyToManyField(Activity,blank=True)
 
     def __str__(self):
         return self.name

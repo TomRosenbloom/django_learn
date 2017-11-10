@@ -127,6 +127,10 @@
           {% for error in field.errors %}
             <p style="color: red">{{ error }}</p>
           {% endfor %}
+          {% for error in form.errors %}
+            <p style="color: red">{{ error }}</p>
+          {% endfor %}
+
 
 
           <input type="submit" class="btn btn-primary" value="Submit" />

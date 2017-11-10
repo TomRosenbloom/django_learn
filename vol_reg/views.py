@@ -71,8 +71,8 @@ def signup(request):
             login(request, user)
             Volunteer.objects.create(user_id=user.pk)
 
-            g = Group.objects.get(name='volunteer')
-            g.user_set.add(user)
+            # g = Group.objects.get(name='volunteer')
+            # g.user_set.add(user)
 
             return redirect('vol_reg:profile')
     else:

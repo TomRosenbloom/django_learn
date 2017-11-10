@@ -72,6 +72,28 @@ class OpportunityUpdateView(UpdateView):
         context['allSkills'] = Skill.objects.all()
         return context
 
+    def form_valid(self, form):
+        organisation = form.save()
+        print('foo')
+        return HttpResponseRedirect(self.get_success_url())
+
+    #     organisation = form.save(commit=False)
+    #     type_reg_formset = self.RegistrationFormset(self.request.POST)
+    #     if type_reg_formset.is_valid():
+    #         try:
+    #             with transaction.atomic():
+    #                 OrganisationRegistration.objects.filter(organisation=organisation).delete()
+    #                 for type_reg_form in type_reg_formset:
+    #                     type = type_reg_form.cleaned_data.get('type')
+    #                     reg_number = type_reg_form.cleaned_data.get('reg_number')
+    #                     if(type):
+    #                         OrganisationRegistration.objects.create(organisation = organisation,type = type,reg_number = reg_number)
+    #         except IntegrityError as e:
+    #             print(e.args[0])
+    #             messages.error(self.request, 'There was an error updating this organisation.')
+    #             return redirect(reverse('crm:update',kwargs={'pk':self.object.pk}))
+    #     return HttpResponseRedirect(self.get_success_url())
+
     class Meta:
         labels = {
             'name': 'Opportunity title',
