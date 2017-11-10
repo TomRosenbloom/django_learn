@@ -1,0 +1,190 @@
+{% comment %}
+Form for adding/updating opportunity
+
+  Use cases:
+  create new opportunity for unspecified org - org will be selected in form
+  create new opportunity for specified org - org will be displayed in the form
+  edit existing opportunity - org will be displayed in form
+
+  ok, here is the problem: the template opportunity_create is used for both create cases
+  and a value is supplied for org_var_name (because it is needed for the specified org case)
+  So we still need to test for presence of org id in url because this distinguishes the two 'create' cases
+
+  When the org is displayed, the id of the org is forwarded with hidden field
+{% endcomment %}
+
+{% load mptt_tags %}
+    <h2>
+      {{ title_text }}
+    </h2>
+
+    <form method="post">
+      {% csrf_token %}
+
+      {% if 'org_id' in request.get_full_path %}
+        <div class="form-group row">
+          <div class="col-md-3">
+              <strong>Organisation:</strong>
+          </div>
+          <div class="col-md-4">
+            {{ org_var_name.name }}
+            <input type="hidden" name="organisation_id" value="{{ organisation.id }}" />
+          </div>
+        </div>
+      {% endif %}
+
+
+
+      {% for field in form %}
+
+        {% if field.name != 'activitys' and field.name != 'skills' %}
+
+          <div class="form-group row">
+            <div class="col-md-3">
+                <label for="{{ field.name }}">{{ field.label_tag }}</label>
+            </div>
+            <div class="col-md-4">
+              {{ field }}
+            </div>
+          </div>
+
+        {% elif field.name == 'activitys' %}
+
+          <div class="form-group row">
+            <div class="col-md-3">
+                <label for="{{ field.name }}">{{ field.label_tag }}</label>
+            </div>
+            <div class="col-md-4">
+              <div id="menuwrapper">
+                <ul class="list-group" style="width: 400px">
+                    {% recursetree allActivities %}
+                      {% if node.level == 0 %}
+                        <li class="list-group-item  list-group-item-info">
+                          <a href="#parentActivity{{ node.id }}">
+                            {{ node.name }}
+                          </a>
+                      {% else %}
+                        <li class="list-group-item">
+                          {% if node.name in profileActivities %}
+                            <input type="checkbox" name="activitys" value="{{ node.id }}" checked />
+                          {% else %}
+                            <input type="checkbox" name="activitys" value="{{ node.id }}" />
+                          {% endif %}
+                          {{ node.name }}
+                      {% endif %}
+
+                      {% if not node.is_leaf_node %}
+                        <div id="parentActivity{{ node.id }}">
+                            <ul>
+                                {{ children }}
+                            </ul>
+                        </div>
+                      {% endif %}
+
+                      </li>
+
+                    {% endrecursetree %}
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        {% elif field.name == 'skills' %}
+
+          <div class="form-group row">
+            <div class="col-md-3">
+                <label for="{{ field.name }}">{{ field.label_tag }}</label>
+            </div>
+            <div class="col-md-4">
+              <div id="menuwrapper">
+                <ul class="list-group" style="width: 400px">
+                    {% recursetree allSkills %}
+                      {% if node.level == 0 %}
+                        <li class="list-group-item  list-group-item-info">
+                          <a href="#parentSkill{{ node.id }}">
+                            {{ node.name }}
+                          </a>
+                      {% else %}
+                        <li class="list-group-item">
+                          {% if node.name in profileSkills %}
+                            <input type="checkbox" name="skills" value="{{ node.id }}" checked />
+                          {% else %}
+                            <input type="checkbox" name="skills" value="{{ node.id }}" />
+                          {% endif %}
+                          {{ node.name }}
+                      {% endif %}
+
+                      {% if not node.is_leaf_node %}
+                        <div id="parentSkill{{ node.id }}">
+                            <ul>
+                                {{ children }}
+                            </ul>
+                        </div>
+                      {% endif %}
+
+                      </li>
+
+                    {% endrecursetree %}
+
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        {% endif %}
+
+      {% endfor %}
+
+      {% for error in field.errors %}
+        <p style="color: red">{{ error }}</p>
+      {% endfor %}
+      {% for error in form.errors %}
+        <p style="color: red">{{ error }}</p>
+      {% endfor %}
+
+
+
+      <input type="submit" class="btn btn-primary" value="Submit" />
+    </form>
+
+    {% load static %}
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+    <script>
+
+    $(document).ready(function() {
+
+      $('#id_start_date, #id_end_date').datepicker({
+        dateFormat: 'd/m/y',
+        altField: ".date_alternate",
+        altFormat: "yyyy-mm-dd"
+      });
+
+
+      $("#id_organisation").change(function () {
+        $('#opp-list').hide();
+
+        var organisation_id = $(this).val();
+
+        $.ajax({
+          url: '/crm/ajax/org_opps/?org_id='+organisation_id,
+          dataType: 'json',
+          success: function(data){
+            if(data.length > 0) {
+              var rowDiv = $('#id_organisation').closest('div[class="form-group row"]');
+              var oppsDiv = '<div class="form-group row" id="opp-row"><div class="col-md-3"></div><div class="col-md-4" id="opp-list"><p><strong>Existing opportunities:</strong></p>';
+              for (var i = 0; i < data.length; i++) {
+                console.log(data[i].name);
+                oppsDiv += '<p>' + data[i].name + '</p>';
+              }
+              oppsDiv += '</div></div>';
+              $(oppsDiv).insertAfter(rowDiv).hide().slideDown();
+            }
+          }
+        });
+
+      });
+
+
+    });
+    </script>

@@ -15,11 +15,29 @@
     background-color: #9acd32;
     margin-left: 15px;
   }
+  #menuwrapper ul li {
+    height: 42px;
+  }
+  #menuwrapper ul li ul {
+    position: relative;
+    display: none;
+    left:100%;
+    padding-left: 15px;
+    top:-31px;
+    z-index: 999;
+  }
+  #menuwrapper ul li:hover {
+    background-color: white;
+  }
+  #menuwrapper ul li:hover ul  {
+    position: relative;
+    display:block;
+  }  
   {% endblock %}
 
   {% block body_block %}
 
-  {% include "../generic/opp_form_with_org_content.html" with title_text="Create Opportunity" org_var_name=organisation %}
+  {% include "../generic/opp_form.html" with title_text="Create Opportunity" org_var_name=organisation %}
 
 
   {% endblock %}

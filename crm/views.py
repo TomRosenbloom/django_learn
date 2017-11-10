@@ -58,7 +58,7 @@ class OpportunityDeleteView(DeleteView):
     success_url = reverse_lazy('crm:list-opps')
 
 class OpportunityUpdateView(UpdateView):
-    fields = ('name','description','start_date','end_date','skills','activitys')
+    fields = ('organisation','name','description','start_date','end_date','skills','activitys')
     model = Opportunity
     template_name = 'crm/opportunity_update.html'
     success_url = reverse_lazy('crm:list-opps')
@@ -72,28 +72,6 @@ class OpportunityUpdateView(UpdateView):
         context['allSkills'] = Skill.objects.all()
         return context
 
-    def form_valid(self, form):
-        organisation = form.save()
-        print('foo')
-        return HttpResponseRedirect(self.get_success_url())
-
-    #     organisation = form.save(commit=False)
-    #     type_reg_formset = self.RegistrationFormset(self.request.POST)
-    #     if type_reg_formset.is_valid():
-    #         try:
-    #             with transaction.atomic():
-    #                 OrganisationRegistration.objects.filter(organisation=organisation).delete()
-    #                 for type_reg_form in type_reg_formset:
-    #                     type = type_reg_form.cleaned_data.get('type')
-    #                     reg_number = type_reg_form.cleaned_data.get('reg_number')
-    #                     if(type):
-    #                         OrganisationRegistration.objects.create(organisation = organisation,type = type,reg_number = reg_number)
-    #         except IntegrityError as e:
-    #             print(e.args[0])
-    #             messages.error(self.request, 'There was an error updating this organisation.')
-    #             return redirect(reverse('crm:update',kwargs={'pk':self.object.pk}))
-    #     return HttpResponseRedirect(self.get_success_url())
-
     class Meta:
         labels = {
             'name': 'Opportunity title',
@@ -101,10 +79,16 @@ class OpportunityUpdateView(UpdateView):
         }
 
 class OpportunityCreateView(CreateView):
-    fields = ('organisation','name','description','start_date','end_date')
+    fields = ('organisation','name','description','start_date','end_date','skills','activitys')
     model = Opportunity
     template_name = 'crm/opportunity_create.html'
     success_url = reverse_lazy('crm:list-opps')
+
+    def get_context_data(self, **kwargs):
+        context = super(OpportunityCreateView, self).get_context_data(**kwargs)
+        context['allActivities'] = Activity.objects.all()
+        context['allSkills'] = Skill.objects.all()
+        return context
 
     class Meta:
         labels = {
