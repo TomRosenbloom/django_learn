@@ -1,17 +1,21 @@
 from django.shortcuts import render, redirect
+from django.views.generic import (View, TemplateView, FormView,
+                                ListView, DetailView, CreateView,
+                                UpdateView, DeleteView)
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import View, TemplateView
 
 from . import forms
 from .forms import SignUpForm, ProfileForm
 from backend.models import Skill, Activity
 
 from user_types.models import Volunteer
+
+from utils.my_crud_utils import category_belonging_dict
 
 # this method, using groups, is defunct
 # def is_volunteer(user):
@@ -92,15 +96,8 @@ def profile(request):
 
     import mptt
     # obvs need to make a function of some sort here as I am repeating myself
-    activityDict = {}
-    activities = mptt.utils.tree_item_iterator(profile.activitys.all(), ancestors=False)
-    for activity in activities:
-        activityDict[activity[0].name] = activity[0].name
-
-    skillDict = {}
-    skills = mptt.utils.tree_item_iterator(profile.skills.all(), ancestors=False)
-    for skill in skills:
-        skillDict[skill[0].name] = skill[0].name
+    activityDict = category_belonging_dict(profile, 'activitys')
+    skillDict = category_belonging_dict(profile, 'skills')
 
     if request.method == 'POST':
         form = ProfileForm(request.POST,instance=profile)
