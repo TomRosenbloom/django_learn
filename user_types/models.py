@@ -23,8 +23,8 @@ class UserProfile(models.Model):
 class Volunteer(UserProfile): # extends UserProfile
 #class Volunteer(models.Model):
 #    user_profile = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
-    skills = models.ManyToManyField(Skill)
-    activitys = models.ManyToManyField(Activity)
+    skills = models.ManyToManyField(Skill,blank=True)
+    activitys = models.ManyToManyField(Activity,blank=True)
     range = models.PositiveSmallIntegerField(choices=RANGE_CHOICES,null=True)
 
     def __str__(self):

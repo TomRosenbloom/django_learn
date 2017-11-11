@@ -3,17 +3,17 @@ from django.views.generic import (View, TemplateView, FormView,
                                 ListView, DetailView, CreateView,
                                 UpdateView, DeleteView)
 from django.http import HttpResponse, HttpResponseRedirect
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from . import forms
 from .forms import SignUpForm, ProfileForm
 from backend.models import Skill, Activity
 
-from user_types.models import Volunteer
+from user_types.models import UserProfile, Volunteer
 
 from utils.my_crud_utils import category_belonging_dict
 
@@ -84,6 +84,31 @@ def signup(request):
     return render(request, 'vol_reg/signup.html', {'form': form})
 
 
+#
+# put this aside for now: 'Generic detail view ProfileUpdateView must be called with either an object pk or a slug'
+#
+# class ProfileUpdateView(LoginRequiredMixin, UpdateView):
+#     fields = ('postcode','range','skills','activitys')
+#     model = UserProfile
+#     template_name = 'vol_reg/profile.html'
+#     success_url = reverse_lazy('vol_reg:profile')
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(ProfileUpdateView, self).get_context_data(**kwargs)
+#         user = request.user
+#         print('foo')
+#         profile = user.userprofile.volunteer
+#         context['profileActivities'] = category_belonging_dict(profile, 'activitys')
+#         context['allActivities'] = Activity.objects.all()
+#         context['profileSkills'] = category_belonging_dict(profile, 'skills')
+#         context['allSkills'] = Skill.objects.all()
+#         return context
+#
+#     class Meta:
+#         labels = {
+#             'range': 'Travel range',
+#             'activitys': 'Activities'
+#         }
 
 @login_required(login_url='/volunteer/not_authorised/')
 @user_passes_test(is_volunteer,login_url='/volunteer/not_authorised/')
