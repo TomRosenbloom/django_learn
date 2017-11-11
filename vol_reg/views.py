@@ -11,15 +11,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from . import forms
 from .forms import SignUpForm, ProfileForm
-from backend.models import Skill, Activity
+from backend.models import Skill, Activity, Opportunity
 
 from user_types.models import UserProfile, Volunteer
 
 from utils.my_crud_utils import category_belonging_dict
 
-# this method, using groups, is defunct
-# def is_volunteer(user):
-#     return user.groups.filter(name__in=['volunteer',]).exists()
+
 def is_volunteer(user):
     if hasattr(user, 'userprofile'):
         profile = user.userprofile
@@ -143,6 +141,22 @@ def profile(request):
     'profileSkills': skillDict
     })
 
-
+@login_required(login_url='/volunteer/not_authorised/')
+@user_passes_test(is_volunteer,login_url='/volunteer/not_authorised/')
 def index(request):
-    return render(request,'vol_reg/index.html')
+
+    # get profile details
+    user = request.user
+    profile = user.userprofile.volunteer
+    activities = category_belonging_dict(profile, 'activitys')
+
+    # get matching opps
+    print(activities)
+    print(Opportunity.objects.filter(activitys__name__in=activities))
+    matched_opps = Opportunity.objects.filter(activitys__name__in=activities)
+
+    return render(request,'vol_reg/index.html', {
+        'profile': profile,
+        'activities': activities,
+        'matched_opps': matched_opps
+        })

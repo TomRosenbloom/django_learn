@@ -4,12 +4,47 @@
 
     <h2>Home</h2>
     {% if user.is_authenticated %}
+    <div class="row">
+      <div class="col-md-12">
+        <p>
+          Logged in as {{ user.username }}
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <p>
+          Hello {{ user.first_name }}, how about <a href="{% url 'vol_reg:profile' %}">updating your profile</a>?
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <p>
+          Your current profile:
+        </p>
+        <p>
+          {{ profile.postcode }}
+        </p>
+        <p>
+          {% for activity in activities %}
+            {{ activity }}
+          {% endfor %}
+        </p>
+      </div>
+
+    </div>
+    <div>
       <p>
-        Logged in as {{ user.username }}
+        Roles you may be interested in:
       </p>
       <p>
-        Hello {{ user.first_name }}, how about <a href="{% url 'vol_reg:profile' %}">updating your profile</a>?
+        {% for opp in matched_opps %}
+          {{ opp }}
+        {% endfor %}
       </p>
+    </div>
+
     {% else %}
 
       <a href="{% url 'vol_reg:signup' %}">Sign up</a> or <a href="{% url 'vol_reg:login' %}">Log in</a>
