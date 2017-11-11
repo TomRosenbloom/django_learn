@@ -14,13 +14,19 @@
       left:100%;
       padding-left: 15px;
       top:-31px;
-      z-index: 999;
+      z-index: 998;
     }
     #menuwrapper ul li:hover {
       background-color: white;
     }
     #menuwrapper ul li:hover ul  {
+      position: relative;
       display:block;
+      z-index: 998;
+    }
+    .btn {
+      position: relative;
+      z-index: 999;
     }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
