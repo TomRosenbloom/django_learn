@@ -155,6 +155,29 @@ def index(request):
     print(Opportunity.objects.filter(activitys__name__in=activities))
     matched_opps = Opportunity.objects.filter(activitys__name__in=activities)
 
+    # would be cool to specify the reason(s) for the match
+    # - this would also be a route to ordering them i.e. if there is more than one reason for the match
+    # to do this you'd need to a query for each possible match case i.e. currently
+    # skill, activity, or location, rather than combining these in a single big query
+    # (you probably could do a single query that does all this and groups results
+    # according to why matched but I wouldn't think that's a good way of doing it -
+    # for the price of extra database hits, better to have it clearer in the code)
+    # So...
+    # what we want to hand to the template is a list of opportunities, with, for each
+    # one, one or more reason for the match (your skill 'financial management',
+    # your activities gardening and building etc)
+    # so that's going to be a multidimensional array:
+    # for each opp, for each type of match, the matches
+    # How would you order that? Number of matches seems obvious, and you could weight
+    # some types of match more than others, but this calculation would have to be done
+    # in the view and then supplied to the template, so that would need someting else
+    # added to the data array (do this as json?)
+    # Aha - I can make matches a model right? Hmmm, perhaps not. Opportunity is the model
+    # I might defined matches as a property of that model and put the functionality
+    # with the Opportunity class... It is intersting though - you can look at matches from
+    # different perspective, by user, by opp, by org, so it could be useful to have
+    # it really defined in a class. But you wouldn't want it in a database table right?
+
     return render(request,'vol_reg/index.html', {
         'profile': profile,
         'activities': activities,
