@@ -141,7 +141,7 @@ def profile(request):
     'profileSkills': skillDict
     })
 
-@login_required(login_url='/volunteer/not_authorised/')
+@login_required(login_url='/volunteer/login/')
 @user_passes_test(is_volunteer,login_url='/volunteer/not_authorised/')
 def index(request):
 
@@ -149,11 +149,43 @@ def index(request):
     user = request.user
     profile = user.userprofile.volunteer
     activities = category_belonging_dict(profile, 'activitys')
+    skills = category_belonging_dict(profile, 'skills')
 
     # get matching opps
     print(activities)
     print(Opportunity.objects.filter(activitys__name__in=activities))
-    matched_opps = Opportunity.objects.filter(activitys__name__in=activities)
+    matched_opps = []
+    matched_on_activitys = Opportunity.objects.filter(activitys__name__in=activities)
+    matched_on_skills = Opportunity.objects.filter(skills__name__in=skills)
+
+    import itertools
+    matched_opps = itertools.chain(matched_on_activitys, matched_on_skills)
+    #matched_opps.extend(matched_on_activitys)
+
+    opps = {}
+
+    # https://stackoverflow.com/questions/1692388/python-list-of-dict-if-exists-increment-a-dict-value-if-not-append-a-new-dic
+
+    # for opp in matched_opps:
+    #     print(opp)
+    #     if not opp in opps:
+    #         opps[opp] = 1
+    #     else:
+    #         opps[opp] += 1
+
+    # from collections import defaultdict
+    #
+    # opps = defaultdict(int)
+    # for opp in matched_opps:
+    #     opps[opp] += 1
+
+    from collections import Counter
+
+    opps = Counter(matched_opps)
+
+    print(opps)
+
+
 
     # would be cool to specify the reason(s) for the match
     # - this would also be a route to ordering them i.e. if there is more than one reason for the match
@@ -172,14 +204,23 @@ def index(request):
     # some types of match more than others, but this calculation would have to be done
     # in the view and then supplied to the template, so that would need someting else
     # added to the data array (do this as json?)
-    # Aha - I can make matches a model right? Hmmm, perhaps not. Opportunity is the model
-    # I might defined matches as a property of that model and put the functionality
+    # Aha - I can make matches a model right? Hmmm, perhaps not. Opportunity is the model.
+    # I might define matches as a property of that model and put the functionality
     # with the Opportunity class... It is intersting though - you can look at matches from
     # different perspective, by user, by opp, by org, so it could be useful to have
-    # it really defined in a class. But you wouldn't want it in a database table right?
+    # it really defined in a class. But you wouldn't want it in a database table right? No,
+    # because you do want it re-calculated on the fly every time the user refreshes
+    #
+    # Anyway, how am I going to construct this array (or whatever)...
+    # It will have to be a two stage process, I would think, first pass to find matches
+    # for each criterion, second path to aggregate that data i.e. pull together matches
+    # of each type for each opp
+    # Is there a better way?
+    # construct list of zeroes of length=number of opps then increment the index of the opp id, then order on value
 
     return render(request,'vol_reg/index.html', {
         'profile': profile,
         'activities': activities,
-        'matched_opps': matched_opps
+        'matched_opps': matched_on_activitys # temp, to prevent errors
+        #'matched_opps': matched_opps
         })
