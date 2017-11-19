@@ -2,7 +2,10 @@
   {% block body_block %}
 
   <p>
-    Not authorised
+    Not authorised - user {{ user }} ({{ user.userprofile }}) is not signed up as a volunteer
+    {% if user.userprofile.org_user %}
+      but as an <a href="{% url 'org_reg:index' %}">organisational user</a>
+    {% endif %}
   </p>
 
   {% endblock %}
