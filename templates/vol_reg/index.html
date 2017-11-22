@@ -45,6 +45,24 @@
             <li>
               {{ activity }}
             </li>
+          {% empty %}
+            <li>
+              No activities specified
+            </li>
+          {% endfor %}
+        </ul>
+        <p>
+          Skills:
+        </p>
+        <ul>
+          {% for skill in skills %}
+            <li>
+              {{ skill }}
+            </li>
+          {% empty %}
+            <li>
+              No skills specified
+            </li>
           {% endfor %}
         </ul>
       </div>
@@ -58,7 +76,7 @@
         {% for opp, count in all_match_counts %}
           <h4>{{ opp }}</h4>
           <p>
-            Based on {{ count }} matches
+            Based on {{ count }} match{% if count > 1 %}es{% endif %}
           </p>
           {% if opp.activitys %}
             <ul>

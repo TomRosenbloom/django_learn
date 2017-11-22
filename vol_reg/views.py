@@ -131,7 +131,7 @@ def profile(request):
             profile.activitys = form.cleaned_data.get('activitys')
             profile.skills = form.cleaned_data.get('skills')
             profile.save()
-            return redirect('vol_reg:profile')
+            return redirect('vol_reg:index')
 
     return render(request,'vol_reg/profile.html', {
     'form': form,
@@ -168,5 +168,6 @@ def index(request):
     return render(request,'vol_reg/index.html', {
         'profile': profile,
         'activities': activities,
+        'skills': skills,
         'all_match_counts': all_match_counts
         })
