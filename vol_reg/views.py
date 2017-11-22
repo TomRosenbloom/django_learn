@@ -13,7 +13,7 @@ from . import forms
 from .forms import SignUpForm, ProfileForm
 from backend.models import Skill, Activity, Opportunity
 
-from user_types.models import UserProfile, Volunteer
+from user_types.models import UserProfile, Volunteer, Org_user
 
 from utils.my_crud_utils import category_belonging_dict
 
@@ -152,75 +152,21 @@ def index(request):
     skills = category_belonging_dict(profile, 'skills')
 
     # get matching opps
-    print(activities)
-    print(Opportunity.objects.filter(activitys__name__in=activities))
     matched_opps = []
     matched_on_activitys = Opportunity.objects.filter(activitys__name__in=activities)
     matched_on_skills = Opportunity.objects.filter(skills__name__in=skills)
 
     import itertools
-    matched_opps = itertools.chain(matched_on_activitys, matched_on_skills)
-    #matched_opps.extend(matched_on_activitys)
+    all_matches = itertools.chain(matched_on_activitys, matched_on_skills)
 
-    opps = {}
-
-    # https://stackoverflow.com/questions/1692388/python-list-of-dict-if-exists-increment-a-dict-value-if-not-append-a-new-dic
-
-    # for opp in matched_opps:
-    #     print(opp)
-    #     if not opp in opps:
-    #         opps[opp] = 1
-    #     else:
-    #         opps[opp] += 1
-
-    # from collections import defaultdict
-    #
-    # opps = defaultdict(int)
-    # for opp in matched_opps:
-    #     opps[opp] += 1
+    # make a count of matches per opp
+    all_match_counts = {}
 
     from collections import Counter
-
-    opps = Counter(matched_opps)
-
-    print(opps)
-
-
-
-    # would be cool to specify the reason(s) for the match
-    # - this would also be a route to ordering them i.e. if there is more than one reason for the match
-    # to do this you'd need to a query for each possible match case i.e. currently
-    # skill, activity, or location, rather than combining these in a single big query
-    # (you probably could do a single query that does all this and groups results
-    # according to why matched but I wouldn't think that's a good way of doing it -
-    # for the price of extra database hits, better to have it clearer in the code)
-    # So...
-    # what we want to hand to the template is a list of opportunities, with, for each
-    # one, one or more reason for the match (your skill 'financial management',
-    # your activities gardening and building etc)
-    # so that's going to be a multidimensional array:
-    # for each opp, for each type of match, the matches
-    # How would you order that? Number of matches seems obvious, and you could weight
-    # some types of match more than others, but this calculation would have to be done
-    # in the view and then supplied to the template, so that would need someting else
-    # added to the data array (do this as json?)
-    # Aha - I can make matches a model right? Hmmm, perhaps not. Opportunity is the model.
-    # I might define matches as a property of that model and put the functionality
-    # with the Opportunity class... It is intersting though - you can look at matches from
-    # different perspective, by user, by opp, by org, so it could be useful to have
-    # it really defined in a class. But you wouldn't want it in a database table right? No,
-    # because you do want it re-calculated on the fly every time the user refreshes
-    #
-    # Anyway, how am I going to construct this array (or whatever)...
-    # It will have to be a two stage process, I would think, first pass to find matches
-    # for each criterion, second path to aggregate that data i.e. pull together matches
-    # of each type for each opp
-    # Is there a better way?
-    # construct list of zeroes of length=number of opps then increment the index of the opp id, then order on value
+    all_match_counts = Counter(all_matches).most_common() # most_common sorts on count value
 
     return render(request,'vol_reg/index.html', {
         'profile': profile,
         'activities': activities,
-        'matched_opps': matched_on_activitys # temp, to prevent errors
-        #'matched_opps': matched_opps
+        'all_match_counts': all_match_counts
         })

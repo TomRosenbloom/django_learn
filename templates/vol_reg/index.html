@@ -20,27 +20,55 @@
     </div>
     <div class="row">
       <div class="col-md-12">
-        <p>
+        <h3>
           Your current profile:
-        </p>
+        </h3>
         <p>
-          {{ profile.postcode }}
+        Postcode: {{ profile.postcode }}
         </p>
+        {% if profile.postcode and profile.range %}
         <p>
+          Travel range: within {{ profile.range }}
+          {% if profile.postcode and profile.range == 1 %}
+          mile
+          {% elif profile.postcode and profile.range > 1 %}
+          miles
+          {% endif %}
+          of {{ profile.postcode }}
+        </p>
+        {% endif %}
+        <p>
+          Activities:
+        </p>
+        <ul>
           {% for activity in activities %}
-            {{ activity }}
+            <li>
+              {{ activity }}
+            </li>
           {% endfor %}
-        </p>
+        </ul>
       </div>
 
     </div>
     <div>
-      <p>
+      <h3>
         Roles you may be interested in:
-      </p>
+      </h3>
       <p>
-        {% for opp in matched_opps %}
-          {{ opp }}
+        {% for opp, count in all_match_counts %}
+          <h4>{{ opp }}</h4>
+          <p>
+            Based on {{ count }} matches
+          </p>
+          {% if opp.activitys %}
+            <ul>
+              {% for activity in opp.activitys.all %}
+                <li>
+                  Activity: {{ activity }}
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
         {% endfor %}
       </p>
     </div>
