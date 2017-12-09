@@ -16,6 +16,7 @@ from backend.models import Skill, Activity, Opportunity
 from user_types.models import UserProfile, Volunteer, Org_user
 
 from utils.my_crud_utils import category_belonging_dict
+from utils.my_location_utils import postcode_lookup, distance, square_around_origin, places_in_square, places_in_circle
 
 
 def is_volunteer(user):
@@ -156,12 +157,26 @@ def index(request):
     matched_on_activitys = Opportunity.objects.filter(activitys__name__in=activities)
     matched_on_skills = Opportunity.objects.filter(skills__name__in=skills)
 
+    # location/range:
+    # get lat and long of postcode from postcodes.io
+    # e.g. api.postcodes.io/postcodes/ex42lg
+    # returns json including a ton of useful data including lat and long
+    # How to actually implement this? *All* of this should be done in a self contained
+    # function/module - like: get_postcodes_in_range(postcode, range)
+    #
+    # use GeoDjango (? or something) to calculate postcode within x mile radius
+    # rather, not the post codes as such, but the organisations (ones that have opps available)
+
+    print(postcode_lookup('ex42lg'))
+    print(postcode_lookup('ex42lg')['status'])
+    print(postcode_lookup('ex42lg')['result']['longitude'])
+
+    # aggregate matches of different types into a single array of matches
     import itertools
     all_matches = itertools.chain(matched_on_activitys, matched_on_skills)
 
-    # make a count of matches per opp
+    # make a count of matches per opp - note this will include not just the count but the details of each match
     all_match_counts = {}
-
     from collections import Counter
     all_match_counts = Counter(all_matches).most_common() # most_common sorts on count value
 
@@ -171,3 +186,14 @@ def index(request):
         'skills': skills,
         'all_match_counts': all_match_counts
         })
+
+
+def test(request):
+    print(distance(0,0,20,20))
+    print(square_around_origin(8,50.740201781113,-3.60225065630703))
+    print(square_around_origin(8,50.740201781113,-3.60225065630703)[1]) #prints the values in the tuple returned by function
+    places_square = places_in_square(square_around_origin(1,50.740201781113,-3.60225065630703))
+    places_circle = places_in_circle(places_in_square(square_around_origin(1,50.740201781113,-3.60225065630703)),50.740201781113,-3.60225065630703,1)
+    print(len(places_square))
+    print(len(places_circle))
+    return render(request,'vol_reg/test.html')

@@ -1,5 +1,48 @@
 import json
 import urllib.request
+from math import radians, degrees, acos, sin, cos
+
+def distance(lat1, lng1, lat2, lng2):
+    # https://www.mullie.eu/geographic-searches/
+
+    # convert latitude/longitude degrees for both coordinates
+    # to radians: radian = degree * π / 180
+    lat1 = radians(lat1)
+    lng1 = radians(lng1)
+    lat2 = radians(lat2)
+    lng2 = radians(lng2)
+
+    # calculate great-circle distance
+    distance = acos(sin(lat1) * sin(lat2) + cos(lat1) * cos(lat2) * cos(lng1 - lng2))
+
+    # distance in human-readable format:
+    # earth's radius in km = ~6371
+    return 6371 * distance
+
+
+def square_around_origin(distance, origin_lat, origin_long):
+    radius = 6371
+    # print(type(origin_lat))
+    print(distance/radius)
+    # print(radians(distance/radius))
+    # print(origin_lat + (radians(distance/radius)))
+    north_lat = origin_lat + degrees(distance/radius)
+    south_lat = origin_lat - degrees(distance/radius)
+    east_long = origin_long + degrees(distance/radius/cos(radians(origin_lat)))
+    west_long = origin_long - degrees(distance/radius/cos(radians(origin_lat)))
+    return ('Square',[north_lat, south_lat, east_long, west_long]) #named tuple
+
+def places_in_square(square):
+    from backend.models import Place
+    return(Place.places_in_square(square))
+
+def places_in_circle(places_in_square, origin_lat, origin_long, radius):
+    #print(places_in_square)
+    places = []
+    for place in places_in_square:
+        if distance(place.latitude, place.longitude, origin_lat, origin_long) <= radius:
+            places.append(place)
+    return (places)
 
 def postcode_lookup(postcode):
     """

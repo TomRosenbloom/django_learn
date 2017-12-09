@@ -10,6 +10,26 @@ from backend.model_choices import *
 
 # Create your models here.
 
+class Place(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    latitude = models.DecimalField(max_digits=14,decimal_places=12)
+    longitude = models.DecimalField(max_digits=14,decimal_places=12)
+
+    def __str__(self):
+        return self.name
+
+    @classmethod
+    def places_in_square(self, square):
+        bounds = square[1]
+        north_lat = bounds[0]
+        south_lat = bounds[1]
+        east_long = bounds[2]
+        west_long = bounds[3]
+        return(self.objects.filter(
+            latitude__gte=south_lat,
+            latitude__lte=north_lat,
+            longitude__gte=west_long,
+            longitude__lte=east_long))
 
 class Skill(MPTTModel):
     name = models.CharField(max_length=50, unique=True)

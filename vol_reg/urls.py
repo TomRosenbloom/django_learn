@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^logout/$',views.VolLogout.as_view(),name='logout'),
     url(r'^not_authorised/$',views.NotAuthorised.as_view(),name='not_authorised'),
 
+    url(r'^test/$',views.test,name='test'),
 ]
