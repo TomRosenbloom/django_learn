@@ -16,7 +16,7 @@ from backend.models import Skill, Activity, Opportunity
 from user_types.models import UserProfile, Volunteer, Org_user
 
 from utils.my_crud_utils import category_belonging_dict
-from utils.my_location_utils import postcode_lookup, distance, square_around_origin, places_in_square, places_in_circle
+from utils.my_location_utils import postcode_lookup, postcodes_in_radius
 
 
 def is_volunteer(user):
@@ -157,19 +157,16 @@ def index(request):
     matched_on_activitys = Opportunity.objects.filter(activitys__name__in=activities)
     matched_on_skills = Opportunity.objects.filter(skills__name__in=skills)
 
-    # location/range:
-    # get lat and long of postcode from postcodes.io
-    # e.g. api.postcodes.io/postcodes/ex42lg
-    # returns json including a ton of useful data including lat and long
-    # How to actually implement this? *All* of this should be done in a self contained
-    # function/module - like: get_postcodes_in_range(postcode, range)
-    #
-    # use GeoDjango (? or something) to calculate postcode within x mile radius
-    # rather, not the post codes as such, but the organisations (ones that have opps available)
-
-    print(postcode_lookup('ex42lg'))
-    print(postcode_lookup('ex42lg')['status'])
-    print(postcode_lookup('ex42lg')['result']['longitude'])
+    # location/range matches:
+    postcode_data = postcode_lookup(profile.postcode)
+    if postcode_data['status'] == 200 and postcode_data['result']['longitude'] and postcode_data['result']['latitude']:
+        postcodes_in_range = postcodes_in_radius((profile.range*1.61),postcode_data['result']['latitude'],postcode_data['result']['longitude'])
+        print(postcodes_in_range)
+        matched_on_range = Opportunity.objects.filter(organisation__postcode__in=postcodes_in_range)
+        matched_on_range = Opportunity.objects.filter(organisation__postcode='EX13 5AH')
+        # first one works but the second doesn't because postcodes_in_range don't have spaces in them
+        # string.replace(" ", "") but how to deploy it in this context??
+        print(matched_on_range)
 
     # aggregate matches of different types into a single array of matches
     import itertools
@@ -189,11 +186,12 @@ def index(request):
 
 
 def test(request):
-    print(distance(0,0,20,20))
-    print(square_around_origin(8,50.740201781113,-3.60225065630703))
-    print(square_around_origin(8,50.740201781113,-3.60225065630703)[1]) #prints the values in the tuple returned by function
-    places_square = places_in_square(square_around_origin(1,50.740201781113,-3.60225065630703))
-    places_circle = places_in_circle(places_in_square(square_around_origin(1,50.740201781113,-3.60225065630703)),50.740201781113,-3.60225065630703,1)
-    print(len(places_square))
-    print(len(places_circle))
+#     from utils.my_location_utils import postcode_lookup, distance, square_around_origin, places_in_square, places_in_circle
+#     print(distance(0,0,20,20))
+#     print(square_around_origin(8,50.740201781113,-3.60225065630703))
+#     print(square_around_origin(8,50.740201781113,-3.60225065630703)[1]) #prints the values in the tuple returned by function
+#     places_square = places_in_square(square_around_origin(1,50.740201781113,-3.60225065630703))
+#     places_circle = places_in_circle(places_in_square(square_around_origin(1,50.740201781113,-3.60225065630703)),50.740201781113,-3.60225065630703,1)
+#     print(len(places_square))
+#     print(len(places_circle))
     return render(request,'vol_reg/test.html')

@@ -22,10 +22,6 @@ def distance(lat1, lng1, lat2, lng2):
 
 def square_around_origin(distance, origin_lat, origin_long):
     radius = 6371
-    # print(type(origin_lat))
-    print(distance/radius)
-    # print(radians(distance/radius))
-    # print(origin_lat + (radians(distance/radius)))
     north_lat = origin_lat + degrees(distance/radius)
     south_lat = origin_lat - degrees(distance/radius)
     east_long = origin_long + degrees(distance/radius/cos(radians(origin_lat)))
@@ -92,3 +88,17 @@ def postcode_lookup(postcode):
     postcode_lookup_url = 'http://api.postcodes.io/postcodes/'+postcode
     response = urllib.request.urlopen(postcode_lookup_url)
     return json.loads(response.read())
+
+
+def postcodes_in_radius(radius, lat, long):
+    postcodes = []
+    postcodes_square = places_in_square(square_around_origin(radius,lat,long))
+    for place in places_in_circle(postcodes_square, lat, long, radius):
+        postcodes.append(place)
+        print(place.name)
+        # have created a problem for myself here because the 'names' in the 'places'
+        # table/model are postcodes without spaces, whereas the postcodes used
+        # for organisation and for vol are with spaces
+        # the original postcode lookup data does include a version of the postcode with a space
+        # so ~I need to recerate the places table I think - and in fact should call it 'postcodes'
+    return postcodes
