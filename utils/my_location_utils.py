@@ -28,17 +28,21 @@ def square_around_origin(distance, origin_lat, origin_long):
     west_long = origin_long - degrees(distance/radius/cos(radians(origin_lat)))
     return ('Square',[north_lat, south_lat, east_long, west_long]) #named tuple
 
-def places_in_square(square):
-    from backend.models import Place
-    return(Place.places_in_square(square))
+def postcodes_in_square(square):
+    bounds = square[1]
+    north_lat = bounds[0]
+    south_lat = bounds[1]
+    east_long = bounds[2]
+    west_long = bounds[3]
+    from backend.models import Postcode
+    return(Postcode.objects.filter(latitude__gte=south_lat, latitude__lte=north_lat, longitude__gte=west_long, longitude__lte=east_long))
 
-def places_in_circle(places_in_square, origin_lat, origin_long, radius):
-    #print(places_in_square)
-    places = []
-    for place in places_in_square:
-        if distance(place.latitude, place.longitude, origin_lat, origin_long) <= radius:
-            places.append(place)
-    return (places)
+def postcodes_in_circle(postcodes_in_square, origin_lat, origin_long, radius):
+    postcodes = []
+    for postcode in postcodes_in_square:
+        if distance(postcode.latitude, postcode.longitude, origin_lat, origin_long) <= radius:
+            postcodes.append(postcode)
+    return (postcodes)
 
 def postcode_lookup(postcode):
     """
@@ -92,13 +96,10 @@ def postcode_lookup(postcode):
 
 def postcodes_in_radius(radius, lat, long):
     postcodes = []
-    postcodes_square = places_in_square(square_around_origin(radius,lat,long))
-    for place in places_in_circle(postcodes_square, lat, long, radius):
-        postcodes.append(place)
-        print(place.name)
-        # have created a problem for myself here because the 'names' in the 'places'
-        # table/model are postcodes without spaces, whereas the postcodes used
-        # for organisation and for vol are with spaces
-        # the original postcode lookup data does include a version of the postcode with a space
-        # so ~I need to recerate the places table I think - and in fact should call it 'postcodes'
+    postcodes_square = postcodes_in_square(square_around_origin(radius,lat,long))
+    #print(postcodes_square)
+    for postcode in postcodes_in_circle(postcodes_square, lat, long, radius):
+        postcodes.append(postcode)
+        #print(postcode.postcode)
+        # why do the postcodes not have spaces?
     return postcodes

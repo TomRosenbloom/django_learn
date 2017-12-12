@@ -87,6 +87,19 @@
               {% endfor %}
             </ul>
           {% endif %}
+          {% if opp.organisation.postcode in postcodes_in_range %}
+            <ul>
+              <li>
+                Within your travel range: {{ profile.range }}
+                {% if profile.postcode and profile.range == 1 %}
+                mile
+                {% elif profile.postcode and profile.range > 1 %}
+                miles
+                {% endif %}
+                of {{ profile.postcode }}
+              </li>
+            </ul>
+          {% endif %}
         {% endfor %}
       </p>
     </div>

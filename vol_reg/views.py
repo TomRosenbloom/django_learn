@@ -161,27 +161,33 @@ def index(request):
     postcode_data = postcode_lookup(profile.postcode)
     if postcode_data['status'] == 200 and postcode_data['result']['longitude'] and postcode_data['result']['latitude']:
         postcodes_in_range = postcodes_in_radius((profile.range*1.61),postcode_data['result']['latitude'],postcode_data['result']['longitude'])
-        print(postcodes_in_range)
         matched_on_range = Opportunity.objects.filter(organisation__postcode__in=postcodes_in_range)
-        matched_on_range = Opportunity.objects.filter(organisation__postcode='EX13 5AH')
-        # first one works but the second doesn't because postcodes_in_range don't have spaces in them
-        # string.replace(" ", "") but how to deploy it in this context??
-        print(matched_on_range)
+        # need a way to signal that there was a match on postcode
 
     # aggregate matches of different types into a single array of matches
     import itertools
-    all_matches = itertools.chain(matched_on_activitys, matched_on_skills)
+    all_matches = itertools.chain(matched_on_activitys, matched_on_skills, matched_on_range)
+
+    # for match in all_matches:
+    #     print(match.organisation.postcode)
+
+
 
     # make a count of matches per opp - note this will include not just the count but the details of each match
     all_match_counts = {}
     from collections import Counter
     all_match_counts = Counter(all_matches).most_common() # most_common sorts on count value
 
+    postcode_list = []
+    for postcode in postcodes_in_range:
+        postcode_list.append(postcode.postcode)
+
     return render(request,'vol_reg/index.html', {
         'profile': profile,
         'activities': activities,
         'skills': skills,
-        'all_match_counts': all_match_counts
+        'all_match_counts': all_match_counts,
+        'postcodes_in_range': postcode_list
         })
 
 
@@ -194,4 +200,7 @@ def test(request):
 #     places_circle = places_in_circle(places_in_square(square_around_origin(1,50.740201781113,-3.60225065630703)),50.740201781113,-3.60225065630703,1)
 #     print(len(places_square))
 #     print(len(places_circle))
+    from backend.models import Postcode
+    postcode = Postcode.objects.filter(id=5)
+    print(postcode)
     return render(request,'vol_reg/test.html')

@@ -7,7 +7,7 @@ from mptt.admin import MPTTModelAdmin
 from mptt.admin import DraggableMPTTAdmin
 
 from backend.models import (Funder, Project, Organisation, Opportunity,
-    Role, Skill, Activity, OrganisationType, OrganisationRegistration)
+    Role, Skill, Activity, OrganisationType, OrganisationRegistration, Postcode)
 
 
 
@@ -32,6 +32,7 @@ admin.site.register(OrganisationRegistration)
 admin.site.register(Opportunity)
 admin.site.register(Role)
 admin.site.register(Skill, MPTTModelAdmin)
+admin.site.register(Postcode)
 
 admin.site.register(
     Activity,
