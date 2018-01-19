@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from . import forms
-from .forms import SignUpForm, ProfileForm
+from .forms import SignUpForm, ProfileForm, UserForm
 from backend.models import Skill, Activity, Opportunity
 
 from user_types.models import UserProfile, Volunteer, Org_user
@@ -114,19 +114,20 @@ def signup(request):
 def profile(request):
 
     user = request.user
-    #profile = user.profile
     profile = user.userprofile.volunteer
-    form = ProfileForm(instance=profile)
+    form = ProfileForm(instance=profile) # why do this here rather than following 'else' of 'if POST'?
+    userForm = UserForm(instance=user)
 
     import mptt
-    # obvs need to make a function of some sort here as I am repeating myself
     activityDict = category_belonging_dict(profile, 'activitys')
     skillDict = category_belonging_dict(profile, 'skills')
 
     if request.method == 'POST':
-        form = ProfileForm(request.POST,instance=profile)
+        form = ProfileForm(request.POST, instance=profile)
+        userForm = UserForm(request.POST, instance=user)
 
-        if form.is_valid():
+        if form.is_valid() and userForm.is_valid():
+            user = userForm.save()
             profile = form.save(commit=False)
             profile.user_id = request.user.id
             profile.activitys = form.cleaned_data.get('activitys')
@@ -136,6 +137,7 @@ def profile(request):
 
     return render(request,'vol_reg/profile.html', {
     'form': form,
+    'userForm': userForm,
     'allActivities': Activity.objects.all(),
     'profileActivities': activityDict,
     'allSkills': Skill.objects.all(),

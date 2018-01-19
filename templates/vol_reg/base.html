@@ -5,6 +5,28 @@
     <title>Volunteer dashboard</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
     <style>
+    .row-bordered:after {
+      content: "";
+      display: block;
+      border-bottom: 1px solid #ccc;
+      margin: 0 15px;
+    }
+    .sectionlinks {
+      margin-top: 30px;
+      margin-bottom: 10px;
+    }
+    .sectionlink {
+      font-size: 16px;
+      font-weight: bold;
+    }
+    #profile p, #profile ul {
+      background-color: whitesmoke;
+    }
+    .categoryTitle {
+      margin-bottom: 0;
+    }
+
+
     #menuwrapper ul li {
       height: 42px;
     }
@@ -37,7 +59,7 @@
       <div class="container">
         <ul class="nav navbar-nav">
           <li>
-            <a  class="navbar-brand" href="{% url 'vol_reg:index' %}">Home</a>
+            <a  class="navbar-brand" href="{% url 'vol_reg:index' %}">Volunteer portal</a>
           </li>
           {% if user.is_authenticated %}
           <li>
@@ -59,7 +81,6 @@
     </nav>
 
     <div class="container">
-      <h1>Volunteer registration</h1>
 
         {% block body_block %}
 

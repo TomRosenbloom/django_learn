@@ -2,27 +2,24 @@
 {% extends "vol_reg/base.html" %}
   {% block body_block %}
 
-    <h2>Home</h2>
     {% if user.is_authenticated %}
-    <div class="row">
-      <div class="col-md-12">
-        <p>
-          Logged in as {{ user.username }}
-        </p>
+    <h1>Welcome {{ user.first_name }} {{ user.last_name }}</h1>
+
+    <div class="row row-bordered">
+      <div class="col-md-4">
+        <h2>
+          Your profile
+        </h2>
+      </div>
+      <div class="col-md-4 sectionlinks">
+        <a href="{% url 'vol_reg:profile' %}" class="sectionlink">Update profile</a>
       </div>
     </div>
-    <div class="row">
+    <div class="row" id="profile">
       <div class="col-md-12">
         <p>
-          Hello {{ user.first_name }}, how about <a href="{% url 'vol_reg:profile' %}">updating your profile</a>?
+          Name: {{ user.first_name }} {{ user.last_name}}
         </p>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <h3>
-          Your current profile:
-        </h3>
         <p>
         Postcode: {{ profile.postcode }}
         </p>
@@ -37,7 +34,7 @@
           of {{ profile.postcode }}
         </p>
         {% endif %}
-        <p>
+        <p class="categoryTitle">
           Activities:
         </p>
         <ul>
@@ -51,7 +48,7 @@
             </li>
           {% endfor %}
         </ul>
-        <p>
+        <p class="categoryTitle">
           Skills:
         </p>
         <ul>
@@ -68,10 +65,17 @@
       </div>
 
     </div>
-    <div>
-      <h3>
-        Roles you may be interested in:
-      </h3>
+    <div class="row row-bordered">
+      <div class="col-md-12">
+        <h3>
+          Roles you may be interested in
+        </h3>
+      </div>
+
+    </div>
+    <div class="row">
+
+    </div>
       <p>
         {% for opp, count in all_match_counts %}
           <h4>{{ opp }}</h4>
