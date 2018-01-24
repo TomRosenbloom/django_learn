@@ -8,6 +8,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib import messages
 
 from . import forms
 from .forms import SignUpForm, ProfileForm, UserForm
@@ -56,7 +57,9 @@ class VolLogin(TemplateView):
 
 class VolLogout(LoginRequiredMixin, View):
     def get(self, request):
+        username = request.user.username
         logout(request)
+        messages.add_message(request, messages.SUCCESS, 'Logged out ' + username)
         return HttpResponseRedirect(reverse('vol_reg:index'))
 
 class NotAuthorised(TemplateView):
@@ -73,41 +76,13 @@ def signup(request):
             user = authenticate(username=username, password=raw_password)
             login(request, user)
             Volunteer.objects.create(user_id=user.pk)
-
-            # g = Group.objects.get(name='volunteer')
-            # g.user_set.add(user)
-
+            messages.add_message(request, messages.INFO, 'Thanks for signing up, now you can edit your profile')
             return redirect('vol_reg:profile')
     else:
         form = SignUpForm()
     return render(request, 'vol_reg/signup.html', {'form': form})
 
 
-#
-# put this aside for now: 'Generic detail view ProfileUpdateView must be called with either an object pk or a slug'
-#
-# class ProfileUpdateView(LoginRequiredMixin, UpdateView):
-#     fields = ('postcode','range','skills','activitys')
-#     model = UserProfile
-#     template_name = 'vol_reg/profile.html'
-#     success_url = reverse_lazy('vol_reg:profile')
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(ProfileUpdateView, self).get_context_data(**kwargs)
-#         user = request.user
-#         print('foo')
-#         profile = user.userprofile.volunteer
-#         context['profileActivities'] = category_belonging_dict(profile, 'activitys')
-#         context['allActivities'] = Activity.objects.all()
-#         context['profileSkills'] = category_belonging_dict(profile, 'skills')
-#         context['allSkills'] = Skill.objects.all()
-#         return context
-#
-#     class Meta:
-#         labels = {
-#             'range': 'Travel range',
-#             'activitys': 'Activities'
-#         }
 
 @login_required(login_url='/volunteer/not_authorised/')
 @user_passes_test(is_volunteer,login_url='/volunteer/not_authorised/')
