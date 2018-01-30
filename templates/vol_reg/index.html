@@ -74,38 +74,46 @@
 
     </div>
     <div class="row">
-
-    </div>
-      <p>
-        {% for opp, count in all_match_counts %}
-          <h4>{{ opp }}</h4>
+      <div class="col-md-12">
+        {% if all_match_counts %}
           <p>
-            Based on {{ count }} match{% if count > 1 %}es{% endif %}
+            {% for opp, count in all_match_counts %}
+              <h4>{{ opp }}, at {{ opp.organisation }}
+                <a href="{% url 'directory:detail' pk=opp.organisation.id %}">
+                  <i class="fa fa-book" data-toggle="tooltip" title="View this organisation in directory"></i>
+                </a>
+              </h4>
+              <p>
+                Based on {{ count }} match{% if count > 1 %}es{% endif %}
+              </p>
+              {% if opp.activitys %}
+                <ul>
+                  {% for activity in opp.activitys.all %}
+                    <li>
+                      Activity: {{ activity }}
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+              {% if opp.organisation.postcode in postcodes_in_range %}
+                <ul>
+                  <li>
+                    Within your travel range: {{ profile.range }}
+                    {% if profile.postcode and profile.range == 1 %}
+                    mile
+                    {% elif profile.postcode and profile.range > 1 %}
+                    miles
+                    {% endif %}
+                    of {{ profile.postcode }}
+                  </li>
+                </ul>
+              {% endif %}
+            {% endfor %}
           </p>
-          {% if opp.activitys %}
-            <ul>
-              {% for activity in opp.activitys.all %}
-                <li>
-                  Activity: {{ activity }}
-                </li>
-              {% endfor %}
-            </ul>
+          {% else %}
+            <p>No matching roles could be found</p>
           {% endif %}
-          {% if opp.organisation.postcode in postcodes_in_range %}
-            <ul>
-              <li>
-                Within your travel range: {{ profile.range }}
-                {% if profile.postcode and profile.range == 1 %}
-                mile
-                {% elif profile.postcode and profile.range > 1 %}
-                miles
-                {% endif %}
-                of {{ profile.postcode }}
-              </li>
-            </ul>
-          {% endif %}
-        {% endfor %}
-      </p>
+        </div>
     </div>
 
     {% else %}
@@ -113,5 +121,9 @@
       <a href="{% url 'vol_reg:signup' %}">Sign up</a> or <a href="{% url 'vol_reg:login' %}">Log in</a>
 
     {% endif %}
-
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+    </script>
     {% endblock %}
