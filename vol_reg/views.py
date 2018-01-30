@@ -135,29 +135,30 @@ def index(request):
     matched_on_skills = Opportunity.objects.filter(skills__name__in=skills)
 
     # location/range matches:
-    postcode_data = postcode_lookup(profile.postcode)
-    if postcode_data['status'] == 200 and postcode_data['result']['longitude'] and postcode_data['result']['latitude']:
-        postcodes_in_range = postcodes_in_radius((profile.range*1.61),postcode_data['result']['latitude'],postcode_data['result']['longitude'])
-        matched_on_range = Opportunity.objects.filter(organisation__postcode__in=postcodes_in_range)
-        # need a way to signal that there was a match on postcode
+    matched_on_range = [] # opportunities within vol travel range (based on postcode of vol & postcodes of orgs offering opps)
+    postcode_list = [] # list of the postcodes within the travel range
+        # got some confusing var names here...
+        # ...and shouldn't really need separate postcode_list and postcodes_in_range
+        # the type of both of these is list, but
+        # members of postcodes_in_range are objects like <Postcode: EX13 9AN>
+        # members of postcode_list are strings like 'EX13 9AN'
+    if profile.postcode:
+        postcode_data = postcode_lookup(profile.postcode)
+        if postcode_data['status'] == 200 and postcode_data['result']['longitude'] and postcode_data['result']['latitude']:
+            postcodes_in_range = postcodes_in_radius((profile.range*1.61),postcode_data['result']['latitude'],postcode_data['result']['longitude'])
+            matched_on_range = Opportunity.objects.filter(organisation__postcode__in=postcodes_in_range)
+            for postcode in postcodes_in_range:
+                postcode_list.append(postcode.postcode)
+            # need a way to signal that there was a match on postcode <- huh?
 
     # aggregate matches of different types into a single array of matches
     import itertools
     all_matches = itertools.chain(matched_on_activitys, matched_on_skills, matched_on_range)
 
-    # for match in all_matches:
-    #     print(match.organisation.postcode)
-
-
-
     # make a count of matches per opp - note this will include not just the count but the details of each match
     all_match_counts = {}
     from collections import Counter
     all_match_counts = Counter(all_matches).most_common() # most_common sorts on count value
-
-    postcode_list = []
-    for postcode in postcodes_in_range:
-        postcode_list.append(postcode.postcode)
 
     return render(request,'vol_reg/index.html', {
         'profile': profile,

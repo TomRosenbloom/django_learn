@@ -14,7 +14,8 @@ def category_belonging_dict(belongingObject, ManyRelatedManagerName):
     """
     catDict = {}
     cats = getattr(belongingObject,ManyRelatedManagerName)
-    mpttCats = mptt.utils.tree_item_iterator(cats.all(), ancestors=False)
-    for cat in mpttCats:
-         catDict[cat[0].name] = cat[0].name
+    if cats.all().count != 0:
+        mpttCats = mptt.utils.tree_item_iterator(cats.all(), ancestors=False)
+        for cat in mpttCats:
+             catDict[cat[0].name] = cat[0].name
     return catDict
