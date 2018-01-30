@@ -93,6 +93,12 @@ class Organisation(models.Model):
 
 
 class OrganisationRegistration(models.Model):
+    """
+    Relates organisation to one or more type, with any registration number
+    e.g. type 'Registered Charity' and registered chairty number with Charity Commission
+    Organisation types are defined in the OrganisationType model,
+    reg_number is just free text with no validation rules
+    """
     organisation = models.ForeignKey(Organisation)
     type = models.ForeignKey(OrganisationType)
     reg_number = models.CharField(max_length=100,blank=True,null=True)
