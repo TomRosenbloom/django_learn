@@ -25,7 +25,7 @@
             Aims and activities
           </dt>
           <dd class="col-sm-10">
-            {{ organisation_detail.aims_and_activities }}
+            {{ organisation_detail.aims_and_activities|safe }}
           </dd>
           <dt class="col-sm-2">
             Address
@@ -53,7 +53,7 @@
                 {% for org_type in organisation_detail.organisationregistration_set.all %}
                 <p class="card-text">
                   {{ org_type.type.name }}
-                  {% if org_type.type.acronym %} 
+                  {% if org_type.type.acronym %}
                     ({{ org_type.type.acronym }})
                   {% endif %}
                   {% if org_type.reg_number %}

@@ -62,7 +62,7 @@
         <a href="{% url 'directory:detail' pk=organisation.id %}">
           <h3 class="list-group-item-heading">{{ organisation.name }}</h3>
         </a>
-        <p class="list-group-item-text">{{ organisation.aims_and_activities }}</p>
+        <p class="list-group-item-text">{{ organisation.aims_and_activities|safe }}</p>
       </div>
 
 
