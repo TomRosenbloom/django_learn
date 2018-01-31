@@ -25,7 +25,7 @@
         </p>
         {% if profile.postcode and profile.range %}
         <p>
-          Travel range: within {{ profile.range }}
+          Your travel range: within {{ profile.range }}
           {% if profile.postcode and profile.range == 1 %}
           mile
           {% elif profile.postcode and profile.range > 1 %}
@@ -35,9 +35,9 @@
         </p>
         {% endif %}
         <p class="categoryTitle">
-          Activities:
+          Your activities:
         </p>
-        <ul>
+        <ul class="categoryList">
           {% for activity in activities %}
             <li>
               {{ activity }}
@@ -49,9 +49,9 @@
           {% endfor %}
         </ul>
         <p class="categoryTitle">
-          Skills:
+          Your skills:
         </p>
-        <ul>
+        <ul class="categoryList">
           {% for skill in skills %}
             <li>
               {{ skill }}
@@ -73,7 +73,7 @@
       </div>
 
     </div>
-    <div class="row">
+    <div class="row" id="roles">
       <div class="col-md-12">
         {% if all_match_counts %}
           <p>
