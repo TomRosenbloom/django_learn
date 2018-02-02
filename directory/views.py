@@ -1,8 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView, DetailView
-from backend.models import Organisation
-from .filters import OrganisationFilter
+from backend.models import Organisation, Opportunity
+from .filters import OrganisationFilter, OpportunityFilter
 import django_filters
 from filters.views import FilterMixin
 import csv
@@ -21,6 +21,17 @@ def export_organisations_csv(request):
 
     return response
 
+class OpportunityFilterView(FilterMixin, django_filters.views.FilterView):
+    filterset_class = OpportunityFilter
+    context_object_name = 'opportunities'
+    model = Opportunity
+    template_name = 'directory/opportunity_filter.html'
+    paginate_by = 10
+
+class OpportunityDetailView(DetailView):
+    context_object_name = 'opportunity_detail'
+    model = Opportunity
+    template_name = 'directory/opportunity_detail.html'
 
 class OrganisationFilterView(FilterMixin, django_filters.views.FilterView):
     filterset_class = OrganisationFilter

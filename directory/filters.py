@@ -1,5 +1,5 @@
 from django import forms
-from backend.models import Organisation, OrganisationType
+from backend.models import Organisation, OrganisationType, Opportunity
 import django_filters
 
 class OrganisationFilter(django_filters.FilterSet):
@@ -11,3 +11,11 @@ class OrganisationFilter(django_filters.FilterSet):
         model = Organisation
         #fields = ['name', 'aims_and_activities', 'postcode', 'address', 'types']
         fields = ['name', 'types']
+
+
+class OpportunityFilter(django_filters.FilterSet):
+    name = django_filters.CharFilter(lookup_expr='icontains')
+
+    class Meta:
+        model = Opportunity
+        fields = ['name','description','start_date','end_date']
