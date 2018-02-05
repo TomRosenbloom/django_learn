@@ -1,6 +1,5 @@
 {% extends "directory/base.html" %}
   {% block body_block %}
-  {{ highlighted_opp }}
 
     <div class="card" style="margin-top:50px">
 
@@ -72,7 +71,9 @@
         <div class="card-deck">
           {% if organisation_detail.opportunity_set.all.count > 0 %}
             {% for opportunity in organisation_detail.opportunity_set.all %}
-              <div class="card{% if opportunity == highlighted_opp %} text-white bg-success{% endif %}" style="min-width:335px; max-width:335px">
+              <div class="card opp{% if opportunity == highlighted_opp %} text-white bg-success{% endif %}"
+              id="{% if opportunity == highlighted_opp %}highlighted_opp{% endif %}"
+              style="min-width:335px; max-width:335px">
                 <div class="card-body">
                   <h5 class="card-title">{{ opportunity.name }}</h5>
                   <p class="card-text">{{ opportunity.description|safe }}</p>
@@ -86,5 +87,16 @@
 
       </div>
     </div>
+
+    <script>
+    $( document ).ready(function() {
+      $(".opp").hover(function(){
+        $(this).addClass(" text-white bg-success");
+      }, function(){
+        $(this).removeClass(" text-white bg-success");
+      });
+      //$("#highlighted_opp").toggle("highlight");
+    });
+    </script>
 
   {% endblock %}

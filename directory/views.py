@@ -57,8 +57,6 @@ class OrganisationDetailView(DetailView):
         context = super(OrganisationDetailView, self).get_context_data(**kwargs)
         if 'opp_id' in self.kwargs:
             context['highlighted_opp'] = Opportunity.objects.get(pk=self.kwargs['opp_id'])
-            # context['highlighted_opp'] = self.kwargs['opp_id']
-            print(type(self.kwargs['opp_id']))
         return context
 
 
