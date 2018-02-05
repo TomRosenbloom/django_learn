@@ -1,6 +1,6 @@
 {% extends "directory/base.html" %}
   {% block body_block %}
-
+  {{ highlighted_opp }}
 
     <div class="card" style="margin-top:50px">
 
@@ -69,18 +69,16 @@
           <h4 class="card-title">Volunteering opportunities:</h4>
         </div>
 
-
-
         <div class="card-deck">
           {% if organisation_detail.opportunity_set.all.count > 0 %}
             {% for opportunity in organisation_detail.opportunity_set.all %}
-              <div class="card" style="min-width:335px; max-width:335px">
+              <div class="card{% if opportunity == highlighted_opp %} text-white bg-success{% endif %}" style="min-width:335px; max-width:335px">
                 <div class="card-body">
                   <h5 class="card-title">{{ opportunity.name }}</h5>
                   <p class="card-text">{{ opportunity.description|safe }}</p>
                 </div>
                 <div class="card-footer">
-                  <small class="text-muted">Last updated 3 mins ago</small>
+                  <small class="text-muted">{{ opportunity.start_date }} - {{ opportunity.end_date }}</small>
                 </div>
               </div>
             {% endfor %}

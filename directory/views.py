@@ -47,10 +47,20 @@ class OrganisationListView(ListView):
     template_name = 'directory/organisation_list.html'
     paginate_by = 5
 
+
 class OrganisationDetailView(DetailView):
     context_object_name = 'organisation_detail'
     model = Organisation
     template_name = 'directory/organisation_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(OrganisationDetailView, self).get_context_data(**kwargs)
+        if 'opp_id' in self.kwargs:
+            context['highlighted_opp'] = Opportunity.objects.get(pk=self.kwargs['opp_id'])
+            # context['highlighted_opp'] = self.kwargs['opp_id']
+            print(type(self.kwargs['opp_id']))
+        return context
+
 
 class IndexView(TemplateView):
     template_name = 'directory/index.html'
