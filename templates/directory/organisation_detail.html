@@ -71,7 +71,7 @@
         <div class="card-deck">
           {% if organisation_detail.opportunity_set.all.count > 0 %}
             {% for opportunity in organisation_detail.opportunity_set.all %}
-              <div class="card opp{% if opportunity == highlighted_opp %} text-white bg-success{% endif %}"
+              <div class="card opp{% if opportunity == highlighted_opp %} alert-success{% endif %}"
               id="{% if opportunity == highlighted_opp %}highlighted_opp{% endif %}"
               style="min-width:335px; max-width:335px">
                 <div class="card-body">
@@ -89,13 +89,16 @@
     </div>
 
     <script>
+    // using alert-succes is so not the way to do this!!!!!!
     $( document ).ready(function() {
       $(".opp").hover(function(){
-        $(this).addClass(" text-white bg-success");
+        $(".opp").removeClass(" alert-success");
+        $(this).addClass(" alert-success");
       }, function(){
-        $(this).removeClass(" text-white bg-success");
+        $(this).removeClass(" alert-success");
       });
       //$("#highlighted_opp").toggle("highlight");
+      //$("#highlighted_opp").trigger('mouseover');
     });
     </script>
 
