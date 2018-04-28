@@ -10,5 +10,5 @@ Having said that, this project does have some interesting features:
 - use of MPTT for categories of 'activity' and 'skill' which are used to match roles to volunteers
 - calculation of 'roles within range' based on postcode and travel range of volunteer and postcode of role
 
-* The error was that I divided the project into apps based on some very broad areas of functionality in the system, so you see for e.g. apps called 'crm' and 'directory'. This is entirely the wrong way to do things and I've addressed that in the newer project.
+\* The error was that I divided the project into apps based on some very broad areas of functionality in the system, so you see for e.g. apps called 'crm' and 'directory'. This is entirely the wrong way to do things and I've addressed that in the newer project.
 
