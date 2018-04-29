@@ -1,4 +1,4 @@
-# django_learn
+# django_volcrm
 This was my first attempt at learning Django.
 
 The use-case is a volunteer matching and CRM system for voluntary sector organisations.
