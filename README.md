@@ -1,49 +1,16 @@
-# django_learn
-This is me learning Django.
+# django_volcrm
+This was my first attempt at learning Django.
 
 The use-case is a volunteer matching and CRM system for voluntary sector organisations.
 
-There are five classes of user:
+I made a fundamental error* in the way I structured my apps, so have put this aside now in favour of a new project in repository 'django_poets'.
 
-  - Admin (Django superuser login)
+Having said that, this project does have some interesting features:
 
-  - Public (no login) – can browse [and search] directory of organisations [and volunteer roles]
+- use of MPTT for categories of 'activity' and 'skill' which are used to match roles to volunteers
+- calculation of 'roles within range' based on postcode and travel range of volunteer and postcode of role
 
-  - Volunteer (signup/login as volunteer) – create/edit profile and find matching roles
+Demo deployed here: http://tomrosenbloom.pythonanywhere.com/
 
-  - Organisation member (signup/login as organisation) – create/edit organisation profile and create roles
+\* The error was that I divided the project into apps based on some very broad areas of functionality in the system, so you see for e.g. apps called 'crm' and 'directory'. This is entirely the wrong way to do things and I've addressed that in the newer project.
 
-A user can be both a volunteer and an organisation member.
-
-
-- Public – can browse and search directory of organisations [and volunteer roles]
--	Volunteer – sign up as volunteer then create/edit profile and find matching roles
--	Organisation member  – sign up as organisational user  to create/edit organisation profile and create roles
--	Volunteer Service officer – CRM system and administration of volunteer matching system
--	Django Admin – Django superuser login, for developers only
-
-Features:
-
-- Different varieties of CRUD functionality, depending on context
-  - Generic CBVs
-  - ‘pretty’ list/detail views in public directory, tabular listings with edit/deletelinks in CRM
-  - Filter-search of list views and list tables
-  - Enhanced pagination
-  - Export results as CSV
-- Separate sign up and login for different user types, with custom access
-- Volunteer opportunities found for volunteers, based on their profile: skills and activities, [location and travel range]
-- [Volunteers found for organisations]
-
-Packages:
-
-- Django-address
-- Django-bootstrap
-- Django-ckeditor
-- Django-csvimport
-- Django-filter
-- Django-localflavor
-- Django-MPTT – for managing models representing hierarchical categories e.g. the skills offered by prospective volunteers
-- Django-pagination
-- Django-select2-forms
-- Django-tables2
-- Django-widget-tweaks
