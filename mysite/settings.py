@@ -49,13 +49,14 @@ INSTALLED_APPS = [
     'crm',
     'user_types',
     'widget_tweaks',
-    'csvimport',
+    #'csvimport',
     'ckeditor',
     'mathfilters',
     'django_tables2',
     'bootstrap3',
     'crispy_forms',
     'haystack',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -166,3 +167,5 @@ HAYSTACK_CONNECTIONS = {
         'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
     },
 }
+
+GOOGLE_API_KEY = 'AIzaSyB6TcIRJpgiHdfR1LGIpINIUSox-SGLXF8'

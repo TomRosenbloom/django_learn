@@ -2,7 +2,7 @@ from django.db import models
 from address.models import AddressField
 from mptt.models import MPTTModel, TreeForeignKey
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from ckeditor.fields import RichTextField
 
@@ -21,7 +21,7 @@ class Postcode(models.Model):
 
 class Skill(MPTTModel):
     name = models.CharField(max_length=50, unique=True)
-    parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True)
+    parent = TreeForeignKey('self', null=True, blank=True, related_name='children', on_delete=models.CASCADE, db_index=True)
 
     class MPTTMeta:
         order_insertion_by = ['name']
@@ -32,7 +32,7 @@ class Skill(MPTTModel):
 
 class Activity(MPTTModel):
     name = models.CharField(max_length=50, unique=True)
-    parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True)
+    parent = TreeForeignKey('self', null=True, blank=True, related_name='children', on_delete=models.CASCADE, db_index=True)
 
     class Meta:
         ordering = ['tree_id','level','name']
@@ -78,7 +78,7 @@ class Organisation(models.Model):
     email = models.EmailField(blank=True,null=True)
     telephone = models.CharField(max_length=100,blank=True,null=True)
     postcode = models.CharField(max_length=100,blank=True,null=True)
-    address = AddressField(blank=True, null=True)
+    address = AddressField(on_delete=models.CASCADE, blank=True, null=True)
     types = models.ManyToManyField(OrganisationType,through='OrganisationRegistration',blank=True)
     #opportunitys = models.ManyToManyField(Opportunity)
 
@@ -99,8 +99,8 @@ class OrganisationRegistration(models.Model):
     Organisation types are defined in the OrganisationType model,
     reg_number is just free text with no validation rules
     """
-    organisation = models.ForeignKey(Organisation)
-    type = models.ForeignKey(OrganisationType)
+    organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE)
+    type = models.ForeignKey(OrganisationType, on_delete=models.CASCADE)
     reg_number = models.CharField(max_length=100,blank=True,null=True)
 
     def __str__(self):

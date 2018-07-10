@@ -6,7 +6,7 @@ from django import forms
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.forms import formset_factory
 from django.db import IntegrityError, transaction
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.contrib import messages
 from django.core import serializers
 import json

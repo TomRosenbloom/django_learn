@@ -3,7 +3,7 @@ from django.views.generic import (View, TemplateView, FormView,
                                 ListView, DetailView, CreateView,
                                 UpdateView, DeleteView)
 from django.http import HttpResponse, HttpResponseRedirect
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required, user_passes_test
